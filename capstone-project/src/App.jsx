@@ -9,7 +9,7 @@ function App() {
     return(
     <Routes>
         <Route index element={<Home />} />
-        <Route path='/prayerrequest' element={<MakeAPrayerRequest />} />
+        <Route path='/request' element={<MakeAPrayerRequest />} />
         <Route path='/signin' element={<Signin />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='*' element={<h1>404: Page Not Found</h1>} />
