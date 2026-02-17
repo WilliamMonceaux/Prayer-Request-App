@@ -17,7 +17,7 @@ import {
   Avatar,
   Tooltip,
   Menu,
-  MenuItem
+  MenuItem,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { NavLink } from 'react-router-dom';
@@ -60,15 +60,19 @@ function Navbar(props) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
+      <Typography variant="h6" sx={{ my: 2, fontSize: '2rem' }}>
         Prayer App
       </Typography>
       <Divider />
       <List>
         {pages.map((page) => (
           <ListItem key={page.title} disablePadding>
-            <ListItemButton component={NavLink} to={page.path} sx={{ textAlign: 'center' }}>
-              <ListItemText primary={page.title} />
+            <ListItemButton
+              component={NavLink}
+              to={page.path}
+              sx={{ textAlign: 'center' }}
+            >
+              <ListItemText primary={page.title} primaryTypographyProps={{ style: { fontSize: '1.4rem' } }} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -81,21 +85,24 @@ function Navbar(props) {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar component="nav" sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
-        <Toolbar sx={{ justifyContent: 'end'}}>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon sx={{ fontSize: '2.5rem'}} />
-          </IconButton>
+      <AppBar
+        component="nav"
+        sx={{
+          backgroundColor: 'transparent',
+          boxShadow: 'none',
+          borderBottom: '1px solid black',
+        }}
+      >
+        <Toolbar sx={{ justifyContent: 'end' }}>
           <Typography
             variant="h6"
             component="div"
-            sx={{ textAlign: 'center', color: 'black', fontSize: '2.6rem', flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            sx={{
+              color: 'black',
+              fontSize: '2.4rem',
+              flexGrow: 1,
+              display: { xs: 'block', sm: 'block' },
+            }}
           >
             Prayer App
           </Typography>
@@ -105,18 +112,25 @@ function Navbar(props) {
                 key={page.title}
                 component={NavLink}
                 to={page.path}
-                sx={{ fontSize: '1.2rem', color: 'black' }}
+                sx={{ fontSize: '1.2rem', fontWeight: 700, color: 'black', mr: 1 }}
               >
                 {page.title}
               </Button>
             ))}
           </Box>
-          <Box sx={{ flexGrow: 0, ml: 2 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="User Profile" sx={{ fontSize: '1.4rem'}} />
-              </IconButton>
-            </Tooltip>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: 'none' } }}
+          >
+            <MenuIcon sx={{ fontSize: '2.5rem', color: 'black' }} />
+          </IconButton>
+          <Box sx={{ flexGrow: 0 }}>
+            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <Avatar alt="User Profile" sx={{ fontSize: '1.4rem', color: 'black' }} />
+            </IconButton>
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"
@@ -129,7 +143,9 @@ function Navbar(props) {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ fontSize: '1.4rem', textAlign: 'center' }}>{setting}</Typography>
+                  <Typography sx={{ fontSize: '1.4rem', textAlign: 'center' }}>
+                    {setting}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -140,7 +156,7 @@ function Navbar(props) {
         <Drawer
           container={container}
           variant="temporary"
-          anchor='right'
+          anchor="right"
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
@@ -154,9 +170,6 @@ function Navbar(props) {
           {drawer}
         </Drawer>
       </nav>
-      <Box component="main" sx={{ p: 3 }}>
-        <Toolbar />
-      </Box>
     </Box>
   );
 }
