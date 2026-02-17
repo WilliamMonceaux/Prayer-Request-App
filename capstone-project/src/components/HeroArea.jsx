@@ -42,14 +42,20 @@ function HeroArea({ heading, paragraph, button }) {
               lineHeight: 1.1,
               letterSpacing: '-0.02em',
               wordBreak: 'keep-all',
+              textShadow: '0px 6px 12px rgba(0,0,0,0.35)',
             }}
           >
             {heading}
           </Typography>
         </Grid>
 
-        <Grid component='p' item sx={{ textAlign: 'center', mt: 2, width: '60%' }}>
-          <Typography sx={{ fontSize: { xs: '1.4rem', md: '1.6rem' } }}>
+        <Grid component="p" item sx={{ textAlign: 'center', mt: 2, width: '60%' }}>
+          <Typography
+            sx={{
+              fontSize: { xs: '1.4rem', md: '1.6rem' },
+              textShadow: '0px 6px 12px rgba(0,0,0,0.35)',
+            }}
+          >
             {paragraph}
           </Typography>
         </Grid>
@@ -62,6 +68,7 @@ function HeroArea({ heading, paragraph, button }) {
                 fontSize: { xs: '1.1rem', md: '1.4rem' },
                 fontWeight: 700,
                 p: '1.2rem',
+                backgroundColor: '#2196F3',
               }}
             >
               {button}
