@@ -12,7 +12,7 @@ function UnderstandingPrayer() {
         border: '2px solid brown',
       }}
     >
-        
+
       <Container
         maxWidth="lg"
         sx={{
@@ -52,7 +52,7 @@ function UnderstandingPrayer() {
             <Typography
               variant="h3"
               sx={{
-                fontSize: { xs: '3rem', md: '4.5rem' },
+                fontSize: { xs: '3.13rem', md: '4.2rem' },
                 fontWeight: 'bold',
                 textShadow: '0px 6px 12px rgba(0,0,0,0.35)',
                 mb: 4,
@@ -77,10 +77,17 @@ function UnderstandingPrayer() {
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center',
-              gap: 3,
+              alignItems: 'center',
+              textAlign: 'center',
               p: 4,
+              gap: 4,
+              border: '2px solid blue'
             }}
           >
+            <Box sx={{ backgroundColor: '#EEEEEE', width: '100%', p: 4, borderRadius: 2, boxShadow: '0px 4px 10px rgba(0,0,0,0.35)'}}>
+                <Typography variant='h3' sx={{ mb: 1, fontSize: {xs: '2.5rem', md:'3.13rem'} }}>What is prayer?</Typography>
+                <Typography variant='body1' sx={{ fontSize: { xs: '1.2rem', md: '1.6rem'} }}> test</Typography>
+            </Box>
 
           </Grid>
         </Grid>
