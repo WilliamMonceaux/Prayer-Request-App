@@ -4,11 +4,13 @@ import { MakeAPrayerRequest } from './pages/MakeAPrayerRequest';
 import { Signin } from './pages/Signin';
 import { Signup } from './pages/Signup';
 import { Navbar } from './components/Navbar';
+import { HeroArea } from './components/HeroArea';
 
 function App() {
     return(
         <>
         <Navbar />
+        <HeroArea />
     <Routes>
         <Route index element={<Home />} />
         <Route path='/request' element={<MakeAPrayerRequest />} />
