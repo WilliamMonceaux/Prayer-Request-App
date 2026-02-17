@@ -1,6 +1,7 @@
 import '../index.css';
 import { HeroArea } from '../components/HeroArea';
 import { UnderstandingPrayer } from '../components/UnderstandingPrayer';
+import { PrayerRequestCards } from '../components/PrayerRequestCards';
 
 function Home() {
   return (
@@ -11,6 +12,7 @@ function Home() {
       button="Create an Account"
     />
     <UnderstandingPrayer />
+    <PrayerRequestCards />
     </>
   );
 }
