@@ -72,7 +72,10 @@ function Navbar(props) {
               to={page.path}
               sx={{ textAlign: 'center' }}
             >
-              <ListItemText primary={page.title} primaryTypographyProps={{ style: { fontSize: '1.4rem' } }} />
+              <ListItemText
+                primary={page.title}
+                primaryTypographyProps={{ style: { fontSize: '1.4rem' } }}
+              />
             </ListItemButton>
           </ListItem>
         ))}
@@ -86,6 +89,7 @@ function Navbar(props) {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar
+        position="sticky"
         component="nav"
         sx={{
           backgroundColor: 'transparent',
