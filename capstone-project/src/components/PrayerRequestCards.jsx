@@ -8,7 +8,6 @@ function PrayerRequestCards() {
         minHeight: '40vh',
         display: 'flex',
         flexDirection: 'column',
-        border: '2px solid blue',
       }}
     >
       <Container
@@ -20,8 +19,7 @@ function PrayerRequestCards() {
           px: 4,
           py: 10,
           gap: 2,
-          border: '2px solid green',
-          backgroundColor: 'white'
+          backgroundColor: 'white',
         }}
       >
         <Box
@@ -29,8 +27,8 @@ function PrayerRequestCards() {
             backgroundColor: '#EEEEEE',
             borderRadius: 2,
             p: 3,
-            border: '2px solid black',
             position: 'relative',
+            boxShadow: '0px 4px 10px rgba(0,0,0,0.35)'
           }}
         >
           <Box
@@ -39,7 +37,6 @@ function PrayerRequestCards() {
               justifyContent: 'space-between',
               alignItems: 'center',
               mb: 2,
-              border: '2px solid orange',
             }}
           >
             <Box
@@ -47,7 +44,6 @@ function PrayerRequestCards() {
                 display: 'flex',
                 alignItems: 'center',
                 gap: 1.5,
-                border: '2px solid red',
               }}
             >
               <Avatar alt="User Profile" sx={{ fontSize: '1.4rem', color: 'black' }} />
@@ -58,7 +54,7 @@ function PrayerRequestCards() {
                 Username
               </Typography>
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', border: '2px solid blueviolet'}}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Box component='img' src={heartImg} alt='like button' sx={{ width: '3rem' }}>
                 </Box>
                 <Typography variant='h6' sx={{ fontSize: { xs: '1.5rem', md: '2rem' }, ml: 0.5 }}>
@@ -72,9 +68,9 @@ function PrayerRequestCards() {
           <Typography variant='body1' sx={{ mt: 1, mb: 4, fontSize: { xs: '1.2rem', md: '1.6rem' }}}>
             This is a paragraph.
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', border: '2px solid pink', mt: 'auto' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', flexGrow: 1, gap: 1, border: '2px solid lime' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, border: '2px solid yellow' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', mt: 'auto' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', flexGrow: 1, gap: 1 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 <Typography variant='h6' sx={{ fontSize: { xs: '1.5rem', md: '2rem' } }}>
                     Status:
                 </Typography>
@@ -82,7 +78,7 @@ function PrayerRequestCards() {
                     Need Prayers
                 </Typography>
                 </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', border: '2px solid green'}}>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Typography variant='body1' sx={{ fontSize: { xs: '1.2rem', md: '1.6rem' }}}>
                     20 minutes ago
                 </Typography>
