@@ -13,11 +13,11 @@ function PrayerInfoCard({ title, description }) {
       }}
     >
       <Typography
-        variant="h3"
+        variant="h4"
         gutterBottom
         sx={{
           mb: 3,
-          fontSize: { xs: '2.5rem', md: '3.13rem' },
+          fontSize: 'clamp(2.5rem, 1.5vw + 2rem, 3.13rem)',
           textShadow: '0px 6px 12px rgba(0,0,0,0.35)',
         }}
       >
