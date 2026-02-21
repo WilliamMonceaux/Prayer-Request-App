@@ -5,7 +5,7 @@ import { PrayerInfoCard } from './PrayerInfoCard';
 
 function UnderstandingPrayer() {
   return (
-    <Box sx={{ minHeight: '60vh', display: 'flex', flexDirection: 'column', my: 10 }}>
+    <Box sx={{ minHeight: '60vh', display: 'flex', flexDirection: 'column', my: 20 }}>
       <Container maxWidth="lg" sx={{ flexGrow: 1, display: 'flex', width: '100%', p: 0 }}>
         <Grid container sx={{ flexGrow: 1, width: '100%', justifyContent: 'center' }}>
           
