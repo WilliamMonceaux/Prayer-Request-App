@@ -1,7 +1,7 @@
 'use client';
-import { Box, Container, Grid, Typography } from '@mui/material';
+import { Box, Container, Grid } from '@mui/material';
 import { PrayerHero } from './PrayerHero';
-import { PrayerInfoCard } from './PrayerInfoCards';
+import { PrayerInfoCard } from './PrayerInfoCard';
 
 function UnderstandingPrayer() {
   return (
