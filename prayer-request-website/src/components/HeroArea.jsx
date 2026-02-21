@@ -49,7 +49,7 @@ function HeroArea({ heading, paragraph, button }) {
           </Typography>
         </Grid>
 
-        <Grid component="p" item sx={{ textAlign: 'center', mt: 2, width: '60%' }}>
+        <Grid item sx={{ textAlign: 'center', mt: 2, width: '60%' }}>
           <Typography
             sx={{
               fontSize: { xs: '1.4rem', md: '1.6rem' },
