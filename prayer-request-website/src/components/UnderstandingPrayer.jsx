@@ -1,5 +1,4 @@
 import { Box, Container, Grid, Typography } from '@mui/material';
-import prayImg from '../assets/images/pray.png';
 
 function UnderstandingPrayer() {
   return (
@@ -56,7 +55,7 @@ function UnderstandingPrayer() {
 
             <Box
               component="img"
-              src={prayImg}
+              src='/images/pray.png'
               alt="Person praying"
               sx={{ width: '100%', maxWidth: 400 }}
             />
