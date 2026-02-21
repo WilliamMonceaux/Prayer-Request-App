@@ -1,3 +1,5 @@
+'use client';
+import Link from 'next/link';
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -20,7 +22,6 @@ import {
   MenuItem,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { NavLink } from 'react-router-dom';
 
 const drawerWidth = 240;
 const pages = [
@@ -68,13 +69,17 @@ function Navbar(props) {
         {pages.map((page) => (
           <ListItem key={page.title} disablePadding>
             <ListItemButton
-              component={NavLink}
-              to={page.path}
+              component={Link}
+              href={page.path}
               sx={{ textAlign: 'center' }}
             >
               <ListItemText
                 primary={page.title}
-                primaryTypographyProps={{ style: { fontSize: '1.4rem' } }}
+                slotProps={{
+                  primary: {
+                    sx: { fontSize: '1.4rem' },
+                  },
+                }}
               />
             </ListItemButton>
           </ListItem>
@@ -114,8 +119,8 @@ function Navbar(props) {
             {pages.map((page) => (
               <Button
                 key={page.title}
-                component={NavLink}
-                to={page.path}
+                component={Link}
+                href={page.path}
                 sx={{ fontSize: '1.2rem', fontWeight: 700, color: 'black', mr: 1 }}
               >
                 {page.title}
