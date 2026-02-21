@@ -2,6 +2,7 @@
 import { HeroArea } from '@/components/HeroArea';
 import { PrayerRequestCards } from '@/components/PrayerRequestCards';
 import { UnderstandingPrayer } from '@/components/UnderstandingPrayer';
+import { Pagination } from '@/components/Pagination';
 import { Typography, Container } from '@mui/material';
 
 export default function Home() {
@@ -24,6 +25,7 @@ export default function Home() {
         </Container>
         <PrayerRequestCards />
       </main>
+      <Pagination />
     </>
   );
 }
