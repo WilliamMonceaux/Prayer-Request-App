@@ -34,12 +34,22 @@ const pages = [
     path: '/request',
   },
   {
-    title: 'Sign In',
-    path: '/signin',
+    title: 'About Me',
+    path: '/about',
   },
 ];
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settingsLoggedIn = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settingsLoggedOut = [
+  {
+    title: 'Sign In',
+    path: '/signin',
+  },
+  {
+    title: 'Sign Up',
+    path: '/signup',
+  },
+];
 
 function Navbar(props) {
   const { window } = props;
@@ -150,10 +160,10 @@ function Navbar(props) {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+              {settingsLoggedOut.map((setting) => (
+                <MenuItem key={setting.title} onClick={handleCloseUserMenu} component={Link} href={setting.path}>
                   <Typography sx={{ fontSize: '1.4rem', textAlign: 'center' }}>
-                    {setting}
+                    {setting.title}
                   </Typography>
                 </MenuItem>
               ))}
