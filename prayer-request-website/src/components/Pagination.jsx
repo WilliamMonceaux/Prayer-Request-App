@@ -20,7 +20,8 @@ function Pagination({ current = 1, total = 25}) {
         sx={{
           border: '1px solid #e0e0e0',
           padding: '12px 24px',
-          borderRadius: '1rem'
+          borderRadius: '1rem',
+          backgroundColor: 'white'
         }}
       >
         <IconButton aria-label="previous page">
