@@ -125,7 +125,7 @@ export default function SignUp(props) {
           <Typography
             component="h1"
             variant="h4"
-            sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)', mb: 2 }}
+            sx={{ width: '100%', fontSize: 'clamp(3.1rem, 10vw, 2.15rem)', mb: 2 }}
           >
             Sign up
           </Typography>
@@ -135,8 +135,11 @@ export default function SignUp(props) {
             sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
           >
             <FormControl>
-              <FormLabel htmlFor="name">Full name</FormLabel>
+              <FormLabel htmlFor="name" sx={{ fontSize: '1.4rem', mb: 1 }}>
+                Full name
+              </FormLabel>
               <TextField
+                size="small"
                 autoComplete="name"
                 name="name"
                 required
@@ -149,8 +152,11 @@ export default function SignUp(props) {
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
+              <FormLabel htmlFor="email" sx={{ fontSize: '1.4rem', mb: 1 }}>
+                Email
+              </FormLabel>
               <TextField
+                size="small"
                 required
                 fullWidth
                 id="email"
@@ -164,8 +170,11 @@ export default function SignUp(props) {
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
+              <FormLabel htmlFor="password" sx={{ fontSize: '1.4rem', mb: 1 }}>
+                Password
+              </FormLabel>
               <TextField
+                size="small"
                 required
                 fullWidth
                 name="password"
@@ -184,7 +193,7 @@ export default function SignUp(props) {
               fullWidth
               variant="contained"
               onClick={validateInputs}
-              sx={{ my: 2 }}
+              sx={{ my: 2, backgroundColor: '#2196F3' }}
             >
               Sign up
             </Button>
