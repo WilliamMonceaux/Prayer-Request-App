@@ -18,12 +18,11 @@ function PrayerRequestCards() {
           px: 4,
           py: 10,
           gap: 2,
-          backgroundColor: 'white',
         }}
       >
         <Box
           sx={{
-            backgroundColor: '#EEEEEE',
+            backgroundColor: 'white',
             borderRadius: 2,
             p: 3,
             position: 'relative',
