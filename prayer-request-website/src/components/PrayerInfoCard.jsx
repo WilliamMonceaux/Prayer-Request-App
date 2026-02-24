@@ -4,7 +4,7 @@ function PrayerInfoCard({ title, description }) {
   return (
     <Box
       sx={{
-        backgroundColor: '#EEEEEE',
+        backgroundColor: 'white',
         width: '100%',
         maxWidth: '450px',
         p: 4,
