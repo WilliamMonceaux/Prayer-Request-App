@@ -19,6 +19,7 @@
     "@mui/material-nextjs": "^7.3.8",
     "axios": "^1.13.5",
     "babel-plugin-react-compiler": "^1.0.0",
+    "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "mongoose": "^9.2.2",
     "next": "16.1.6",
