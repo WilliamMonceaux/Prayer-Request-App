@@ -9,7 +9,7 @@ const commentsSchema = new mongoose.Schema(
     },
     prayer_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Prayers',
+      ref: 'Prayer',
       required: [true, 'A comment must belong to a prayer post'],
     },
     content: {
@@ -24,8 +24,8 @@ const commentsSchema = new mongoose.Schema(
   }
 );
 
-const Comment = mongoose.model('Comments', commentsSchema);
+const Comment = mongoose.model('Comment', commentsSchema);
 
 module.exports = {
-    Comments,
+    Comment,
 }
