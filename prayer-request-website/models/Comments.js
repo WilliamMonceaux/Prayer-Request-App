@@ -24,8 +24,8 @@ const commentsSchema = new mongoose.Schema(
   }
 );
 
-const Comment = mongoose.model('Prayers', commentsSchema);
+const Comment = mongoose.model('Comments', commentsSchema);
 
 module.exports = {
-    PrayerPost,
+    Comments,
 }
