@@ -1,6 +1,7 @@
 import { connectMongo } from '@/lib/mongodb';
 import { User } from '@/models/User';
 import { NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
 
 export async function GET() {
   try {
@@ -37,11 +38,10 @@ export async function POST(req) {
         });
 
         const userResponse = newUser.toObject();
-        delete userResponse.password;
 
         return NextResponse.json(userResponse, { status: 201 });
     } catch (err) {
         console.error('POST error:', err);
-        return NextResponse.json({ error: 'Failed to create user' }, { status: 500 });
+        return NextResponse.json({ error: err.message }, { status: 400 });
     }
 }
