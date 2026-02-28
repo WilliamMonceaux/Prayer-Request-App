@@ -12,6 +12,7 @@ export async function GET() {
   }
 }
 
+// Remember to create logic to for duration expiring time
 export async function POST(req) {
   try {
     await connectMongo();
