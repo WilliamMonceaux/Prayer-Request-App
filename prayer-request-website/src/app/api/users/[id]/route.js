@@ -27,3 +27,32 @@ export async function DELETE(req, { params }) {
     return NextResponse.json({ error: 'Failed to delete user' }, { status: 500 });
   }
 }
+
+export async function PATCH(req, { params }) {
+    try {
+        await connectMongo();
+
+        const { id } = await params;
+        const data = await req.json();
+
+        // Preventing users from changing their role or password
+        delete data.role;
+        delete data.password;
+
+        const updatedUser = await User.findByIdAndUpdate(
+            id,
+            { $set: data },
+            { new: true, runValidators: true }
+        ).select('-password');
+
+        if (!updatedUser) {
+            return NextResponse.json({ error: 'User not found' }, { status: 404 });
+        }
+
+        return NextResponse.json(updatedUser, { status: 200 });
+
+    } catch (err) {
+        console.error('PATCH error:', err);
+        return NextResponse.json({ error: 'Failed to update user' }, { status: 500 });
+    }
+}
