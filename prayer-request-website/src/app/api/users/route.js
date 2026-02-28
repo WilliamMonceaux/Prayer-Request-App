@@ -11,3 +11,37 @@ export async function GET() {
     return NextResponse.json({ error: 'Failed to fetch users' }, { status: 500 });
   }
 }
+
+export async function POST(req) {
+    try {
+        await connectMongo();
+        const { username, email, password } = await req.json();
+
+        if(!username || !email || !password) {
+            return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+        }
+
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return NextResponse.json({ error: 'Email already in use' }, { status: 400 });
+        }
+
+        const salt = await bcrypt.genSalt(10); // generating a white noise for potential hackers to gain password access
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        const newUser = await User.create({
+            username,
+            email,
+            password: hashedPassword,
+            role: 'user'
+        });
+
+        const userResponse = newUser.toObject();
+        delete userResponse.password;
+
+        return NextResponse.json(userResponse, { status: 201 });
+    } catch (err) {
+        console.error('POST error:', err);
+        return NextResponse.json({ error: 'Failed to create user' }, { status: 500 });
+    }
+}
