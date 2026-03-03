@@ -13,6 +13,10 @@ if (!cached) {
 }
 
 async function connectMongo() {
+
+  if (mongoose.connection.readyState >= 1) {
+    return mongoose.connection;
+  }
   if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
