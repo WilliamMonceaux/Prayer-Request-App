@@ -5,14 +5,29 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   try {
     await connectMongo();
-    const prayers = await PrayerPost.find({}).sort({ createdAt: -1 });
+    const timeNow = new Date();
+
+    const prayers = await PrayerPost.find({
+      $or: [
+        { duration: 0 },
+        {
+          $expr: {
+            $gt: [
+              { $add: ['$createdAt', { $multiply: ['$duration', 3600000] }] },
+              timeNow,
+            ],
+          },
+        },
+      ],
+    })
+      .sort({ createdAt: -1 })
+      .limit(10);
     return NextResponse.json(prayers, { status: 200 });
   } catch (err) {
     return NextResponse.json({ error: 'Failed to fetch prayers' }, { status: 500 });
   }
 }
 
-// Remember to create logic to for duration expiring time
 export async function POST(req) {
   try {
     await connectMongo();
@@ -32,7 +47,7 @@ export async function POST(req) {
 
     return NextResponse.json(newPost, { status: 201 });
   } catch (err) {
-    console.error("POST error:", err);
+    console.error('POST error:', err);
     return NextResponse.json({ error: 'Failed to post prayer' }, { status: 500 });
   }
 }
