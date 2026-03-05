@@ -10,14 +10,13 @@ import { Box } from '@mui/material';
 export default function Home() {
   return (
     <>
-      <header>
         <HeroArea
           heading="Where healing and community is built"
           paragraph="Join a community dedicated to lifting one another up. Share your prayer request and experience the strength of being known and supported"
           button="Create an Account"
         />
+
         <UnderstandingPrayer />
-      </header>
 
       <main>
         <Container maxWidth="md" sx={{ mt: 4 }}>
@@ -40,6 +39,7 @@ export default function Home() {
               fontSize: { xs: '1.4rem', md: '1.6rem', xl: '2rem' },
               textAlign: 'center',
               mb: 4,
+              textShadow: '0px 6px 12px rgba(0,0,0,0.35)',
             }}
           >
             Lift others up in prayer. Share your request or pray for someone in need.
@@ -60,8 +60,8 @@ export default function Home() {
           </Box>
         </Container>
         <PrayerRequestCards />
-      </main>
       <Pagination />
+      </main>
     </>
   );
 }
