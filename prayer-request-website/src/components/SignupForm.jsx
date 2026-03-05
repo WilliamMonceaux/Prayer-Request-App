@@ -93,7 +93,7 @@ export default function SignUp(props) {
 
     if (!name.value || name.value.length < 1) {
       setNameError(true);
-      setNameErrorMessage('Name is required.');
+      setNameErrorMessage('Username is required.');
       isValid = false;
     } else {
       setNameError(false);
@@ -135,8 +135,8 @@ export default function SignUp(props) {
             sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
           >
             <FormControl>
-              <FormLabel htmlFor="name" sx={{ fontSize: '1.4rem', mb: 1 }}>
-                Full name
+              <FormLabel htmlFor="name" sx={{ fontSize: '1.6rem', mb: 1 }}>
+                Username
               </FormLabel>
               <TextField
                 size="small"
@@ -152,7 +152,7 @@ export default function SignUp(props) {
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="email" sx={{ fontSize: '1.4rem', mb: 1 }}>
+              <FormLabel htmlFor="email" sx={{ fontSize: '1.6rem', mb: 1 }}>
                 Email
               </FormLabel>
               <TextField
@@ -170,7 +170,7 @@ export default function SignUp(props) {
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="password" sx={{ fontSize: '1.4rem', mb: 1 }}>
+              <FormLabel htmlFor="password" sx={{ fontSize: '1.6rem', mb: 1 }}>
                 Password
               </FormLabel>
               <TextField
@@ -207,7 +207,7 @@ export default function SignUp(props) {
               <Link
                 href="/material-ui/getting-started/templates/sign-in/"
                 variant="body2"
-                sx={{ alignSelf: 'center' }}
+                sx={{ alignSelf: 'center', fontSize: '1.6rem' }}
               >
                 Sign in
               </Link>
