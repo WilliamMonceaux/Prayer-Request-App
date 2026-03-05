@@ -7,6 +7,12 @@ const prayerPostSchema = new mongoose.Schema(
       ref: 'User',
       required: [true, 'A prayer must belong to a user'],
     },
+    comment_id: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment',
+      },
+    ],
     title: {
       type: String,
       required: [true, 'Title is required'],
@@ -31,7 +37,7 @@ const prayerPostSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['Need Prayers', 'Prayer Answered', 'Expired'],
+      enum: ['Need Prayers', 'Prayer Answered'],
       default: 'Need Prayers',
     },
     isAnonymous: {
