@@ -164,7 +164,7 @@ function Navbar(props) {
                 key={page.title}
                 component={Link}
                 href={page.path}
-                sx={{ fontSize: '1.2rem', fontWeight: 700, color: 'black', mr: 1 }}
+                sx={{ fontSize: {md: '1.4rem', xl: '1.6rem'}, fontWeight: 700, color: 'black', mr: 1 }}
               >
                 {page.title}
               </Button>
@@ -200,7 +200,7 @@ function Navbar(props) {
                   component={Link}
                   href={setting.path}
                 >
-                  <Typography sx={{ fontSize: '1.4rem', textAlign: 'center' }}>
+                  <Typography sx={{ fontSize: { md: '1.4rem', xl: '2.0rem'}, textAlign: 'center' }}>
                     {setting.title}
                   </Typography>
                 </MenuItem>
