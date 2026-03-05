@@ -57,8 +57,8 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
  function SignInForm(props) {
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
+  const [nameError, setNameError] = React.useState(false);
+  const [nameErrorMessage, setNameErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
@@ -72,30 +72,30 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   };
 
   const handleSubmit = (event) => {
-    if (emailError || passwordError) {
+    if (nameError || passwordError) {
       event.preventDefault();
       return;
     }
     const data = new FormData(event.currentTarget);
     console.log({
-      email: data.get('email'),
+      name: data.get('name'),
       password: data.get('password'),
     });
   };
 
   const validateInputs = () => {
-    const email = document.getElementById('email');
+    const name = document.getElementById('name');
     const password = document.getElementById('password');
 
     let isValid = true;
 
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage('Please enter a valid email address.');
+    if (!name.value || !/\S+@\S+\.\S+/.test(name.value)) {
+      setNameError(true);
+      setNameErrorMessage("Username is required");
       isValid = false;
     } else {
-      setEmailError(false);
-      setEmailErrorMessage('');
+      setNameError(false);
+      setNameErrorMessage('');
     }
 
     if (!password.value || password.value.length < 6) {
@@ -134,25 +134,25 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
             }}
           >
             <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
+              <FormLabel htmlFor="name" sx={{ fontSize: '1.6rem', mb: 1 }} >Username</FormLabel>
               <TextField
               size='small'
-                error={emailError}
-                helperText={emailErrorMessage}
-                id="email"
-                type="email"
-                name="email"
-                placeholder="your@email.com"
-                autoComplete="email"
+                error={nameError}
+                helperText={nameErrorMessage}
+                id="name"
+                type="name"
+                name="name"
+                placeholder="Jon Doe"
+                autoComplete="name"
                 autoFocus
                 required
                 fullWidth
                 variant="outlined"
-                color={emailError ? 'error' : 'primary'}
+                color={nameError ? 'error' : 'primary'}
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
+              <FormLabel htmlFor="password" sx={{ fontSize: '1.6rem', mb: 1 }} >Password</FormLabel>
               <TextField
               size='small'
                 error={passwordError}
@@ -174,9 +174,9 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
               fullWidth
               variant="contained"
               onClick={validateInputs}
-              sx={{ my: 2, backgroundColor: '#2196F3' }}
+              sx={{ my: 2, backgroundColor: '#2196F3', textTransform: 'none' }}
             >
-              Sign in
+              Sign In
             </Button>
             <Link
               component="button"
