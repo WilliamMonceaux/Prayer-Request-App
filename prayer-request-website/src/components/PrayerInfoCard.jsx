@@ -6,11 +6,12 @@ function PrayerInfoCard({ title, description }) {
       sx={{
         backgroundColor: 'white',
         width: '100%',
-        maxWidth: '450px',
+        maxWidth: '425px',
         p: 4,
         borderRadius: 2,
         boxShadow: '0px 4px 10px rgba(0,0,0,0.35)',
-        border: '2px solid black'
+        border: '2px solid black',
+        textAlign: 'center'
       }}
     >
       <Typography
@@ -24,7 +25,7 @@ function PrayerInfoCard({ title, description }) {
       >
         {title}
       </Typography>
-      <Typography variant="body1" sx={{ fontSize: { xs: '1.2rem', md: '1.6rem' } }}>
+      <Typography variant="body1" sx={{ fontSize: { xs: '1.4rem', md: '1.6rem', xl: '2.0rem' } }}>
         {description}
       </Typography>
     </Box>

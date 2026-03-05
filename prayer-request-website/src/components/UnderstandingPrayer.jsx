@@ -27,7 +27,7 @@ function UnderstandingPrayer() {
           >
             <PrayerInfoCard 
               title="What is prayer?" 
-              description="Prayer is a solemn request for help or expression of faith." 
+              description='"For me, prayer is a surge of the heart; it is a simple look turned toward heaven, it is a cry of recognition and of love, embracing both trial and joy." - Saint Therese of Lisieux'
             />
             <PrayerInfoCard 
               title="Why is it important?" 

@@ -31,7 +31,7 @@ function PrayerHero() {
         component="img"
         src="/images/pray.png"
         alt="Person praying"
-        sx={{ width: '100%', maxWidth: 400 }}
+        sx={{ width: '100%', maxWidth: 350 }}
       />
     </Grid>
   );
