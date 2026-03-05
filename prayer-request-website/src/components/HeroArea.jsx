@@ -11,9 +11,8 @@ function HeroArea({ heading, paragraph, button }) {
       justifyContent="center"
       sx={{
         minHeight: '60vh',
-        background: 'linear-gradient(to bottom, #43E97B, #38F9D7)',
+        background: 'linear-gradient(90deg, #43E97B 0%, #38F9D7 15%, transparent 15%, transparent 85%, #43E97B 85%, #38F9D7 100%)',
         width: '100%',
-        borderBottom: '1px solid black',
       }}
     >
       <Grid
@@ -24,8 +23,7 @@ function HeroArea({ heading, paragraph, button }) {
           alignItems: 'center',
           justifyContent: 'center',
           gap: 2,
-          backgroundImage:
-            'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
+          background: 'transparent',
           width: '70%',
           flexGrow: 1,
         }}
