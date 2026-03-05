@@ -4,6 +4,7 @@ import { PrayerRequestCards } from '@/components/PrayerRequestCards';
 import { UnderstandingPrayer } from '@/components/UnderstandingPrayer';
 import { Pagination } from '@/components/Pagination';
 import { Typography, Container } from '@mui/material';
+import { Box } from '@mui/material';
 
 export default function Home() {
   return (
@@ -26,13 +27,34 @@ export default function Home() {
             sx={{
               fontSize: 'clamp(3.5rem, 5vw + 1.5rem, 4.88rem)',
               textAlign: 'center',
-              fontWeight: 'bold',
-              lineHeight: 1.2,
+              lineHeight: 1.6,
               textShadow: '0px 6px 12px rgba(0,0,0,0.35)',
             }}
           >
             Community Prayer Requests
           </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              fontSize: { xs: '1.2rem', md: '1.6rem', xl: '2rem' },
+              textAlign: 'center',
+              mb: 4,
+            }}
+          >
+            Lift others up in prayer. Share your request or pray for someone in need.
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              borderBottom: '1px solid #e0e0e0',
+              gap: 2,
+              pb: 2,
+              mb: 4,
+            }}
+          ></Box>
         </Container>
         <PrayerRequestCards />
       </main>
