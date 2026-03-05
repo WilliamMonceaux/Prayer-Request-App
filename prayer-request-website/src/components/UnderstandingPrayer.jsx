@@ -5,36 +5,32 @@ import { PrayerInfoCard } from './PrayerInfoCard';
 
 function UnderstandingPrayer() {
   return (
-    <Box sx={{ minHeight: '60vh', display: 'flex', flexDirection: 'column', my: 20 }}>
-      <Container maxWidth="lg" sx={{ flexGrow: 1, display: 'flex', width: '100%', p: 0 }}>
-        <Grid container sx={{ flexGrow: 1, width: '100%', justifyContent: 'center' }}>
-          
-          <PrayerHero />
-
-          <Grid
-            item
-            xs={12}
-            md={6}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              textAlign: 'center',
-              p: 4,
-              gap: 4,
-            }}
-          >
-            <PrayerInfoCard 
-              title="What is prayer?" 
-              description="Prayer is a solemn request for help or expression of faith." 
-            />
-            <PrayerInfoCard 
-              title="Why is it important?" 
-              description="It builds community and provides strength during difficult times." 
-            />
+    <Box sx={{ minHeight: '80vh', display: 'flex', flexDirection: 'column', my: 10 }}>
+      <Container maxWidth="lg">
+        <Grid container spacing={4} alignItems="center" wrap="nowrap">
+          <Grid item xs={12} md={5}>
+            <PrayerHero />
           </Grid>
 
+          <Grid item xs={12} md={7}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: { xs: 'column', sm: 'row' },
+                justifyContent: 'center',
+                gap: 3,
+              }}
+            >
+              <PrayerInfoCard
+                title="What is prayer?"
+                description='"For me, prayer is a surge of the heart; it is a simple look turned toward heaven, it is a cry of recognition and of love, embracing both trial and joy." - Saint Therese of Lisieux'
+              />
+              <PrayerInfoCard
+                title="Why is it important?"
+                description="Find peace, healing & support"
+              />
+            </Box>
+          </Grid>
         </Grid>
       </Container>
     </Box>
