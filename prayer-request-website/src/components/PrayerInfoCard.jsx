@@ -25,7 +25,7 @@ function PrayerInfoCard({ title, description }) {
       >
         {title}
       </Typography>
-      <Typography variant="body1" sx={{ fontSize: { xs: '1.4rem', md: '1.6rem' } }}>
+      <Typography variant="body1" sx={{ fontSize: { xs: '1.4rem', md: '1.6rem', xl: '2.0rem' } }}>
         {description}
       </Typography>
     </Box>
