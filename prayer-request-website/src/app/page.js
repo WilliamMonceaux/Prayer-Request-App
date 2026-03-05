@@ -36,7 +36,7 @@ export default function Home() {
           <Typography
             variant="body1"
             sx={{
-              fontSize: { xs: '1.2rem', md: '1.6rem', xl: '2rem' },
+              fontSize: { xs: '1.4rem', md: '1.6rem', xl: '2rem' },
               textAlign: 'center',
               mb: 4,
             }}
