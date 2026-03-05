@@ -118,7 +118,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
           <Typography
             component="h1"
             variant="h4"
-            sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
+            sx={{ width: '100%', fontSize: 'clamp(3.1rem, 10vw, 2.15rem)' }}
           >
             Sign in
           </Typography>
@@ -136,6 +136,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
             <FormControl>
               <FormLabel htmlFor="email">Email</FormLabel>
               <TextField
+              size='small'
                 error={emailError}
                 helperText={emailErrorMessage}
                 id="email"
@@ -153,6 +154,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
             <FormControl>
               <FormLabel htmlFor="password">Password</FormLabel>
               <TextField
+              size='small'
                 error={passwordError}
                 helperText={passwordErrorMessage}
                 name="password"
@@ -172,6 +174,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
               fullWidth
               variant="contained"
               onClick={validateInputs}
+              sx={{ my: 2, backgroundColor: '#2196F3' }}
             >
               Sign in
             </Button>
