@@ -12,7 +12,7 @@ function RequestBtn({ text }) {
           href='/request'
             variant="contained"
             sx={{
-              fontSize: { xs: '1.1rem', md: '1.4rem' },
+              fontSize: { xs: '1.1rem', md: '1.4rem', xl: '1.6rem' },
               fontWeight: 500,
               p: '1.2rem',
               backgroundColor: '#2196F3',
