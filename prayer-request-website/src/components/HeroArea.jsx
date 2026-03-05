@@ -46,7 +46,7 @@ function HeroArea({ heading, paragraph, button }) {
         <Grid item sx={{ textAlign: 'center', mt: 2, width: '60%' }}>
           <Typography
             sx={{
-              fontSize: { xs: '1.4rem', md: '1.6rem' },
+              fontSize: { xs: '1.4rem', md: '1.6rem', xl: '2rem' },
               textShadow: '0px 6px 12px rgba(0,0,0,0.35)',
             }}
           >
