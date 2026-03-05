@@ -193,7 +193,7 @@ export default function SignUp(props) {
               fullWidth
               variant="contained"
               onClick={validateInputs}
-              sx={{ my: 2, backgroundColor: '#2196F3' }}
+              sx={{ my: 2, backgroundColor: '#2196F3', textTransform: 'none' }}
             >
               Sign up
             </Button>
