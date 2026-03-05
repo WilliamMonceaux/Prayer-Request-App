@@ -48,7 +48,7 @@ function PrayerRequestCards() {
               <Avatar alt="User Profile" sx={{ fontSize: '1.4rem', color: 'black' }} />
               <Typography
                 variant="h6"
-                sx={{ fontSize: { xs: '1.5rem', md: '2.0rem'} }}
+                sx={{ fontSize: { xs: '1.6rem', md: '2rem', xl: '2.4rem'} }}
               >
                 Username
               </Typography>
@@ -56,29 +56,29 @@ function PrayerRequestCards() {
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Box component='img' src='/images/heart-like.png' alt='like button' sx={{ width: '3rem' }}>
                 </Box>
-                <Typography variant='h6' sx={{ fontSize: { xs: '1.5rem', md: '2rem' }, ml: 0.5 }}>
+                <Typography variant='h6' sx={{ fontSize: { xs: '1.4rem', md: '1.6rem', xl: '2rem' }, ml: 0.5 }}>
                     0
                 </Typography>
             </Box>
           </Box>
-          <Typography variant='h6' sx={{ fontSize: { xs: '1.5rem', md: '2rem' }, display: 'block', my: 3 }}>
+          <Typography variant='h6' sx={{ fontSize: { xs: '1.6rem', md: '2rem', xl: '2.4rem' }, display: 'block', my: 3 }}>
             Title
           </Typography>
-          <Typography variant='body1' sx={{ mt: 1, mb: 4, fontSize: { xs: '1.2rem', md: '1.6rem' }}}>
+          <Typography variant='body1' sx={{ mt: 1, mb: 4, fontSize: { xs: '1.2rem', md: '1.6rem', xl: '2rem' }}}>
             This is a paragraph.
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', mt: 'auto' }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', flexGrow: 1, gap: 1 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <Typography variant='h6' sx={{ fontSize: { xs: '1.5rem', md: '2rem' } }}>
+                <Typography variant='h6' sx={{ fontSize: { xs: '1.6rem', md: '2rem', xl: '2.4rem' } }}>
                     Status:
                 </Typography>
-                <Typography variant='body1' sx={{ fontSize: { xs: '1.2rem', md: '1.6rem' }, fontWeight: 'bold'}}>
+                <Typography variant='body1' sx={{ fontSize: { xs: '1.2rem', md: '1.6rem', xl: '2rem' }, fontWeight: 'bold'}}>
                     Need Prayers
                 </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Typography variant='body1' sx={{ fontSize: { xs: '1.2rem', md: '1.6rem' }}}>
+                <Typography variant='body1' sx={{ fontSize: { xs: '1.2rem', md: '1.6rem', xl: '2rem' }, fontStyle: 'italic'}}>
                     20 minutes ago
                 </Typography>
                 </Box>
