@@ -91,7 +91,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
-      setEmailErrorMessage(" Please enter a valid email address.");
+      setEmailErrorMessage('Please enter a valid email address.');
       isValid = false;
     } else {
       setEmailError(false);
@@ -118,7 +118,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
           <Typography
             component="h1"
             variant="h4"
-            sx={{ width: '100%', fontSize: 'clamp(3.1rem, 10vw, 2.15rem)' }}
+            sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
           >
             Sign in
           </Typography>
@@ -134,9 +134,8 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
             }}
           >
             <FormControl>
-              <FormLabel htmlFor="email" sx={{ fontSize: '1.6rem', mb: 1 }} >Email</FormLabel>
+              <FormLabel htmlFor="email">Email</FormLabel>
               <TextField
-              size='small'
                 error={emailError}
                 helperText={emailErrorMessage}
                 id="email"
@@ -152,9 +151,8 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="password" sx={{ fontSize: '1.6rem', mb: 1 }} >Password</FormLabel>
+              <FormLabel htmlFor="password">Password</FormLabel>
               <TextField
-              size='small'
                 error={passwordError}
                 helperText={passwordErrorMessage}
                 name="password"
@@ -174,9 +172,8 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
               fullWidth
               variant="contained"
               onClick={validateInputs}
-              sx={{ my: 2, backgroundColor: '#2196F3', textTransform: 'none' }}
             >
-              Sign In
+              Sign in
             </Button>
             <Link
               component="button"
@@ -193,7 +190,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
             <Typography sx={{ textAlign: 'center' }}>
               Don&apos;t have an account?{' '}
               <Link
-                href="/signup"
+                href="/material-ui/getting-started/templates/sign-in/"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
               >
