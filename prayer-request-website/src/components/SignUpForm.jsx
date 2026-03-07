@@ -159,11 +159,15 @@ function SignUpForm(props) {
           router.push('/');
         }, 2000);
       } else {
-        alert(result.message || 'Signup failed, Please try again.');
+        setSnackbarSeverity('error');
+        setSnackbarMessage(result.message || 'Signup failed. Please try again.');
+        setOpenSnackbar(true);
       }
     } catch (err) {
       console.error('Error during signup:', err);
-      alert('Could not connect to the server.');
+      setSnackbarSeverity('error');
+      setSnackbarMessage('Could not connect to the server.');
+      setOpenSnackbar(true);
     }
   };
 
