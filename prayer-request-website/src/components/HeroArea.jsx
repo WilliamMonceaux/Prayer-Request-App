@@ -11,7 +11,8 @@ function HeroArea({ heading, paragraph, button }) {
       justifyContent="center"
       sx={{
         minHeight: '60vh',
-        background: 'linear-gradient(90deg, #43E97B 0%, #38F9D7 15%, transparent 15%, transparent 85%, #43E97B 85%, #38F9D7 100%)',
+        background:
+          'linear-gradient(90deg, #43E97B 0%, #38F9D7 15%, transparent 15%, transparent 85%, #43E97B 85%, #38F9D7 100%)',
         width: '100%',
       }}
     >
@@ -28,11 +29,16 @@ function HeroArea({ heading, paragraph, button }) {
           flexGrow: 1,
         }}
       >
-        <Grid item sx={{ width: '80%', textAlign: 'center', mt: 2 }}>
+        <Grid item sx={{ width: { xs: '100%', md: '80%' }, textAlign: 'center', mt: 2 }}>
           <Typography
             variant="h1"
+            component="h1"
             sx={{
-              fontSize: 'clamp(3.91rem, 8vw + 1rem, 7.3rem)',
+              fontSize: {
+                xs: '2.8rem',
+                md: '6.10rem',
+                xl: '7.63rem',
+              },
               lineHeight: 1.1,
               letterSpacing: '-0.02em',
               wordBreak: 'keep-all',
@@ -54,7 +60,7 @@ function HeroArea({ heading, paragraph, button }) {
           </Typography>
         </Grid>
 
-        <RequestBtn text='Request A Prayer' />
+        <RequestBtn text="Request A Prayer" />
       </Grid>
     </Grid>
   );
