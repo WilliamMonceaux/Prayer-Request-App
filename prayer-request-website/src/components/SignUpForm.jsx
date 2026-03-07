@@ -16,6 +16,7 @@ import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
+import { Alert, Snackbar } from '@mui/material';
 import { useUserContext } from '@/context/UserContext';
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -60,9 +61,12 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
- function SignUpForm(props) {
+function SignUpForm(props) {
   const { handleUpdateUser } = useUserContext();
   const router = useRouter();
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [snackbarMessage, setSnackbarMessage] = React.useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = React.useState('success');
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
@@ -107,44 +111,49 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
     return isValid;
   };
 
-     const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if(!validateInputs()) {
-    return;
-  }
-
-  const data = new FormData(e.currentTarget);
-  const signupData = {
-    username: data.get('name'),
-    email: data.get('email'),
-    password: data.get('password'),
-  };
-
-  try {
-    const response = await fetch('http://localhost:3000/auth/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(signupData),
-    });
-
-    const result = await response.json();
-
-    if (response.ok) {
-      handleUpdateUser(result.user);
-
-      router.push('/feed');
-    } else {
-      alert(result.message || 'Signup failed, Please try again.');
+    if (!validateInputs()) {
+      return;
     }
-  } catch (err) {
-    console.error('Error during signup:', err);
-    alert('Could not connect to the server.');
-  }
-};
 
+    const data = new FormData(e.currentTarget);
+    const signupData = {
+      username: data.get('name'),
+      email: data.get('email'),
+      password: data.get('password'),
+    };
+
+    try {
+      const response = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(signupData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setSnackbarSeverity('success');
+        setSnackbarMessage('Account created successfully! Redirecting...');
+        setOpenSnackbar(true);
+
+        handleUpdateUser(result.user);
+
+        setTimeout(() => {
+          router.push('/');
+        }, 2000);
+      } else {
+        alert(result.message || 'Signup failed, Please try again.');
+      }
+    } catch (err) {
+      console.error('Error during signup:', err);
+      alert('Could not connect to the server.');
+    }
+  };
 
   return (
     <>
@@ -243,6 +252,21 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
             </Typography>
           </Box>
         </Card>
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={4000}
+          onClose={() => setOpenSnackbar(false)}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+          <Alert
+            onClose={() => setOpenSnackbar(false)}
+            severity={snackbarSeverity}
+            variant="filled"
+            sx={{ width: '100%' }}
+          >
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
       </SignUpContainer>
     </>
   );
