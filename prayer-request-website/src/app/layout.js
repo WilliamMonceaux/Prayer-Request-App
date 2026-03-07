@@ -5,6 +5,7 @@ import theme from '@/lib/theme';
 import { Roboto, Lato } from 'next/font/google';
 import './globals.css';
 import { Navbar } from '@/components/Navbar';
+import { UserProvider } from '@/context/UserContext';
 
 const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
@@ -31,11 +32,13 @@ export default function RootLayout({ children }) {
       <body className={roboto.className}>
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
+            <UserProvider>
             <CssBaseline />
             <header>
             <Navbar />
             </header>
             {children}
+            </UserProvider>
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
