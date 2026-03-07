@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 
-function PrayerInfoCard({ title, description }) {
+function PrayerInfoCard({ title, description, quote, image }) {
   return (
     <Box
       sx={{
@@ -14,6 +14,9 @@ function PrayerInfoCard({ title, description }) {
         textAlign: 'center',
       }}
     >
+      {image && (
+        <Box sx={{ mb: 2, display: 'flex', justifyContent: 'center' }}>{image}</Box>
+      )}
       <Typography
         variant="h4"
         component="h4"
@@ -35,6 +38,12 @@ function PrayerInfoCard({ title, description }) {
         sx={{ fontSize: { xs: '1.4rem', md: '1.6rem', xl: '2.0rem' } }}
       >
         {description}
+      </Typography>
+      <Typography
+        variant="body1"
+        sx={{ mt: 2, fontSize: { xs: '1.4rem', md: '1.6rem', xl: '2.0rem' } }}
+      >
+        {quote}
       </Typography>
     </Box>
   );
