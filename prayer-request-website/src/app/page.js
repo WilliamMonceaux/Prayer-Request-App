@@ -30,7 +30,7 @@ export default function Home() {
               textShadow: '0px 6px 12px rgba(0,0,0,0.35)',
             }}
           >
-            Community Prayer Requests
+            Prayer Request Board
           </Typography>
           <Typography
             variant="body1"
