@@ -10,12 +10,12 @@ import { Box } from '@mui/material';
 export default function Home() {
   return (
     <>
-        <HeroArea
-          heading="Where healing and community is built"
-          paragraph="Join a community dedicated to lifting one another up. Share your prayer request and experience the strength of being known and supported"
-        />
+      <HeroArea
+        heading="Where healing and community is built"
+        paragraph="Join a community dedicated to lifting one another up. Share your prayer request and experience the strength of being known and supported"
+      />
 
-        <UnderstandingPrayer />
+      <UnderstandingPrayer />
 
       <main>
         <Container maxWidth="md" sx={{ mt: 4 }}>
@@ -24,7 +24,11 @@ export default function Home() {
             component="h2"
             gutterBottom
             sx={{
-              fontSize: 'clamp(3.5rem, 5vw + 1.5rem, 4.88rem)',
+              fontSize: {
+                xs: '2.5rem',
+                md: '4.88rem',
+                xl: '6.10rem',
+              },
               textAlign: 'center',
               lineHeight: 1.6,
               textShadow: '0px 6px 12px rgba(0,0,0,0.35)',
@@ -59,7 +63,7 @@ export default function Home() {
           </Box>
         </Container>
         <PrayerRequestCards />
-      <Pagination />
+        <Pagination />
       </main>
     </>
   );
