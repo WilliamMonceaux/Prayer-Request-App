@@ -25,14 +25,14 @@ function Pagination({ current = 1, total = 25}) {
         }}
       >
         <IconButton aria-label="previous page">
-          <ArrowBackIosNewIcon sx={{ fontSize: { md: '1.6rem', xl: '2rem' }, color: 'black' }} />
+          <ArrowBackIosNewIcon sx={{ fontSize: { xs: '1.2rem', md: '1.6rem', xl: '2rem' }, color: 'black' }} />
         </IconButton>
 
         <Typography 
           variant="body1"
           sx={{ 
             fontWeight: 500,
-            fontSize: '1.6rem',
+            fontSize: { xs: '1.4rem', md: '1.6rem' },
             userSelect: 'none' 
           }}
         >
@@ -40,7 +40,7 @@ function Pagination({ current = 1, total = 25}) {
         </Typography>
 
         <IconButton aria-label="next page">
-          <ArrowForwardIosIcon sx={{ fontSize: { md: '1.6rem', xl: '2rem' }, color: 'black' }} />
+          <ArrowForwardIosIcon sx={{ fontSize: { xs: '1.2rem', md: '1.6rem', xl: '2rem' }, color: 'black' }} />
         </IconButton>
       </Stack>
     </Box>
