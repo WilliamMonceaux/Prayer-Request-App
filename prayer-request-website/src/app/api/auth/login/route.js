@@ -27,12 +27,15 @@ export async function POST(req) {
 
     const response = NextResponse.json(
       {
-        message: 'Login successful',
-        user: { email: user.email, username: user.username },
+        message: 'Signin successful',
+        user: {
+          email: user.email,
+          username: user.username,
+          profilePicture: user.profilePicture,
+        },
       },
       { status: 200 }
     );
-
     response.cookies.set('token', token, {
       httpOnly: true, // Interrupts hackers from stealing information in JS
       secure: process.env.NODE_ENV === 'production',
