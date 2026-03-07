@@ -155,8 +155,7 @@ function RequestForm() {
               />
             }
             sx={{
-              py: 2,
-              fontSize: '1.6rem',
+              fontSize: { md: '1.4rem', xl: '1.6rem' },
               textTransform: 'none',
               borderRadius: 2,
               boxShadow: 'none',
