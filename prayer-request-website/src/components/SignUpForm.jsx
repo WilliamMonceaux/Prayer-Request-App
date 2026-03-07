@@ -26,13 +26,14 @@ const Card = styled(MuiCard)(({ theme }) => ({
   flexDirection: 'column',
   alignSelf: 'center',
   width: '100%',
-  padding: theme.spacing(4),
+  padding: theme.spacing(2),
   gap: theme.spacing(2),
   margin: 'auto',
   boxShadow:
     'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
   [theme.breakpoints.up('sm')]: {
     width: '450px',
+    padding: theme.spacing(4),
   },
   ...theme.applyStyles('dark', {
     boxShadow:
@@ -41,12 +42,12 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }));
 
 const SignUpContainer = styled(Stack)(({ theme }) => ({
-  height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
-  minHeight: '100%',
+  minHeight: '100dvh',
   padding: theme.spacing(2),
   [theme.breakpoints.up('sm')]: {
     padding: theme.spacing(4),
   },
+  position: 'relative',
   '&::before': {
     content: '""',
     display: 'block',
@@ -183,13 +184,23 @@ function SignUpForm(props) {
           >
             Sign up
           </Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary', mb: 3 }}>
+            <Box component="span" sx={{ color: 'error.main', mr: 1 }}>
+              *
+            </Box>
+            fields are required
+          </Typography>
           <Box
             component="form"
             onSubmit={handleSubmit}
+            noValidate
             sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
           >
             <FormControl>
               <FormLabel htmlFor="name" sx={{ fontSize: '1.6rem', mb: 1 }}>
+                <Box component="span" sx={{ color: 'error.main', mr: 0.5 }}>
+                  *
+                </Box>
                 Username
               </FormLabel>
               <TextField
@@ -207,6 +218,9 @@ function SignUpForm(props) {
             </FormControl>
             <FormControl>
               <FormLabel htmlFor="email" sx={{ fontSize: '1.6rem', mb: 1 }}>
+                <Box component="span" sx={{ color: 'error.main', mr: 0.5 }}>
+                  *
+                </Box>
                 Email
               </FormLabel>
               <TextField
@@ -225,6 +239,9 @@ function SignUpForm(props) {
             </FormControl>
             <FormControl>
               <FormLabel htmlFor="password" sx={{ fontSize: '1.6rem', mb: 1 }}>
+                <Box component="span" sx={{ color: 'error.main', mr: 0.5 }}>
+                  *
+                </Box>
                 Password
               </FormLabel>
               <TextField
