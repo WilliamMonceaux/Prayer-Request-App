@@ -131,19 +131,19 @@ function SignUpForm(props) {
     }
 
     const data = new FormData(e.currentTarget);
-    const signupData = {
-      username: data.get('name'),
-      email: data.get('email'),
-      password: data.get('password'),
-    };
+
+    data.append('username', data.get('name'));
+    data.append('email', data.get('email'));
+    data.append('password', data.get('password'));
+
+    if (selectedFile) {
+      data.append('profilePicture', selectedFile);
+    }
 
     try {
       const response = await fetch('/api/auth/signup', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(signupData),
+        body: data,
       });
 
       const result = await response.json();
@@ -260,12 +260,16 @@ function SignUpForm(props) {
                   onChange={handleFileChange}
                 />
               </Button>
+              {selectedFile && (
+                <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                  {selectedFile.name}
+                </Typography>
+              )}
             </Box>
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              onClick={validateInputs}
               sx={{ my: 2, backgroundColor: '#2196F3', textTransform: 'none' }}
             >
               Sign up
