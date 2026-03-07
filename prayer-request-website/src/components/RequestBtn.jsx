@@ -12,11 +12,15 @@ function RequestBtn({ text }) {
           href='/request'
             variant="contained"
             sx={{
-              fontSize: { xs: '1.1rem', md: '1.4rem', xl: '1.6rem' },
+              fontSize: { md: '1.4rem', xl: '1.6rem' },
               fontWeight: 500,
               p: '1.2rem',
               backgroundColor: '#2196F3',
-              width: { xs: '200px', md: '300px' },
+              '&:hover': {
+                backgroundColor: '#1976d2',
+                boxShadow: 'none',
+              },
+              width: { xs: '20rem', md: '30rem' },
               borderRadius: 6,
               textTransform: 'none',
               display: 'flex',
