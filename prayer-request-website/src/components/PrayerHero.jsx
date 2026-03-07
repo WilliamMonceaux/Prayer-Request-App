@@ -17,8 +17,13 @@ function PrayerHero() {
     >
       <Typography
         variant="h3"
+        component="h3"
         sx={{
-          fontSize: 'clamp(3.13rem, 2.5vw + 2.5rem, 4.2rem)',
+          fontSize: {
+            xs: '3.42rem',
+            md: '3.91rem',
+            xl: '4.88rem',
+          },
           fontWeight: 'bold',
           textShadow: '0px 6px 12px rgba(0,0,0,0.35)',
           mb: 4,
