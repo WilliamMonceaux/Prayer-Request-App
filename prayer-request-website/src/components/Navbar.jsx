@@ -23,6 +23,7 @@ import {
   MenuItem,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useUserContext } from '@/context/UserContext';
 
 const drawerWidth = 240;
 const pages = [
@@ -30,9 +31,9 @@ const pages = [
     title: 'Home',
     path: '/',
   },
-    {
+  {
     title: 'Prayer Meditation',
-    path: '/meditation'
+    path: '/meditation',
   },
   {
     title: 'Request Prayers',
@@ -44,7 +45,17 @@ const pages = [
   },
 ];
 
-const settingsLoggedIn = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settingsLoggedIn = [
+  {
+    title: 'Dashboard',
+    path: '/dashboard',
+  },
+  {
+    title: 'Logout',
+    path: '#',
+  },
+];
+
 const settingsLoggedOut = [
   {
     title: 'Sign In',
@@ -57,10 +68,14 @@ const settingsLoggedOut = [
 ];
 
 function Navbar(props) {
+  const { currentUser, logout } = useUserContext();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const userInitial = currentUser?.username
+    ? currentUser.username.charAt(0).toUpperCase()
+    : '';
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -140,25 +155,25 @@ function Navbar(props) {
                 color: 'inherit',
               }}
             >
-                          <PrayerHands
-              src="/images/praying-hands.png"
-              alt="Prayer Hands Logo"
-              width={50}
-              height={50}
-            />
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{
-                color: 'black',
-                fontSize: '2.4rem',
-                flexGrow: 1,
-                mx: 1,
-                display: { xs: 'block', sm: 'block' },
-              }}
-            >
-              Prayer App
-            </Typography>
+              <PrayerHands
+                src="/images/praying-hands.png"
+                alt="Prayer Hands Logo"
+                width={50}
+                height={50}
+              />
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{
+                  color: 'black',
+                  fontSize: '2.4rem',
+                  flexGrow: 1,
+                  mx: 1,
+                  display: { xs: 'block', sm: 'block' },
+                }}
+              >
+                Prayer App
+              </Typography>
             </Box>
           </Box>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
@@ -167,7 +182,13 @@ function Navbar(props) {
                 key={page.title}
                 component={Link}
                 href={page.path}
-                sx={{ fontSize: {md: '1.4rem', xl: '1.6rem'}, fontWeight: 500, color: 'black', mr: 1, textTransform: 'none' }}
+                sx={{
+                  fontSize: { md: '1.4rem', xl: '1.6rem' },
+                  fontWeight: 500,
+                  color: 'black',
+                  mr: 1,
+                  textTransform: 'none',
+                }}
               >
                 {page.title}
               </Button>
@@ -184,7 +205,13 @@ function Navbar(props) {
           </IconButton>
           <Box sx={{ flexGrow: 0 }}>
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar alt="User Profile" sx={{ fontSize: '1.4rem', color: 'black' }} />
+              <Avatar
+                src={currentUser?.profilePicture}
+                alt={currentUser?.username || 'User Profile'}
+                sx={{ fontSize: '2.0rem', color: 'black', backgroundColor: '#eeeeee' }}
+              >
+                {userInitial}
+              </Avatar>
             </IconButton>
             <Menu
               sx={{ mt: '45px' }}
@@ -196,14 +223,25 @@ function Navbar(props) {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settingsLoggedOut.map((setting) => (
+              {(currentUser ? settingsLoggedIn : settingsLoggedOut).map((setting) => (
                 <MenuItem
                   key={setting.title}
-                  onClick={handleCloseUserMenu}
+                  onClick={(e) => {
+                    if (setting.title === 'Logout') {
+                      e.preventDefault();
+                      logout();
+                    }
+                    handleCloseUserMenu();
+                  }}
                   component={Link}
                   href={setting.path}
                 >
-                  <Typography sx={{ fontSize: { md: '1.4rem', xl: '2.0rem'}, textAlign: 'center' }}>
+                  <Typography
+                    sx={{
+                      fontSize: { md: '1.4rem', xl: '2.0rem' },
+                      textAlign: 'center',
+                    }}
+                  >
                     {setting.title}
                   </Typography>
                 </MenuItem>
