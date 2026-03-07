@@ -205,17 +205,8 @@ function Navbar(props) {
           </IconButton>
           <Box sx={{ flexGrow: 0 }}>
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar
-                src={currentUser?.profilePicture || ''}
-                sx={{
-                  width: 40,
-                  height: 40,
-                  bgcolor: currentUser?.profilePicture ? 'transparent' : '#eeeeee',
-                  color: 'black',
-                }}
-              >
-                {!currentUser?.profilePicture &&
-                  currentUser?.username?.charAt(0).toUpperCase()}
+              <Avatar src={currentUser?.profilePicture} sx={{ width: 40, height: 40 }}>
+                {currentUser?.username?.charAt(0).toUpperCase()}
               </Avatar>
             </IconButton>
             <Menu
