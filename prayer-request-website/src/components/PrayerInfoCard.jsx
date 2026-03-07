@@ -21,7 +21,7 @@ function PrayerInfoCard({ title, description }) {
         sx={{
           mb: 3,
           fontSize: {
-            xs: '2.75rem',
+            xs: '2.0rem',
             md: '3.15rem',
             xl: '3.9rem',
           },

@@ -20,7 +20,7 @@ function PrayerHero() {
         component="h3"
         sx={{
           fontSize: {
-            xs: '3.42rem',
+            xs: '2.2rem',
             md: '3.91rem',
             xl: '4.88rem',
           },
@@ -36,7 +36,7 @@ function PrayerHero() {
         component="img"
         src="/images/pray.png"
         alt="Person praying"
-        sx={{ width: '100%', maxWidth: 350 }}
+        sx={{ width: { xs: '70%', md: '100%' }, maxWidth: 350 }}
       />
     </Grid>
   );
