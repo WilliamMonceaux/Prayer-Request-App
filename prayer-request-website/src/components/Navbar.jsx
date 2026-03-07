@@ -206,11 +206,16 @@ function Navbar(props) {
           <Box sx={{ flexGrow: 0 }}>
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <Avatar
-                src={currentUser?.profilePicture}
-                alt={currentUser?.username || 'User Profile'}
-                sx={{ fontSize: '2.0rem', color: 'black', backgroundColor: '#eeeeee' }}
+                src={currentUser?.profilePicture || ''}
+                sx={{
+                  width: 40,
+                  height: 40,
+                  bgcolor: currentUser?.profilePicture ? 'transparent' : '#eeeeee',
+                  color: 'black',
+                }}
               >
-                {userInitial}
+                {!currentUser?.profilePicture &&
+                  currentUser?.username?.charAt(0).toUpperCase()}
               </Avatar>
             </IconButton>
             <Menu
