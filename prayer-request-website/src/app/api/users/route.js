@@ -1,7 +1,6 @@
 import { connectMongo } from '@/lib/mongodb';
 import { User } from '@/models/User';
 import { NextResponse } from 'next/server';
-import bcrypt from 'bcryptjs';
 
 export async function GET() {
   try {
@@ -27,13 +26,11 @@ export async function POST(req) {
             return NextResponse.json({ error: 'Email already in use' }, { status: 400 });
         }
 
-        const salt = await bcrypt.genSalt(10); // generating a white noise for potential hackers to gain password access
-        const hashedPassword = await bcrypt.hash(password, salt);
 
         const newUser = await User.create({
             username,
             email,
-            password: hashedPassword,
+            password,
             role: 'user'
         });
 
