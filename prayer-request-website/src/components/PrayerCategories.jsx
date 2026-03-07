@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ToggleButton, ToggleButtonGroup, styled } from '@mui/material';
 
-const StyledToggleButtonGroup = styled(ToggleButtonGroup)(() => ({
+const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   backgroundColor: '#f5f5f7',
   borderRadius: '50px',
   padding: '4px',
@@ -12,8 +12,13 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(() => ({
     padding: '6px 24px',
     textTransform: 'none',
     fontWeight: 600,
-    fontSize: { xs: '1.2rem', md: '1.6rem', xl: '2.0rem' },
     color: '#555',
+    [theme.breakpoints.up('xs')]: {
+      fontSize: '1.2rem',
+    },
+    [theme.breakpoints.up('md')]: {
+      fontSize: '1.4rem',
+    },
    '&.Mui-selected': {
       color: 'white',
       boxShadow: '0px 2px 6px rgba(0,0,0,0.2)',
@@ -24,10 +29,10 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(() => ({
         backgroundColor: '#757575',
       },
       '&[value="need prayers"]': {
-        backgroundColor: '#fbc02d',
+        backgroundColor: '#757575',
       },
       '&[value="prayer answered"]': {
-        backgroundColor: '#81c784',
+        backgroundColor: '#757575',
       },
     },
   },
