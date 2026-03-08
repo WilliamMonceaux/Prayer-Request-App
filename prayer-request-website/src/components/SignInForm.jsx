@@ -12,6 +12,9 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
+import { useRouter } from 'next/navigation';
+import { useUserContext } from '@/context/UserContext';
+import Alert from '@mui/material/Alert';
 import { styled } from '@mui/material/styles';
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -56,31 +59,59 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
- function SignInForm(props) {
+function SignInForm(props) {
+  const { handleUpdateUser } = useUserContext();
+  const router = useRouter();
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
+  const [formError, setFormError] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
+    setFormError('');
+    if (!validateInputs()) return;
+
     setOpen(false);
   };
 
-  const handleSubmit = (event) => {
-    if (emailError || passwordError) {
-      event.preventDefault();
-      return;
-    }
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    setFormError('');
+    if (!validateInputs()) return;
+
+    setLoading(true);
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const email = data.get('email');
+    const password = data.get('password');
+
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        handleUpdateUser(result.user);
+        router.push('/');
+      } else {
+        setFormError(result.message || 'Login failed');
+      }
+    } catch (err) {
+      setFormError('A server error occurred. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const validateInputs = () => {
@@ -91,7 +122,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
-      setEmailErrorMessage(" Please enter a valid email address.");
+      setEmailErrorMessage(' Please enter a valid email address.');
       isValid = false;
     } else {
       setEmailError(false);
@@ -122,6 +153,11 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
           >
             Sign in
           </Typography>
+          {formError && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {formError}
+            </Alert>
+          )}
           <Box
             component="form"
             onSubmit={handleSubmit}
@@ -134,9 +170,11 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
             }}
           >
             <FormControl>
-              <FormLabel htmlFor="email" sx={{ fontSize: '1.6rem', mb: 1 }} >Email</FormLabel>
+              <FormLabel htmlFor="email" sx={{ fontSize: '1.6rem', mb: 1 }}>
+                Email
+              </FormLabel>
               <TextField
-              size='small'
+                size="small"
                 error={emailError}
                 helperText={emailErrorMessage}
                 id="email"
@@ -152,9 +190,11 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="password" sx={{ fontSize: '1.6rem', mb: 1 }} >Password</FormLabel>
+              <FormLabel htmlFor="password" sx={{ fontSize: '1.6rem', mb: 1 }}>
+                Password
+              </FormLabel>
               <TextField
-              size='small'
+                size="small"
                 error={passwordError}
                 helperText={passwordErrorMessage}
                 name="password"
@@ -173,7 +213,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
               type="submit"
               fullWidth
               variant="contained"
-              onClick={validateInputs}
+              disabled={loading}
               sx={{ my: 2, backgroundColor: '#2196F3', textTransform: 'none' }}
             >
               Sign In
@@ -192,18 +232,14 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Typography sx={{ textAlign: 'center' }}>
               Don&apos;t have an account?{' '}
-              <Link
-                href="/signup"
-                variant="body2"
-                sx={{ alignSelf: 'center' }}
-              >
+              <Link href="/signup" variant="body2" sx={{ alignSelf: 'center' }}>
                 Sign up
               </Link>
             </Typography>
           </Box>
         </Card>
       </SignInContainer>
-      </>
+    </>
   );
 }
 
