@@ -1,15 +1,28 @@
 import { Button, Grid } from '@mui/material';
 import Arrow from 'next/image';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useUserContext } from '@/context/UserContext';
+import { useSearchParams } from 'next/navigation';
+import { Alert } from '@mui/material';
 
 function RequestBtn({ text }) {
+  const { currentUser } = useUserContext();
+  const router = useRouter();
+  const handleRequestClick = () => {
+    if (!currentUser) {
+      const message = encodeURIComponent('You must sign in first before submitting a prayer request.');
+      router.push(`/signin?message=${message}`);
+    } else {
+      router.push('/request');
+    }
+  }
+
   return (
     <>
       {text && (
         <Grid item sx={{ my: 4 }}>
           <Button
-          component={Link}
-          href='/request'
+          onClick={handleRequestClick}
             variant="contained"
             sx={{
               fontSize: { md: '1.4rem', xl: '1.6rem' },
