@@ -41,9 +41,15 @@ export const UserProvider = (props) => {
     setCurrentUser(user);
   };
 
-  const logout = () => {
-    setCurrentUser(null);
-  };
+  const logout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+
+      setCurrentUser(null);
+    } catch (err) {
+      console.error('Logout failed', err);
+    }
+  }
 
   return (
     <UserContext.Provider value={{ currentUser, handleUpdateUser, loading, logout }}>
