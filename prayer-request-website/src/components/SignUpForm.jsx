@@ -124,6 +124,11 @@ function SignUpForm(props) {
     return isValid;
   };
 
+  const handleRemovePicture = () => {
+    setSelectedFile(null);
+    setPreviewUrl(null);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -268,19 +273,35 @@ function SignUpForm(props) {
               }}
             >
               <Avatar src={previewUrl} sx={{ width: 100, height: 100 }} />
-              <Button
-                component="label"
-                variant="contained"
-                startIcon={<CloudUploadIcon />}
-              >
-                Upload Picture
-                <input
-                  type="file"
-                  hidden
-                  accept="image/*"
-                  onChange={handleFileChange}
-                />
-              </Button>
+
+              <Stack direction="row" spacing={2}>
+                <Button
+                  component="label"
+                  variant="contained"
+                  startIcon={<CloudUploadIcon />}
+                  sx={{ textTransform: 'none' }}
+                >
+                  {selectedFile ? 'Change Picture' : 'Upload Picture'}
+                  <input
+                    type="file"
+                    hidden
+                    accept="image/*"
+                    onChange={handleFileChange}
+                  />
+                </Button>
+
+                {selectedFile && (
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={handleRemovePicture}
+                    sx={{ textTransform: 'none' }}
+                  >
+                    Remove
+                  </Button>
+                )}
+              </Stack>
+
               {selectedFile && (
                 <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                   {selectedFile.name}
