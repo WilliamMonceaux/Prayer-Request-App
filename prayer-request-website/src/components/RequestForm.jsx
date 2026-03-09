@@ -12,10 +12,12 @@ import {
   MenuItem,
   FormControl,
   Select,
-  Button
+  Button,
 } from '@mui/material';
 import Image from 'next/image';
 import CheckMark from '../../public/images/checkmark.png';
+import { useRouter } from 'next/navigation';
+import { useUserContext } from '@/context/UserContext';
 
 const PageWrapper = styled(Stack)(({ theme }) => ({
   minHeight: '100vh',
@@ -31,13 +33,44 @@ const PageWrapper = styled(Stack)(({ theme }) => ({
 }));
 
 function RequestForm() {
+  const { user } = useUserContext();
+  const router = useRouter();
+
+  const [title, setTitle] = useState('');
   const [request, setRequest] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
-  const [duration, setDuration] = useState('1 day');
+  const [duration, setDuration] = useState('1 week');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ request, isAnonymous, duration });
+
+    if (!user?._id) {
+      alert('Please sign in to post a request.');
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/prayers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_id: user._id,
+          title,
+          description: request,
+          duration,
+          isAnonymous,
+        }),
+      });
+
+      if (res.ok) {
+        router.push('/');
+      } else {
+        const errorData = await res.json();
+        console.error('Post failed:', errorData.error);
+      }
+    } catch (err) {
+      console.error('Network error:', err);
+    }
   };
 
   return (
