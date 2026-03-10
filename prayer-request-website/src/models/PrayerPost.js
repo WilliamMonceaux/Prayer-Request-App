@@ -40,6 +40,11 @@ const prayerPostSchema = new mongoose.Schema(
       enum: ['Need Prayers', 'Prayer Answered'],
       default: 'Need Prayers',
     },
+    prayedCount: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
     isAnonymous: {
       type: Boolean,
       default: false,
