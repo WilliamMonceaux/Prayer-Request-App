@@ -33,14 +33,13 @@ const PageWrapper = styled(Stack)(({ theme }) => ({
 }));
 
 function RequestForm() {
-  const { user } = useUserContext();
+  const { currentUser: user, loading } = useUserContext();
   const router = useRouter();
 
   const [title, setTitle] = useState('');
   const [request, setRequest] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [duration, setDuration] = useState('1 week');
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -53,6 +52,7 @@ function RequestForm() {
       const res = await fetch('/api/prayers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({
           user_id: user._id,
           title,
@@ -67,6 +67,7 @@ function RequestForm() {
       } else {
         const errorData = await res.json();
         console.error('Post failed:', errorData.error);
+        alert(`Error: ${errorData.error}`);
       }
     } catch (err) {
       console.error('Network error:', err);
@@ -112,6 +113,15 @@ function RequestForm() {
           noValidate
           aria-label="Prayer request submission form"
         >
+          <TextField
+            fullWidth
+            label="Title"
+            variant="filled"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            sx={{ mb: 3, backgroundColor: '#f9f9f9', borderRadius: 1 }}
+            required
+          />
           <Box component="section" sx={{ mb: 3 }}>
             <TextField
               id="request-input"
