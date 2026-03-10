@@ -28,7 +28,7 @@ const prayerPostSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please select a prayer duration'],
       enum: {
-        values: ['1 week', '2 weeks', '1 month'],
+        values: ['1 Minute', '1 Week', '2 Weeks', '1 Month'],
         message: 'Please select a valid duration',
       },
     },
