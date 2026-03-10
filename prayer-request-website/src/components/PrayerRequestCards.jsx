@@ -132,6 +132,7 @@ function PrayerRequestCards() {
             const status = prayer.status || 'Need Prayers';
             const colors = getStatusColors(status);
             const hasPrayed = prayer.prayedBy?.includes(currentUser?._id);
+            const isAuthor = currentUser?._id === prayer.user_id?._id;
 
             return (
               <PrayerCard
@@ -182,6 +183,7 @@ function PrayerRequestCards() {
                   <Stack direction="row" spacing={1} alignItems="center">
                     <Button
                       onClick={() => handlePray(prayer._id)}
+                      disabled={isAuthor}
                       startIcon={
                         <Box
                           sx={{
@@ -225,7 +227,7 @@ function PrayerRequestCards() {
                       variant="body2"
                       sx={{
                         fontWeight: 800,
-                        fontSize: { md: '1.4rem', xl: '1.6rem'}
+                        fontSize: { md: '1.4rem', xl: '1.6rem' },
                       }}
                     >
                       {prayer.prayedCount || 0}
