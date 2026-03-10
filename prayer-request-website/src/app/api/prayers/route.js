@@ -2,6 +2,12 @@ import { connectMongo } from '@/lib/mongodb';
 import { PrayerPost } from '@/models/PrayerPost';
 import { NextResponse } from 'next/server';
 
+const durationMap = {
+  '1 Week': 7,
+  '2 Weeks': 14,
+  '1 Month': 30,
+};
+
 export async function GET() {
   try {
     await connectMongo();
@@ -10,6 +16,7 @@ export async function GET() {
     const prayers = await PrayerPost.find({
       expiresAt: { $gt: timeNow },
     })
+      .populate('user_id', 'username')
       .sort({ createdAt: -1 })
       .limit(10);
 
@@ -28,16 +35,14 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
     }
 
-    const durationMap = {
-      '1 week': 7,
-      '2 weeks': 14,
-      '1 month': 30,
-    };
-
     const expirationDate = new Date();
-    expirationDate.setDate(
-      expirationDate.getDate() + (durationMap[data.duration] || 7)
-    );
+
+    if (data.duration === '1 Minute') {
+      expirationDate.setMinutes(expirationDate.getMinutes() + 1);
+    } else {
+      const daysToAdd = durationMap[data.duration] || 7;
+      expirationDate.setDate(expirationDate.getDate() + daysToAdd);
+    }
 
     const newPost = await PrayerPost.create({
       user_id: data.user_id,
