@@ -38,6 +38,16 @@ export async function PATCH(req, { params }) {
     const { user_id, action } = body;
 
     if (action === 'togglePray') {
+      const prayer = await PrayerPost.findById(id);
+      if (!prayer) return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+
+      if (prayer.user_id.toString() === user_id) {
+    return NextResponse.json(
+      { error: "You cannot pray for your own request." }, 
+      { status: 400 }
+    );
+  }
+
       const existingLike = await Like.findOne({ user_id: user_id, prayer_id: id });
       let updated;
 
@@ -45,13 +55,16 @@ export async function PATCH(req, { params }) {
         await Like.findByIdAndDelete(existingLike._id);
 
         updated = await PrayerPost.findOneAndUpdate(
-          { _id: id, prayedCount: { $gt: 0 } }, 
+          { _id: id, prayedCount: { $gt: 0 } },
           { $inc: { prayedCount: -1 } },
           { new: true }
         ).populate('user_id', 'username profilePicture');
 
         if (!updated) {
-          updated = await PrayerPost.findById(id).populate('user_id', 'username profilePicture');
+          updated = await PrayerPost.findById(id).populate(
+            'user_id',
+            'username profilePicture'
+          );
         }
       } else {
         await Like.create({ user_id: user_id, prayer_id: id });
@@ -80,7 +93,7 @@ export async function PATCH(req, { params }) {
 
     return NextResponse.json(updatedPrayer, { status: 200 });
   } catch (err) {
-    console.error("DETAILED API ERROR:", err);
+    console.error('DETAILED API ERROR:', err);
     return NextResponse.json({ error: 'Server Error' }, { status: 500 });
   }
 }
