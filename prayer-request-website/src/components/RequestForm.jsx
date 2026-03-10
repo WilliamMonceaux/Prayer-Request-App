@@ -173,11 +173,9 @@ function RequestForm() {
                   value={duration}
                   onChange={(e) => setDuration(e.target.value)}
                 >
-                  <MenuItem value="1 day">1 Day</MenuItem>
-                  <MenuItem value="4 days">4 Days</MenuItem>
-                  <MenuItem value="1 week">1 Week</MenuItem>
-                  <MenuItem value="2 weeks">2 Weeks</MenuItem>
-                  <MenuItem value="1 month">1 Month</MenuItem>
+                  <MenuItem value="1 Week">1 Week</MenuItem>
+                  <MenuItem value="2 Weeks">2 Weeks</MenuItem>
+                  <MenuItem value="1 Month">1 Month</MenuItem>
                 </Select>
               </FormControl>
             </Box>
