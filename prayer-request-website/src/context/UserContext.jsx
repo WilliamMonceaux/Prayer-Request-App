@@ -10,8 +10,9 @@ export const UserProvider = (props) => {
   useEffect(() => {
     const checkUserSession = async () => {
       try {
-        const res = await fetch('/api/auth/me');
-        credentials: 'include'
+        const res = await fetch('/api/auth/me', {
+          credentials: 'include'
+        });
 
         const contentType = res.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
@@ -50,7 +51,7 @@ export const UserProvider = (props) => {
     } catch (err) {
       console.error('Logout failed', err);
     }
-  }
+  };
 
   return (
     <UserContext.Provider value={{ currentUser, handleUpdateUser, loading, logout }}>
