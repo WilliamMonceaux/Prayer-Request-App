@@ -11,6 +11,7 @@ export const UserProvider = (props) => {
     const checkUserSession = async () => {
       try {
         const res = await fetch('/api/auth/me');
+        credentials: 'include'
 
         const contentType = res.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
