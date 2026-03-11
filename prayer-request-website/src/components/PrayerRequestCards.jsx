@@ -256,6 +256,7 @@ function PrayerRequestCards({ activeStatus }) {
                               alt="Pray"
                               fill
                               style={{ objectFit: 'contain' }}
+                              sizes={'3.2rem'}
                             />
                           </Box>
                         }
