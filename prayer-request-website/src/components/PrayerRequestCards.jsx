@@ -19,6 +19,7 @@ import {
 import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
 import { useUserContext } from '@/context/UserContext';
+import { Comments } from '@/components/Comments';
 
 const PrayerCard = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -62,11 +63,20 @@ const getStatusColors = (status) => {
 
 function PrayerRequestCards({ activeStatus }) {
   const { currentUser } = useUserContext();
+  const [expandedComments, setExpandedComments] = useState({});
   const [prayers, setPrayers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+
   const limit = 5;
+
+  const toggleComments = (id) => {
+    setExpandedComments((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
 
   const handleStatusChange = async (prayerId, newStatus) => {
     try {
@@ -180,6 +190,7 @@ function PrayerRequestCards({ activeStatus }) {
         ) : (
           <>
             {prayers.map((prayer) => {
+              const isExpanded = expandedComments[prayer._id];
               const isAnonymous = prayer.isAnonymous;
               const username = prayer.user_id?.username || 'Community Member';
               const profilePic = prayer.user_id?.profilePicture;
@@ -282,6 +293,19 @@ function PrayerRequestCards({ activeStatus }) {
                       >
                         {prayer.prayedCount || 0}
                       </Typography>
+                      <Button
+                        onClick={() => toggleComments(prayer._id)}
+                        variant="text"
+                        sx={{
+                          textTransform: 'none',
+                          fontWeight: 700,
+                          borderRadius: '20px',
+                          fontSize: { xs: '0.9rem', md: '1rem', xl: '1.3rem' },
+                          color: 'text.primary',
+                        }}
+                      >
+                        {isExpanded ? 'Hide' : 'Comment'}
+                      </Button>
                     </Stack>
                   </Box>
 
@@ -347,8 +371,8 @@ function PrayerRequestCards({ activeStatus }) {
                             PaperProps: {
                               sx: {
                                 '& .MuiMenuItem-root': {
-                                  fontSize: { xs: '0.9rem', md: '1.6rem' }, 
-                                  py: 1, 
+                                  fontSize: { xs: '0.9rem', md: '1.6rem' },
+                                  py: 1,
                                   minHeight: 'auto',
                                 },
                               },
@@ -392,6 +416,11 @@ function PrayerRequestCards({ activeStatus }) {
                       {formatDistanceToNow(new Date(prayer.createdAt))} ago
                     </Typography>
                   </Box>
+                  {isExpanded && (
+                    <Box sx={{ mt: 2 }}>
+                      <Comments prayerId={prayer._id} currentUser={currentUser} />
+                    </Box>
+                  )}
                 </PrayerCard>
               );
             })}
