@@ -22,7 +22,7 @@ function Comments({ prayerId, currentUser }) {
     const fetchComments = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/comments?prayer_id=${prayerId}`);
+       const res = await fetch(`/api/comments/${prayerId}`);
         if (res.ok) {
           const data = await res.json();
           setComments(data);
@@ -42,7 +42,7 @@ function Comments({ prayerId, currentUser }) {
 
     setSubmitting(true);
     try {
-      const res = await fetch('/api/comments', {
+      const res = await fetch(`/api/comments/${prayerId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
