@@ -73,7 +73,6 @@ function Comments({ prayerId, currentUser }) {
         Words of Encouragement ({comments.length})
       </Typography>
 
-      {/* Comment List */}
       <Stack spacing={2} sx={{ mb: 3 }}>
         {loading ? (
           <CircularProgress size={24} />
@@ -105,7 +104,6 @@ function Comments({ prayerId, currentUser }) {
         )}
       </Stack>
 
-      {/* Input Section */}
       {currentUser ? (
         <Box component="form" onSubmit={handleSubmit}>
           <TextField
