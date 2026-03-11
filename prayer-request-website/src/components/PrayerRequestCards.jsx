@@ -11,6 +11,7 @@ import {
   Stack,
   Button,
   Pagination,
+  Skeleton
 } from '@mui/material';
 import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
@@ -56,13 +57,13 @@ const getStatusColors = (status) => {
   };
 };
 
-function PrayerRequestCards() {
+function PrayerRequestCards({ activeStatus }) {
   const { currentUser } = useUserContext();
   const [prayers, setPrayers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const limit = 1;
+  const limit = 5;
 
   const handlePray = async (prayerId) => {
     if (!currentUser?._id) return alert('Please log in to pray.');
@@ -87,13 +88,22 @@ function PrayerRequestCards() {
   };
 
   useEffect(() => {
+    setPage(1);
+  }, [activeStatus]);
+
+  useEffect(() => {
     const fetchPrayers = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/prayers?page=${page}&limit=${limit}`);
+        const statusParam =
+          activeStatus !== 'all' ? `&status=${encodeURIComponent(activeStatus)}` : '';
+        const res = await fetch(
+          `/api/prayers?page=${page}&limit=${limit}${statusParam}`
+        );
+
         if (res.ok) {
           const data = await res.json();
-          setPrayers(data.prayers || data);
+          setPrayers(data.prayers || [data]);
           setTotalPages(data.totalPages || 1);
         }
       } catch (err) {
@@ -103,15 +113,24 @@ function PrayerRequestCards() {
       }
     };
     fetchPrayers();
-  }, [page]);
+  }, [page, activeStatus]);
 
-  if (loading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', py: 10 }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
+ if (loading) {
+  return (
+    <Container sx={{ py: 5, maxWidth: { md: '800px' } }}>
+      {[...Array(3)].map((_, i) => (
+        <Paper key={i} sx={{ p: 3, mb: 8, borderRadius: 4 }}>
+          <Stack direction="row" spacing={2} alignItems="center" mb={2}>
+            <Skeleton variant="circular" width={52} height={52} />
+            <Skeleton variant="text" width="40%" height={30} />
+          </Stack>
+          <Skeleton variant="rectangular" height={100} sx={{ mb: 2, borderRadius: 2 }} />
+          <Skeleton variant="text" width="20%" />
+        </Paper>
+      ))}
+    </Container>
+  );
+}
 
   return (
     <Box sx={{ minHeight: '40vh', display: 'flex', flexDirection: 'column' }}>
