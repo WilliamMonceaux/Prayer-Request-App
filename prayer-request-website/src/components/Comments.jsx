@@ -22,7 +22,7 @@ function Comments({ prayerId, currentUser }) {
     const fetchComments = async () => {
       setLoading(true);
       try {
-       const res = await fetch(`/api/comments/${prayerId}`);
+        const res = await fetch(`/api/comments/${prayerId}`);
         if (res.ok) {
           const data = await res.json();
           setComments(data);
@@ -87,7 +87,16 @@ function Comments({ prayerId, currentUser }) {
                   {comment.user_id?.username?.charAt(0).toUpperCase() || 'U'}
                 </Avatar>
                 <Box>
-                  <Typography variant="caption" sx={{ fontWeight: 700 }}>
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      fontWeight: 700,
+                      display: 'block',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
                     {comment.user_id?.username || 'Community Member'} •{' '}
                     {formatDistanceToNow(new Date(comment.createdAt))} ago
                   </Typography>

@@ -5,7 +5,6 @@ import {
   Typography,
   Container,
   Avatar,
-  CircularProgress,
   Paper,
   styled,
   Stack,
@@ -14,7 +13,6 @@ import {
   Skeleton,
   Select,
   MenuItem,
-  FormControl,
 } from '@mui/material';
 import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
@@ -215,38 +213,23 @@ function PrayerRequestCards({ activeStatus }) {
                   <Box
                     sx={{
                       display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
+                      flexDirection: { xs: 'column', sm: 'row' },
+                      justifyContent: { xs: 'flex-start', sm: 'space-between' },
+                      alignItems: { xs: 'flex-start', sm: 'center' },
+                      gap: { xs: 1, sm: 2 },
                       mb: 2,
                     }}
                   >
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <Avatar
-                        src={!isAnonymous && profilePic ? profilePic : undefined}
-                        sx={{
-                          bgcolor: 'grey.200',
-                          color: 'black',
-                          fontWeight: 'bold',
-                          width: { xs: 40, md: 52, xl: 64 },
-                          height: { xs: 40, md: 52, xl: 64 },
-                          fontSize: { xs: '1.2rem', md: '1.5rem', xl: '2rem' },
-                        }}
-                      >
-                        {isAnonymous ? '?' : initial}
-                      </Avatar>
-
-                      <Typography
-                        variant="subtitle1"
-                        sx={{
-                          fontWeight: 600,
-                          fontSize: { xs: '1.2rem', md: '1.4rem', xl: '2rem' },
-                        }}
-                      >
-                        {isAnonymous ? 'Anonymous' : username}
-                      </Typography>
-                    </Box>
-
-                    <Stack direction="row" spacing={1} alignItems="center">
+                    <Stack
+                      direction="row"
+                      spacing={1}
+                      alignItems="center"
+                      sx={{
+                        order: { xs: 1, sm: 2 },
+                        width: { xs: '100%', sm: 'auto' },
+                        justifyContent: { xs: 'flex-end', sm: 'flex-end' },
+                      }}
+                    >
                       <Button
                         onClick={() => handlePray(prayer._id)}
                         disabled={isAuthor}
@@ -267,7 +250,7 @@ function PrayerRequestCards({ activeStatus }) {
                               alt="Pray"
                               fill
                               style={{ objectFit: 'contain' }}
-                              sizes={'3.2rem'}
+                              sizes="32px"
                             />
                           </Box>
                         }
@@ -307,6 +290,45 @@ function PrayerRequestCards({ activeStatus }) {
                         {isExpanded ? 'Hide' : 'Comment'}
                       </Button>
                     </Stack>
+
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 2,
+                        order: { xs: 2, sm: 1 },
+                        minWidth: 0,
+                      }}
+                    >
+                      <Avatar
+                        src={!isAnonymous && profilePic ? profilePic : undefined}
+                        sx={{
+                          bgcolor: 'grey.200',
+                          color: 'black',
+                          fontWeight: 'bold',
+                          width: { xs: 40, md: 52, xl: 64 },
+                          height: { xs: 40, md: 52, xl: 64 },
+                          fontSize: { xs: '1.2rem', md: '1.5rem', xl: '2rem' },
+                        }}
+                      >
+                        {isAnonymous ? '?' : initial}
+                      </Avatar>
+
+                      <Typography
+                        variant="subtitle1"
+                        noWrap
+                        sx={{
+                          fontWeight: 600,
+                          fontSize: { xs: '1.2rem', md: '1.4rem', xl: '2rem' },
+                          maxWidth: { xs: '180px', sm: '250px', md: '400px' },
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
+                        {isAnonymous ? 'Anonymous' : username}
+                      </Typography>
+
+                    </Box>
                   </Box>
 
                   <Typography
@@ -367,26 +389,10 @@ function PrayerRequestCards({ activeStatus }) {
                           }
                           variant="standard"
                           disableUnderline
-                          MenuProps={{
-                            PaperProps: {
-                              sx: {
-                                '& .MuiMenuItem-root': {
-                                  fontSize: { xs: '0.9rem', md: '1.6rem' },
-                                  py: 1,
-                                  minHeight: 'auto',
-                                },
-                              },
-                            },
-                          }}
                           sx={{
                             fontWeight: 500,
                             fontSize: { xs: '0.9rem', md: '1.1rem', xl: '1.6rem' },
                             color: 'black',
-                            '& .MuiSelect-select': {
-                              py: 0,
-                              display: 'flex',
-                              alignItems: 'center',
-                            },
                           }}
                         >
                           <MenuItem value="Need Prayers">Need Prayers</MenuItem>
@@ -415,6 +421,7 @@ function PrayerRequestCards({ activeStatus }) {
                     >
                       {formatDistanceToNow(new Date(prayer.createdAt))} ago
                     </Typography>
+
                   </Box>
                   {isExpanded && (
                     <Box sx={{ mt: 2 }}>
