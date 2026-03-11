@@ -36,17 +36,17 @@ export async function PATCH(req, { params }) {
     const { id } = await params;
     const body = await req.json();
     const { user_id, action } = body;
-
     if (action === 'togglePray') {
       const prayer = await PrayerPost.findById(id);
-      if (!prayer) return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+      if (!prayer)
+        return NextResponse.json({ error: 'Post not found' }, { status: 404 });
 
       if (prayer.user_id.toString() === user_id) {
-    return NextResponse.json(
-      { error: "You cannot pray for your own request." }, 
-      { status: 400 }
-    );
-  }
+        return NextResponse.json(
+          { error: 'You cannot pray for your own request.' },
+          { status: 400 }
+        );
+      }
 
       const existingLike = await Like.findOne({ user_id: user_id, prayer_id: id });
       let updated;
@@ -54,24 +54,24 @@ export async function PATCH(req, { params }) {
       if (existingLike) {
         await Like.findByIdAndDelete(existingLike._id);
 
-        updated = await PrayerPost.findOneAndUpdate(
-          { _id: id, prayedCount: { $gt: 0 } },
-          { $inc: { prayedCount: -1 } },
-          { new: true }
-        ).populate('user_id', 'username profilePicture');
-
-        if (!updated) {
-          updated = await PrayerPost.findById(id).populate(
-            'user_id',
-            'username profilePicture'
-          );
-        }
-      } else {
-        await Like.create({ user_id: user_id, prayer_id: id });
         updated = await PrayerPost.findByIdAndUpdate(
           id,
-          { $inc: { prayedCount: 1 } },
-          { new: true }
+          {
+            $inc: { prayedCount: -1 },
+            $pull: { prayedBy: user_id },
+          },
+          { returnDocument: 'after' }
+        ).populate('user_id', 'username profilePicture');
+      } else {
+        await Like.create({ user_id: user_id, prayer_id: id });
+
+        updated = await PrayerPost.findByIdAndUpdate(
+          id,
+          {
+            $inc: { prayedCount: 1 },
+            $push: { prayedBy: user_id },
+          },
+          { returnDocument: 'after' }
         ).populate('user_id', 'username profilePicture');
       }
 
