@@ -10,6 +10,11 @@ import PersonIcon from '@mui/icons-material/Person';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import DescriptionIcon from '@mui/icons-material/Description';
 import LayersIcon from '@mui/icons-material/Layers';
+import HomeIcon from '@mui/icons-material/Home';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import LaunchIcon from '@mui/icons-material/Launch';
 import { matchPath, useLocation } from 'react-router';
 import DashboardSidebarContext from '@/context/DashboardSidebarContext';
 import { DRAWER_WIDTH, MINI_DRAWER_WIDTH } from '@/theme/customizations/constants';
@@ -28,9 +33,7 @@ function DashboardSidebar({
   container,
 }) {
   const theme = useTheme();
-
   const { pathname } = useLocation();
-
   const [expandedItemIds, setExpandedItemIds] = React.useState([]);
 
   const isOverSmViewport = useMediaQuery(theme.breakpoints.up('sm'));
@@ -44,13 +47,9 @@ function DashboardSidebar({
       const drawerWidthTransitionTimeout = setTimeout(() => {
         setIsFullyExpanded(true);
       }, theme.transitions.duration.enteringScreen);
-
       return () => clearTimeout(drawerWidthTransitionTimeout);
     }
-
     setIsFullyExpanded(false);
-
-    return () => {};
   }, [expanded, theme.transitions.duration.enteringScreen]);
 
   React.useEffect(() => {
@@ -58,13 +57,9 @@ function DashboardSidebar({
       const drawerWidthTransitionTimeout = setTimeout(() => {
         setIsFullyCollapsed(true);
       }, theme.transitions.duration.leavingScreen);
-
       return () => clearTimeout(drawerWidthTransitionTimeout);
     }
-
     setIsFullyCollapsed(false);
-
-    return () => {};
   }, [expanded, theme.transitions.duration.leavingScreen]);
 
   const mini = !disableCollapsibleSidebar && !expanded;
@@ -73,7 +68,7 @@ function DashboardSidebar({
     (newExpanded) => () => {
       setExpanded(newExpanded);
     },
-    [setExpanded],
+    [setExpanded]
   );
 
   const handlePageItemClick = React.useCallback(
@@ -81,16 +76,14 @@ function DashboardSidebar({
       if (hasNestedNavigation && !mini) {
         setExpandedItemIds((previousValue) =>
           previousValue.includes(itemId)
-            ? previousValue.filter(
-                (previousValueItemId) => previousValueItemId !== itemId,
-              )
-            : [...previousValue, itemId],
+            ? previousValue.filter((id) => id !== itemId)
+            : [...previousValue, itemId]
         );
       } else if (!isOverSmViewport && !hasNestedNavigation) {
         setExpanded(false);
       }
     },
-    [mini, setExpanded, isOverSmViewport],
+    [mini, setExpanded, isOverSmViewport]
   );
 
   const hasDrawerTransitions =
@@ -127,11 +120,18 @@ function DashboardSidebar({
           >
             <DashboardSidebarHeaderItem>Main items</DashboardSidebarHeaderItem>
             <DashboardSidebarPageItem
+              id="home"
+              title="Home"
+              icon={<HomeIcon />}
+              href="/"
+              selected={pathname === '/'}
+            />
+            <DashboardSidebarPageItem
               id="employees"
               title="Employees"
               icon={<PersonIcon />}
               href="/employees"
-              selected={!!matchPath('/employees/*', pathname) || pathname === '/'}
+              selected={!!matchPath('/employees/*', pathname)}
             />
             <DashboardSidebarDividerItem />
             <DashboardSidebarHeaderItem>Example items</DashboardSidebarHeaderItem>
@@ -177,17 +177,30 @@ function DashboardSidebar({
               href="/integrations"
               selected={!!matchPath('/integrations', pathname)}
             />
+            <DashboardSidebarDividerItem />
+            <ListItemButton
+              component="a"
+              href="/"
+              sx={{
+                color: 'text.secondary',
+                '&:hover': { bgcolor: 'action.hover' },
+              }}
+            >
+              <ListItemIcon>
+                <LaunchIcon />
+              </ListItemIcon>
+              <ListItemText primary="Back to Home Page" />
+            </ListItemButton>
           </List>
         </Box>
       </React.Fragment>
     ),
-    [mini, hasDrawerTransitions, isFullyExpanded, expandedItemIds, pathname],
+    [mini, hasDrawerTransitions, isFullyExpanded, expandedItemIds, pathname]
   );
 
   const getDrawerSharedSx = React.useCallback(
     (isTemporary) => {
       const drawerWidth = mini ? MINI_DRAWER_WIDTH : DRAWER_WIDTH;
-
       return {
         displayPrint: 'none',
         width: drawerWidth,
@@ -203,7 +216,7 @@ function DashboardSidebar({
         },
       };
     },
-    [expanded, mini],
+    [expanded, mini]
   );
 
   const sidebarContextValue = React.useMemo(() => {
@@ -229,9 +242,7 @@ function DashboardSidebar({
         variant="temporary"
         open={expanded}
         onClose={handleSetSidebarExpanded(false)}
-        ModalProps={{
-          keepMounted: true, // Better open performance on mobile.
-        }}
+        ModalProps={{ keepMounted: true }}
         sx={{
           display: {
             xs: 'block',
@@ -271,9 +282,7 @@ function DashboardSidebar({
 
 DashboardSidebar.propTypes = {
   container: (props, propName) => {
-    if (props[propName] == null) {
-      return null;
-    }
+    if (props[propName] == null) return null;
     if (typeof props[propName] !== 'object' || props[propName].nodeType !== 1) {
       return new Error(`Expected prop '${propName}' to be of type Element`);
     }
