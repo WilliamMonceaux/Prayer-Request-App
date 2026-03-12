@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import Stack from '@mui/material/Stack';
-import { Link } from 'react-router';
+import Link from 'next/link';
 import ThemeSwitcher from './ThemeSwitcher';
 
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
@@ -61,7 +61,7 @@ function DashboardHeader({ logo, title, menuOpen, onToggleMenu }) {
         </Tooltip>
       );
     },
-    [handleMenuOpen],
+    [handleMenuOpen]
   );
 
   return (
@@ -78,7 +78,7 @@ function DashboardHeader({ logo, title, menuOpen, onToggleMenu }) {
         >
           <Stack direction="row" alignItems="center">
             <Box sx={{ mr: 1 }}>{getMenuIcon(menuOpen)}</Box>
-            <Link to="/" style={{ textDecoration: 'none' }}>
+            <Link href="/" style={{ textDecoration: 'none' }}>
               <Stack direction="row" alignItems="center">
                 {logo ? <LogoContainer>{logo}</LogoContainer> : null}
                 {title ? (
@@ -90,6 +90,7 @@ function DashboardHeader({ logo, title, menuOpen, onToggleMenu }) {
                       ml: 1,
                       whiteSpace: 'nowrap',
                       lineHeight: 1,
+                      cursor: 'pointer',
                     }}
                   >
                     {title}
