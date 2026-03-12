@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -6,8 +8,8 @@ import {
   Stack,
   Card,
   CardContent,
+  Chip,
 } from '@mui/material';
-import { useState, useEffect } from 'react';
 
 function MyPrayerRequests() {
   const [loading, setLoading] = useState(true);
@@ -23,7 +25,7 @@ function MyPrayerRequests() {
           setPrayers(data);
         }
       } catch (err) {
-        console.error('Failed to load prayers.');
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -32,7 +34,13 @@ function MyPrayerRequests() {
     fetchPrayers();
   }, []);
 
-  if (loading) return <CircularProgress sx={{ m: 3 }} />;
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', p: 5 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ p: 3 }}>
@@ -49,16 +57,29 @@ function MyPrayerRequests() {
           {prayers.map((prayer) => (
             <Card key={prayer._id} variant="outlined">
               <CardContent>
-                <Typography variant="h6">{prayer.title}</Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                  <Typography variant="h6">{prayer.title}</Typography>
+                  <Chip
+                    label={prayer.status}
+                    color={prayer.status === 'Prayer Answered' ? 'success' : 'error'}
+                    size="small"
+                  />
+                </Box>
+
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                   {prayer.description}
                 </Typography>
-                <Box sx={{ mt: 1, display: 'flex', gap: 2 }}>
-                  <Typography variant="caption">
-                    Prayer Count: {prayer.PrayedCount|| 0}
+
+                <Box sx={{ mt: 1, display: 'flex', gap: 3 }}>
+                  <Typography variant="caption" sx={{ fontWeight: 'bold' }}>
+                    Prayers: {prayer.prayedCount || 0}
                   </Typography>
-                  <Typography variant="caption">
-                    Comments: {prayer.comments_id?.length || 0}
+                  <Typography variant="caption" sx={{ fontWeight: 'bold' }}>
+                    {/* Use the new property from the backend */}
+                    Comments: {prayer.commentCount || 0}
+                  </Typography>
+                  <Typography variant="caption" color="text.disabled">
+                    Duration: {prayer.duration}
                   </Typography>
                 </Box>
               </CardContent>
