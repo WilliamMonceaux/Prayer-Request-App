@@ -118,20 +118,20 @@ function DashboardSidebar({
               width: mini ? MINI_DRAWER_WIDTH : 'auto',
             }}
           >
-            <DashboardSidebarHeaderItem>Main items</DashboardSidebarHeaderItem>
+            <DashboardSidebarHeaderItem>User Account</DashboardSidebarHeaderItem>
             <DashboardSidebarPageItem
-              id="home"
-              title="Home"
-              icon={<HomeIcon />}
-              href="/"
-              selected={pathname === '/'}
+              id="settings"
+              title="Account Settings"
+              icon={<PersonIcon />}
+              href="/settings"
+              selected={pathname === '/settings' || pathname === '/'}
             />
             <DashboardSidebarPageItem
-              id="employees"
-              title="Employees"
-              icon={<PersonIcon />}
-              href="/employees"
-              selected={!!matchPath('/employees/*', pathname)}
+              id="my-requests"
+              title="My Prayer Requests"
+              icon={<LayersIcon />}
+              href="/my-requests"
+              selected={!!matchPath('/my-requests', pathname)}
             />
             <DashboardSidebarDividerItem />
             <DashboardSidebarHeaderItem>Example items</DashboardSidebarHeaderItem>
