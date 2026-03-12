@@ -1,18 +1,14 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate, useParams } from 'react-router';
-import useNotifications from '../hooks/useNotifications/useNotifications';
+import PropTypes from 'prop-types';
+import useNotifications from '@/hooks/useNotifications/useNotifications';
 import {
   getOne as getEmployee,
   updateOne as updateEmployee,
   validate as validateEmployee,
-} from '../data/employees';
+} from '@/app/crud-dashboard/data/employees';
 import EmployeeForm from './EmployeeForm';
 import PageContainer from './PageContainer';
-
 function EmployeeEditForm({ initialValues, onSubmit }) {
   const { employeeId } = useParams();
   const navigate = useNavigate();

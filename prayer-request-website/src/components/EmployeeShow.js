@@ -13,12 +13,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate, useParams } from 'react-router';
 import dayjs from 'dayjs';
-import { useDialogs } from '../hooks/useDialogs/useDialogs';
-import useNotifications from '../hooks/useNotifications/useNotifications';
+import { useDialogs } from '@/hooks/useDialogs/useDialogs';
+import useNotifications from '@/hooks/useNotifications/useNotifications';
 import {
   deleteOne as deleteEmployee,
   getOne as getEmployee,
-} from '../data/employees';
+} from '@/app/crud-dashboard/data/employees';
 import PageContainer from './PageContainer';
 
 export default function EmployeeShow() {

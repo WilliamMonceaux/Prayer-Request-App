@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router';
-import useNotifications from '../hooks/useNotifications/useNotifications';
+import useNotifications from '@/hooks/useNotifications/useNotifications';
 import {
   createOne as createEmployee,
   validate as validateEmployee,
-} from '../data/employees';
+} from '@/app/crud-dashboard/data/employees';
 import EmployeeForm from './EmployeeForm';
 import PageContainer from './PageContainer';
 
