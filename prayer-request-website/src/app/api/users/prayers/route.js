@@ -17,7 +17,7 @@ export async function GET() {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const userPrayers = await PrayerPost.find({ user: decoded.userId })
+    const userPrayers = await PrayerPost.find({ user_id: decoded.userId })
       .sort({ createdAt: -1 });
 
     return NextResponse.json(userPrayers, { status: 200 });
