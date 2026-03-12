@@ -5,12 +5,26 @@ import { buttonBaseClasses } from '@mui/material/ButtonBase';
 import { dividerClasses } from '@mui/material/Divider';
 import { menuItemClasses } from '@mui/material/MenuItem';
 import { selectClasses } from '@mui/material/Select';
+import { typographyClasses } from '@mui/material/Typography';
 import { tabClasses } from '@mui/material/Tab';
 import UnfoldMoreRoundedIcon from '@mui/icons-material/UnfoldMoreRounded';
 import { gray, brand } from '../customizations/themePrimitives';
 
 /* eslint-disable import/prefer-default-export */
 export const navigationCustomizations = {
+  MuiAppBar: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        [`& .${typographyClasses.root}`]: {
+          fontSize: '1.6rem',
+          fontWeight: 700,
+          [theme.breakpoints.up('xl')]: {
+            fontSize: '2.0rem',
+          },
+        },
+      }),
+    },
+  },
   MuiMenuItem: {
     styleOverrides: {
       root: ({ theme }) => ({
