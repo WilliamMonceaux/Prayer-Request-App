@@ -7,13 +7,21 @@ import {
   DialogContent, DialogActions, Select, MenuItem, Accordion, 
   AccordionSummary, AccordionDetails
 } from '@mui/material';
-import { Edit as EditIcon, ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
+import { Edit as EditIcon, ExpandMore as ExpandMoreIcon, DeleteOutline as DeleteIcon } from '@mui/icons-material';
 
 function MyPrayerRequests() {
   const [loading, setLoading] = useState(true);
   const [prayers, setPrayers] = useState([]);
   const [editOpen, setEditOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedPrayer, setSelectedPrayer] = useState(null);
+
+  // DEBUG: Log whenever a prayer is selected
+  useEffect(() => {
+    if (selectedPrayer) {
+      console.log("State updated: current selectedPrayer is", selectedPrayer.title);
+    }
+  }, [selectedPrayer]);
 
   const fetchPrayers = async () => {
     try {
@@ -31,6 +39,23 @@ function MyPrayerRequests() {
     fetchPrayers();
   }, []);
 
+  const handleDelete = async () => {
+    if (!selectedPrayer) return;
+    try {
+      const res = await fetch(`/api/prayers/${selectedPrayer._id}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: selectedPrayer.user_id }),
+      });
+      if (res.ok) {
+        setDeleteDialogOpen(false);
+        fetchPrayers();
+      }
+    } catch (err) {
+      console.error("Delete error:", err);
+    }
+  };
+
   const handleStatusChange = async (id, newStatus, userId) => {
     const res = await fetch(`/api/prayers/${id}`, {
       method: 'PATCH',
@@ -41,20 +66,25 @@ function MyPrayerRequests() {
   };
 
   const handleEditSubmit = async () => {
-    const res = await fetch(`/api/prayers/${selectedPrayer._id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        user_id: selectedPrayer.user_id,
-        editData: {
-          title: selectedPrayer.title, 
-          description: selectedPrayer.description 
-        }
-      }),
-    });
-    if (res.ok) {
-      setEditOpen(false);
-      fetchPrayers();
+    try {
+      const res = await fetch(`/api/prayers/${selectedPrayer._id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_id: selectedPrayer.user_id,
+          editData: {
+            title: selectedPrayer.title,
+            description: selectedPrayer.description,
+            status: selectedPrayer.status,
+          },
+        }),
+      });
+      if (res.ok) {
+        setEditOpen(false);
+        fetchPrayers();
+      }
+    } catch (err) {
+      console.error("Update error:", err);
     }
   };
 
@@ -66,15 +96,7 @@ function MyPrayerRequests() {
 
   return (
     <Box sx={{ p: { xs: 2, md: 3 } }}>
-      <Typography 
-        variant="h4" 
-        sx={{ 
-          mb: 4, 
-          fontWeight: 700, 
-          letterSpacing: '-0.02em', 
-          fontSize: { xs: '2rem', md: '2.5rem' }
-        }}
-      >
+      <Typography variant="h4" sx={{ mb: 4, fontWeight: 700, letterSpacing: '-0.02em', fontSize: { xs: '2rem', md: '2.5rem' } }}>
         My Prayer Requests
       </Typography>
 
@@ -83,22 +105,37 @@ function MyPrayerRequests() {
           <Card key={prayer._id} variant="outlined" sx={{ borderRadius: 3, border: '1px solid #f0f0f0' }}>
             <CardContent sx={{ p: 3 }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-                <Typography 
-                  variant="h5" 
-                  sx={{ 
-                    fontSize: { xs: '1.4rem', md: '1.8rem', xl: '2rem' },
-                    fontWeight: 600, 
-                    lineHeight: 1.2, 
-                    color: '#1a1a1a' 
-                  }}
-                >
+                <Typography variant="h5" sx={{ fontSize: { xs: '1.4rem', md: '1.8rem', xl: '2rem' }, fontWeight: 600, lineHeight: 1.2, color: '#1a1a1a', flex: 1 }}>
                   {prayer.title}
                 </Typography>
                 
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                  <IconButton size="small" onClick={() => { setSelectedPrayer(prayer); setEditOpen(true); }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, zIndex: 10 }}>
+                  <IconButton 
+                    size="small" 
+                    onClick={(e) => { 
+                      console.log("Edit button clicked for:", prayer.title);
+                      e.stopPropagation(); 
+                      setSelectedPrayer(prayer); 
+                      setEditOpen(true); 
+                    }}
+                    sx={{ pointerEvents: 'auto' }}
+                  >
                     <EditIcon fontSize="medium" sx={{ color: '#999' }} />
                   </IconButton>
+
+                  <IconButton 
+                    size="small" 
+                    onClick={(e) => { 
+                      console.log("Delete button clicked for:", prayer.title);
+                      e.stopPropagation(); 
+                      setSelectedPrayer(prayer); 
+                      setDeleteDialogOpen(true); 
+                    }}
+                    sx={{ pointerEvents: 'auto' }}
+                  >
+                    <DeleteIcon fontSize="medium" sx={{ color: '#d32f2f' }} />
+                  </IconButton>
+
                   <Select
                     value={prayer.status}
                     size="small"
@@ -120,15 +157,7 @@ function MyPrayerRequests() {
                 </Box>
               </Box>
 
-              <Typography 
-                variant="body1" 
-                sx={{ 
-                  color: '#5f6368', 
-                  mb: 4, 
-                  fontSize: { xs: '1rem', md: '1.2rem', xl: '1.4rem' },
-                  lineHeight: 1.6 
-                }}
-              >
+              <Typography variant="body1" sx={{ color: '#5f6368', mb: 4, fontSize: { xs: '1rem', md: '1.2rem', xl: '1.4rem' }, lineHeight: 1.6 }}>
                 {prayer.description}
               </Typography>
 
@@ -156,21 +185,25 @@ function MyPrayerRequests() {
         ))}
       </Stack>
 
-      <Dialog open={editOpen} onClose={() => setEditOpen(false)} fullWidth maxWidth="xs">
-        <DialogTitle>Edit Request</DialogTitle>
+      {/* --- DIALOGS --- */}
+      
+      <Dialog 
+        open={editOpen} 
+        onClose={() => setEditOpen(false)} 
+        fullWidth 
+        maxWidth="xs"
+        sx={{ zIndex: 9999 }}
+      >
+        <DialogTitle sx={{fontSize: { xs: '1.2rem', md: '1.4rem', xl: '1.6rem'}, fontWeight: 'bold'}}>Edit Request</DialogTitle>
         <DialogContent>
           <Stack spacing={2} sx={{ mt: 1 }}>
             <TextField 
-              fullWidth 
-              label="Title" 
+              fullWidth label="Title" 
               value={selectedPrayer?.title || ''} 
               onChange={(e) => setSelectedPrayer({...selectedPrayer, title: e.target.value})} 
             />
             <TextField 
-              fullWidth 
-              multiline 
-              rows={3} 
-              label="Description" 
+              fullWidth multiline rows={3} label="Description" 
               value={selectedPrayer?.description || ''} 
               onChange={(e) => setSelectedPrayer({...selectedPrayer, description: e.target.value})} 
             />
@@ -179,6 +212,21 @@ function MyPrayerRequests() {
         <DialogActions>
           <Button onClick={() => setEditOpen(false)}>Cancel</Button>
           <Button onClick={handleEditSubmit} variant="contained">Save</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog 
+        open={deleteDialogOpen} 
+        onClose={() => setDeleteDialogOpen(false)}
+        sx={{ zIndex: 9999, }}
+      >
+        <DialogTitle sx={{ fontSize: { xs: '1.2rem', md: '1.4rem', xl: '1.6rem'}, fontWeight: 'bold'}}>Delete Prayer Request?</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to delete this? This action cannot be undone.</Typography>
+        </DialogContent>
+        <DialogActions sx={{ p: 2 }}>
+          <Button onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
+          <Button onClick={handleDelete} variant="contained" color="error">Delete</Button>
         </DialogActions>
       </Dialog>
     </Box>
@@ -193,7 +241,6 @@ function CommentSection({ prayerId }) {
     const fetchComments = async () => {
       try {
         const res = await fetch(`/api/comments/${prayerId}`);
-        if (!res.ok) throw new Error('Failed to fetch');
         const data = await res.json();
         setComments(Array.isArray(data) ? data : []);
       } catch (err) {
@@ -212,23 +259,14 @@ function CommentSection({ prayerId }) {
     <Stack spacing={2.5} sx={{ p: 1 }}>
       {comments.map((c) => (
         <Box key={c._id} sx={{ display: 'flex', gap: 2.5 }}>
-          <Box 
-            sx={{ 
-              width: 40, height: 40,
-              borderRadius: '50%', bgcolor: 'grey.300', color: 'text.primary',
-              display: 'flex', justifyContent: 'center', alignItems: 'center', 
-              fontSize: '1.6rem', fontWeight: 'bold' 
-            }}
-          >
+          <Box sx={{ width: 40, height: 40, borderRadius: '50%', bgcolor: 'grey.300', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '1.6rem', fontWeight: 'bold' }}>
             {c.user_id?.username?.charAt(0).toUpperCase() || 'U'}
           </Box>
           <Box>
             <Typography variant="caption" sx={{ fontSize: '1.4rem', fontWeight: 'bold', color: '#1a1a1a' }}>
               {c.user_id?.username || 'Anonymous'} • {new Date(c.createdAt).toLocaleDateString()}
             </Typography>
-            <Typography variant="body2" sx={{ fontSize: '1.2rem', color: '#444', mt: 0.5 }}>
-              {c.content}
-            </Typography>
+            <Typography variant="body2" sx={{ fontSize: '1.2rem', color: '#444', mt: 0.5 }}>{c.content}</Typography>
           </Box>
         </Box>
       ))}
