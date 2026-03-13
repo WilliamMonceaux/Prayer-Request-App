@@ -293,8 +293,6 @@ function MyPrayerRequests() {
         ))}
       </Stack>
 
-      {/* --- DIALOGS --- */}
-
       <Dialog
         open={editOpen}
         onClose={() => setEditOpen(false)}
