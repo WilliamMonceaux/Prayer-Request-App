@@ -2,10 +2,6 @@ import mongoose from 'mongoose';
 
 const MONGO_URI = process.env.MONGO_URI;
 
-if (!MONGO_URI) {
-  throw new Error('Please give a valid environment uri variable');
-}
-
 let cached = global.mongoose;
 
 if (!cached) {
@@ -13,6 +9,9 @@ if (!cached) {
 }
 
 async function connectMongo() {
+  if (!MONGO_URI) {
+    throw new Error('Please give a valid environment uri variable');
+  }
 
   if (mongoose.connection.readyState >= 1) {
     return mongoose.connection;
