@@ -1,13 +1,14 @@
 'use client';
+import { useState } from 'react';
 import { HeroArea } from '@/components/HeroArea';
 import { PrayerRequestCards } from '@/components/PrayerRequestCards';
 import { UnderstandingPrayer } from '@/components/UnderstandingPrayer';
-import { Pagination } from '@/components/Pagination';
 import { PrayerCategories } from '@/components/PrayerCategories';
 import { Typography, Container } from '@mui/material';
 import { Box } from '@mui/material';
 
 export default function Home() {
+  const [statusFilter, setStatusFilter] = useState('all');
   return (
     <>
       <HeroArea
@@ -59,11 +60,10 @@ export default function Home() {
               mb: 4,
             }}
           >
-            <PrayerCategories />
+            <PrayerCategories alignment={statusFilter} setAlignment={setStatusFilter} />
           </Box>
         </Container>
-        <PrayerRequestCards />
-        <Pagination />
+        <PrayerRequestCards activeStatus={statusFilter} />
       </main>
     </>
   );

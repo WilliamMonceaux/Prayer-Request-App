@@ -8,20 +8,46 @@ const durationMap = {
   '1 Month': 30,
 };
 
-export async function GET() {
+export async function GET(req) {
   try {
     await connectMongo();
     const timeNow = new Date();
 
-    const prayers = await PrayerPost.find({
-      expiresAt: { $gt: timeNow },
-    })
-      .populate('user_id', 'username')
-      .sort({ createdAt: -1 })
-      .limit(10);
+    const { searchParams } = new URL(req.url, `http://${req.headers.get('host')}`);
+    const page = parseInt(searchParams.get('page')) || 1;
+    const limit = parseInt(searchParams.get('limit')) || 5;
 
-    return NextResponse.json(prayers, { status: 200 });
+    const status = searchParams.get('status');
+
+    const skip = (page - 1) * limit;
+
+    let query = { expiresAt: { $gt: timeNow } };
+
+    if (status && status !== 'all') {
+      query.status = { $regex: new RegExp(`^${status}$`, 'i') };
+    }
+
+    const [prayers, totalCount] = await Promise.all([
+      PrayerPost.find(query)
+        .populate('user_id', 'username profilePicture')
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit),
+      PrayerPost.countDocuments(query),
+    ]);
+
+    const totalPages = Math.ceil(totalCount / limit);
+
+    return NextResponse.json(
+      {
+        prayers,
+        totalPages,
+        currentPage: page,
+      },
+      { status: 200 }
+    );
   } catch (err) {
+    console.error('GET error:', err);
     return NextResponse.json({ error: 'Failed to fetch prayers' }, { status: 500 });
   }
 }

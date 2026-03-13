@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { ToggleButton, ToggleButtonGroup, styled } from '@mui/material';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
@@ -38,8 +37,7 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   },
 }));
 
-function PrayerCategories() {
-  const [alignment, setAlignment] = useState('all');
+function PrayerCategories({ alignment, setAlignment }) {
 
   const handleChange = (event, newAlignment) => {
     if (newAlignment !== null) {

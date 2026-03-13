@@ -2,6 +2,7 @@ import { connectMongo } from '@/lib/mongodb';
 import { Comment } from '@/models/Comment';
 import { User } from '@/models/User';
 import { NextResponse } from 'next/server';
+import { PrayerPost } from '@/models/PrayerPost';
 
 export async function GET(req, { params }) {
   try {
@@ -35,10 +36,14 @@ export async function POST(req, { params }) {
       );
     }
 
-    const newComment = await Comment.create({
+   const newComment = await Comment.create({
       content,
       user_id,
       prayer_id: id,
+    });
+
+    await PrayerPost.findByIdAndUpdate(id, {
+      $push: { comment_id: newComment._id }
     });
 
     const populatedComment = await newComment.populate(

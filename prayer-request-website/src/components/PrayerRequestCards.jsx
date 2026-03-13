@@ -5,15 +5,19 @@ import {
   Typography,
   Container,
   Avatar,
-  CircularProgress,
   Paper,
   styled,
   Stack,
   Button,
+  Pagination,
+  Skeleton,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
 import { useUserContext } from '@/context/UserContext';
+import { Comments } from '@/components/Comments';
 
 const PrayerCard = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -55,10 +59,43 @@ const getStatusColors = (status) => {
   };
 };
 
-function PrayerRequestCards() {
+function PrayerRequestCards({ activeStatus }) {
   const { currentUser } = useUserContext();
+  const [expandedComments, setExpandedComments] = useState({});
   const [prayers, setPrayers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const limit = 5;
+
+  const toggleComments = (id) => {
+    setExpandedComments((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const handleStatusChange = async (prayerId, newStatus) => {
+    try {
+      const response = await fetch(`/api/prayers/${prayerId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'edit',
+          editData: { status: newStatus },
+          user_id: currentUser._id,
+        }),
+      });
+
+      if (response.ok) {
+        const updatedPost = await response.json();
+        setPrayers((prev) => prev.map((p) => (p._id === prayerId ? updatedPost : p)));
+      }
+    } catch (error) {
+      console.error('Error updating status:', error);
+    }
+  };
 
   const handlePray = async (prayerId) => {
     if (!currentUser?._id) return alert('Please log in to pray.');
@@ -83,12 +120,23 @@ function PrayerRequestCards() {
   };
 
   useEffect(() => {
+    setPage(1);
+  }, [activeStatus]);
+
+  useEffect(() => {
     const fetchPrayers = async () => {
+      setLoading(true);
       try {
-        const res = await fetch('/api/prayers');
+        const statusParam =
+          activeStatus !== 'all' ? `&status=${encodeURIComponent(activeStatus)}` : '';
+        const res = await fetch(
+          `/api/prayers?page=${page}&limit=${limit}${statusParam}`
+        );
+
         if (res.ok) {
           const data = await res.json();
-          setPrayers(data);
+          setPrayers(data.prayers || [data]);
+          setTotalPages(data.totalPages || 1);
         }
       } catch (err) {
         console.error('Failed to fetch prayers:', err);
@@ -97,13 +145,26 @@ function PrayerRequestCards() {
       }
     };
     fetchPrayers();
-  }, []);
+  }, [page, activeStatus]);
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', py: 10 }}>
-        <CircularProgress />
-      </Box>
+      <Container sx={{ py: 5, maxWidth: { md: '800px' } }}>
+        {[...Array(3)].map((_, i) => (
+          <Paper key={i} sx={{ p: 3, mb: 8, borderRadius: 4 }}>
+            <Stack direction="row" spacing={2} alignItems="center" mb={2}>
+              <Skeleton variant="circular" width={52} height={52} />
+              <Skeleton variant="text" width="40%" height={30} />
+            </Stack>
+            <Skeleton
+              variant="rectangular"
+              height={100}
+              sx={{ mb: 2, borderRadius: 2 }}
+            />
+            <Skeleton variant="text" width="20%" />
+          </Paper>
+        ))}
+      </Container>
     );
   }
 
@@ -116,6 +177,7 @@ function PrayerRequestCards() {
           display: 'flex',
           flexDirection: 'column',
           gap: 8,
+          minHeight: '600px',
           maxWidth: { xs: '95%', sm: '85%', md: '800px', lg: '1000px', xl: '1200px' },
         }}
       >
@@ -124,188 +186,262 @@ function PrayerRequestCards() {
             No active prayer requests.
           </Typography>
         ) : (
-          prayers.map((prayer) => {
-            const isAnonymous = prayer.isAnonymous;
-            const username = prayer.user_id?.username || 'Community Member';
-            const profilePic = prayer.user_id?.profilePicture;
-            const initial = username.charAt(0).toUpperCase();
-            const status = prayer.status || 'Need Prayers';
-            const colors = getStatusColors(status);
-            const hasPrayed = prayer.prayedBy?.includes(currentUser?._id);
-            const isAuthor = currentUser?._id === prayer.user_id?._id;
+          <>
+            {prayers.map((prayer) => {
+              const isExpanded = expandedComments[prayer._id];
+              const isAnonymous = prayer.isAnonymous;
+              const username = prayer.user_id?.username || 'Community Member';
+              const profilePic = prayer.user_id?.profilePicture;
+              const initial = username.charAt(0).toUpperCase();
+              const status = prayer.status || 'Need Prayers';
+              const colors = getStatusColors(status);
+              const hasPrayed = prayer.prayedBy?.includes(currentUser?._id);
+              const isAuthor = currentUser?._id === prayer.user_id?._id;
 
-            return (
-              <PrayerCard
-                key={prayer._id}
-                elevation={0}
-                sx={{
-                  '&:hover': {
-                    transform: 'translateY(-4px)',
-                    borderColor: colors.border,
-                    boxShadow: `0px 8px 20px ${colors.shadow}`,
-                  },
-                }}
-              >
-                <Box
+              return (
+                <PrayerCard
+                  key={prayer._id}
+                  elevation={0}
                   sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    mb: 2,
+                    '&:hover': {
+                      transform: 'translateY(-4px)',
+                      borderColor: colors.border,
+                      boxShadow: `0px 8px 20px ${colors.shadow}`,
+                    },
                   }}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <Avatar
-                      src={!isAnonymous && profilePic ? profilePic : undefined}
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: { xs: 'column', sm: 'row' },
+                      justifyContent: { xs: 'flex-start', sm: 'space-between' },
+                      alignItems: { xs: 'flex-start', sm: 'center' },
+                      gap: { xs: 1, sm: 2 },
+                      mb: 2,
+                    }}
+                  >
+                    <Stack
+                      direction="row"
+                      spacing={1}
+                      alignItems="center"
                       sx={{
-                        bgcolor: 'grey.200',
-                        color: 'black',
-                        fontWeight: 'bold',
-                        width: { xs: 40, md: 48, xl: 60 },
-                        height: { xs: 40, md: 48, xl: 60 },
-                        fontSize: { xs: '1.6rem', xl: '2rem' },
+                        order: { xs: 1, sm: 2 },
+                        width: { xs: '100%', sm: 'auto' },
+                        justifyContent: { xs: 'flex-end', sm: 'flex-end' },
                       }}
                     >
-                      {isAnonymous ? '?' : initial}
-                    </Avatar>
+                      <Button
+                        onClick={() => handlePray(prayer._id)}
+                        disabled={isAuthor}
+                        startIcon={
+                          <Box
+                            sx={{
+                              position: 'relative',
+                              width: { xs: 20, md: 26, xl: 32 },
+                              height: { xs: 20, md: 26, xl: 32 },
+                            }}
+                          >
+                            <Image
+                              src={
+                                hasPrayed
+                                  ? '/images/like-btn-praying.png'
+                                  : '/images/like-btn-praying-outlined.png'
+                              }
+                              alt="Pray"
+                              fill
+                              style={{ objectFit: 'contain' }}
+                              sizes="32px"
+                            />
+                          </Box>
+                        }
+                        sx={{
+                          textTransform: 'none',
+                          fontWeight: 700,
+                          borderRadius: '20px',
+                          fontSize: { xs: '0.9rem', md: '1rem', xl: '1.3rem' },
+                          color: hasPrayed ? '#2e7d32' : 'inherit',
+                          backgroundColor: hasPrayed
+                            ? 'rgba(46, 125, 50, 0.08)'
+                            : 'transparent',
+                        }}
+                      >
+                        {hasPrayed ? 'Prayed' : 'Pray'}
+                      </Button>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          fontWeight: 800,
+                          fontSize: { xs: '1rem', md: '1.3rem', xl: '1.6rem' },
+                        }}
+                      >
+                        {prayer.prayedCount || 0}
+                      </Typography>
+                      <Button
+                        onClick={() => toggleComments(prayer._id)}
+                        variant="text"
+                        sx={{
+                          textTransform: 'none',
+                          fontWeight: 700,
+                          borderRadius: '20px',
+                          fontSize: { xs: '0.9rem', md: '1rem', xl: '1.3rem' },
+                          color: 'text.primary',
+                        }}
+                      >
+                        {isExpanded ? 'Hide' : 'Comment'}
+                      </Button>
+                    </Stack>
 
-                    <Typography
-                      variant="subtitle1"
+                    <Box
                       sx={{
-                        fontWeight: 600,
-                        fontSize: { xs: '1.4rem', xl: '1.8rem' },
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 2,
+                        order: { xs: 2, sm: 1 },
+                        minWidth: 0,
                       }}
                     >
-                      {isAnonymous ? 'Anonymous' : username}
-                    </Typography>
+                      <Avatar
+                        src={!isAnonymous && profilePic ? profilePic : undefined}
+                        sx={{
+                          bgcolor: 'grey.200',
+                          color: 'black',
+                          fontWeight: 'bold',
+                          width: { xs: 40, md: 52, xl: 64 },
+                          height: { xs: 40, md: 52, xl: 64 },
+                          fontSize: { xs: '1.2rem', md: '1.5rem', xl: '2rem' },
+                        }}
+                      >
+                        {isAnonymous ? '?' : initial}
+                      </Avatar>
+
+                      <Typography
+                        variant="subtitle1"
+                        noWrap
+                        sx={{
+                          fontWeight: 600,
+                          fontSize: { xs: '1.2rem', md: '1.4rem', xl: '2rem' },
+                          maxWidth: { xs: '180px', sm: '250px', md: '400px' },
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
+                        {isAnonymous ? 'Anonymous' : username}
+                      </Typography>
+
+                    </Box>
                   </Box>
 
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <Button
-                      onClick={() => handlePray(prayer._id)}
-                      disabled={isAuthor}
-                      startIcon={
-                        <Box
-                          sx={{
-                            position: 'relative',
-                            width: { xs: 24, xl: 32 },
-                            height: { xs: 24, xl: 32 },
-                          }}
-                        >
-                          <Image
-                            src={
-                              hasPrayed
-                                ? '/images/praying-hands.png'
-                                : '/images/outlined-praying-hands.png'
-                            }
-                            alt="Pray"
-                            fill
-                            style={{ objectFit: 'contain' }}
-                          />
-                        </Box>
-                      }
-                      sx={{
-                        textTransform: 'none',
-                        fontWeight: 700,
-                        borderRadius: '20px',
-                        fontSize: { xs: '0.9rem', xl: '1.2rem' }, // Scaled for your large monitor
-                        color: hasPrayed ? '#2e7d32' : 'inherit',
-                        backgroundColor: hasPrayed
-                          ? 'rgba(46, 125, 50, 0.08)'
-                          : 'transparent',
-                        '&:hover': {
-                          backgroundColor: hasPrayed
-                            ? 'rgba(46, 125, 50, 0.12)'
-                            : 'rgba(0,0,0,0.04)',
-                        },
-                      }}
-                    >
-                      {hasPrayed ? 'Prayed' : 'Pray'}
-                    </Button>
-
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        fontWeight: 800,
-                        fontSize: { md: '1.4rem', xl: '1.6rem' },
-                      }}
-                    >
-                      {prayer.prayedCount || 0}
-                    </Typography>
-                  </Stack>
-                </Box>
-
-                <Typography
-                  variant="h6"
-                  sx={{
-                    fontWeight: 'bold',
-                    mb: 1,
-                    fontSize: { xs: '1.4rem', xl: '2.5rem' },
-                  }}
-                >
-                  {prayer.title}
-                </Typography>
-                <Typography
-                  variant="body1"
-                  sx={{
-                    color: 'text.secondary',
-                    mb: 4,
-                    lineHeight: 1.6,
-                    fontSize: { xs: '1.2rem', xl: '1.8rem' },
-                  }}
-                >
-                  {prayer.description}
-                </Typography>
-
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'flex-end',
-                  }}
-                >
-                  <StatusBadge
+                  <Typography
+                    variant="h6"
                     sx={{
-                      px: { xl: 3 },
-                      py: { xl: 1.5 },
-                      backgroundColor: colors.bg,
-                      borderColor: colors.border,
+                      fontWeight: 800,
+                      mb: 1,
+                      lineHeight: 1.2,
+                      fontSize: { xs: '1.6rem', md: '2rem', xl: '2.0rem' },
                     }}
                   >
-                    <Typography
-                      sx={{
-                        color: 'black',
-                        fontWeight: 'bold',
-                        fontSize: { xs: '1rem', xl: '1.6rem' },
-                      }}
-                    >
-                      Status: &nbsp;
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: 'black',
-                        fontWeight: 500,
-                        fontSize: { xs: '1rem', xl: '1.6rem' },
-                      }}
-                    >
-                      {prayer.status || 'Need Prayers'}
-                    </Typography>
-                  </StatusBadge>
+                    {prayer.title}
+                  </Typography>
 
                   <Typography
-                    variant="caption"
+                    variant="body1"
                     sx={{
-                      color: 'grey.500',
-                      fontStyle: 'italic',
-                      fontSize: { xs: '1rem', xl: '1.6rem' },
+                      color: 'text.secondary',
+                      mb: 4,
+                      lineHeight: 1.6,
+                      fontSize: { xs: '1.1rem', md: '1.4rem', xl: '1.6rem' },
                     }}
                   >
-                    {formatDistanceToNow(new Date(prayer.createdAt))} ago
+                    {prayer.description}
                   </Typography>
-                </Box>
-              </PrayerCard>
-            );
-          })
+
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'flex-end',
+                    }}
+                  >
+                    <StatusBadge
+                      sx={{
+                        px: { xs: 1.5, xl: 3 },
+                        py: { xs: 0.5, xl: 1.5 },
+                        backgroundColor: colors.bg,
+                        borderColor: colors.border,
+                        cursor: isAuthor ? 'pointer' : 'default',
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          color: 'black',
+                          fontWeight: 'bold',
+                          fontSize: { xs: '0.9rem', md: '1.1rem', xl: '1.6rem' },
+                        }}
+                      >
+                        Status: &nbsp;
+                      </Typography>
+
+                      {isAuthor ? (
+                        <Select
+                          value={status}
+                          onChange={(e) =>
+                            handleStatusChange(prayer._id, e.target.value)
+                          }
+                          variant="standard"
+                          disableUnderline
+                          sx={{
+                            fontWeight: 500,
+                            fontSize: { xs: '0.9rem', md: '1.1rem', xl: '1.6rem' },
+                            color: 'black',
+                          }}
+                        >
+                          <MenuItem value="Need Prayers">Need Prayers</MenuItem>
+                          <MenuItem value="Prayer Answered">Prayer Answered</MenuItem>
+                        </Select>
+                      ) : (
+                        <Typography
+                          sx={{
+                            color: 'black',
+                            fontWeight: 500,
+                            fontSize: { xs: '0.9rem', md: '1.1rem', xl: '1.6rem' },
+                          }}
+                        >
+                          {status}
+                        </Typography>
+                      )}
+                    </StatusBadge>
+
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        color: 'grey.500',
+                        fontStyle: 'italic',
+                        fontSize: { xs: '0.9rem', md: '1rem', xl: '1.5rem' },
+                      }}
+                    >
+                      {formatDistanceToNow(new Date(prayer.createdAt))} ago
+                    </Typography>
+
+                  </Box>
+                  {isExpanded && (
+                    <Box sx={{ mt: 2 }}>
+                      <Comments prayerId={prayer._id} currentUser={currentUser} />
+                    </Box>
+                  )}
+                </PrayerCard>
+              );
+            })}
+
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6, mb: 4 }}>
+              <Pagination
+                count={totalPages}
+                page={page}
+                onChange={(e, v) => setPage(v)}
+                color="primary"
+                size="large"
+              />
+            </Box>
+          </>
         )}
       </Container>
     </Box>

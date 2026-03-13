@@ -18,29 +18,29 @@ export async function PATCH(req) {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const data = await req.json();
 
-    const allowedUpdates = ['username', 'email'];
-    const updateData = {};
+    const user = await User.findById(decoded.userId);
 
+    if (!user) {
+      return NextResponse.json({ message: 'User not found' }, { status: 404 });
+    }
+
+    const allowedUpdates = ['username', 'email', 'password'];
+    
     Object.keys(data).forEach((key) => {
-      if (allowedUpdates.includes(key)) {
-        updateData[key] = data[key];
+      if (allowedUpdates.includes(key) && data[key]?.trim() !== '') {
+        user[key] = data[key];
       }
     });
 
-    const updatedUser = await User.findByIdAndUpdate(
-      decoded.userId,
-      { $set: updateData },
-      { new: true, runValidators: true }
-    ).select('-password');
+    await user.save();
 
-    if (!updatedUser) {
-      return NextResponse.json({ message: 'User not found' }, { status: 404 });
-    }
+    const userResponse = user.toObject();
+    delete userResponse.password;
 
     return NextResponse.json(
       {
         message: 'Profile updated successfully',
-        user: updatedUser,
+        user: userResponse,
       },
       { status: 200 }
     );
