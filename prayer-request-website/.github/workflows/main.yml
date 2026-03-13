@@ -1,11 +1,14 @@
 name: Build and Push Docker Image
 
 on:
-push:
-    branches: ['main', 'dev-ci/cd-pipeline']
+  push:
+    branches:
+      - 'main'
+      - 'dev-ci/cd-pipeline'
+  workflow_dispatch:
 
 jobs:
-build-and-push:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
