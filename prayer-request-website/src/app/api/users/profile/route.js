@@ -26,7 +26,7 @@ export async function PATCH(req) {
     }
 
     // Update allowed fields
-    const allowedUpdates = ['username', 'email', 'password'];
+    const allowedUpdates = ['username', 'email', 'password', 'profilePicture'];
     allowedUpdates.forEach((key) => {
       if (data[key] && data[key].trim() !== '') {
         user[key] = data[key];
