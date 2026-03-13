@@ -15,8 +15,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Select,
-  MenuItem,
   Accordion,
   AccordionSummary,
   AccordionDetails,
