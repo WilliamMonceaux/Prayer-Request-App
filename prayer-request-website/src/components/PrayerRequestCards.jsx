@@ -13,11 +13,18 @@ import {
   Skeleton,
   Select,
   MenuItem,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  TextField,
+  DialogActions
 } from '@mui/material';
 import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
 import { useUserContext } from '@/context/UserContext';
 import { Comments } from '@/components/Comments';
+import { Edit as EditIcon } from '@mui/icons-material';
 
 const PrayerCard = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -66,8 +73,42 @@ function PrayerRequestCards({ activeStatus }) {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [selectedPrayer, setSelectedPrayer] = useState(null);
 
   const limit = 5;
+
+  const handleEditClick = (prayer) => {
+    setSelectedPrayer(prayer);
+    setEditDialogOpen(true);
+  };
+
+  const handleEditSubmit = async () => {
+    try {
+      const res = await fetch(`/api/prayers/${selectedPrayer._id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'edit',
+          user_id: currentUser._id,
+          editData: {
+            title: selectedPrayer.title,
+            description: selectedPrayer.description,
+          },
+        }),
+      });
+
+      if (res.ok) {
+        const updatedPost = await res.json();
+        setPrayers((prev) =>
+          prev.map((p) => (p._id === selectedPrayer._id ? updatedPost : p))
+        );
+        setEditDialogOpen(false);
+      }
+    } catch (err) {
+      console.error('Update error:', err);
+    }
+  };
 
   const toggleComments = (id) => {
     setExpandedComments((prev) => ({
@@ -214,12 +255,50 @@ function PrayerRequestCards({ activeStatus }) {
                     sx={{
                       display: 'flex',
                       flexDirection: { xs: 'column', sm: 'row' },
-                      justifyContent: { xs: 'flex-start', sm: 'space-between' },
+                      justifyContent: 'space-between',
                       alignItems: { xs: 'flex-start', sm: 'center' },
                       gap: { xs: 1, sm: 2 },
                       mb: 2,
                     }}
                   >
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 2,
+                        order: { xs: 2, sm: 1 },
+                        minWidth: 0,
+                      }}
+                    >
+                      <Avatar
+                        src={!isAnonymous && profilePic ? profilePic : undefined}
+                        sx={{
+                          bgcolor: 'grey.200',
+                          color: 'black',
+                          fontWeight: 'bold',
+                          width: { xs: 40, md: 52, xl: 64 },
+                          height: { xs: 40, md: 52, xl: 64 },
+                          fontSize: { xs: '1.2rem', md: '1.5rem', xl: '2rem' },
+                        }}
+                      >
+                        {isAnonymous ? '?' : initial}
+                      </Avatar>
+
+                      <Typography
+                        variant="subtitle1"
+                        noWrap
+                        sx={{
+                          fontWeight: 600,
+                          fontSize: { xs: '1.2rem', md: '1.4rem', xl: '2rem' },
+                          maxWidth: { xs: '180px', sm: '250px', md: '400px' },
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
+                        {isAnonymous ? 'Anonymous' : username}
+                      </Typography>
+                    </Box>
+
                     <Stack
                       direction="row"
                       spacing={1}
@@ -227,9 +306,18 @@ function PrayerRequestCards({ activeStatus }) {
                       sx={{
                         order: { xs: 1, sm: 2 },
                         width: { xs: '100%', sm: 'auto' },
-                        justifyContent: { xs: 'flex-end', sm: 'flex-end' },
+                        justifyContent: 'flex-end',
                       }}
                     >
+                      {isAuthor && (
+                        <IconButton
+                          size="small"
+                          onClick={() => handleEditClick(prayer)}
+                          sx={{ color: 'grey.400', '&:hover': { color: 'primary.main' } }}
+                        >
+                          <EditIcon fontSize="medium" />
+                        </IconButton>
+                      )}
                       <Button
                         onClick={() => handlePray(prayer._id)}
                         disabled={isAuthor}
@@ -290,45 +378,6 @@ function PrayerRequestCards({ activeStatus }) {
                         {isExpanded ? 'Hide' : 'Comment'}
                       </Button>
                     </Stack>
-
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 2,
-                        order: { xs: 2, sm: 1 },
-                        minWidth: 0,
-                      }}
-                    >
-                      <Avatar
-                        src={!isAnonymous && profilePic ? profilePic : undefined}
-                        sx={{
-                          bgcolor: 'grey.200',
-                          color: 'black',
-                          fontWeight: 'bold',
-                          width: { xs: 40, md: 52, xl: 64 },
-                          height: { xs: 40, md: 52, xl: 64 },
-                          fontSize: { xs: '1.2rem', md: '1.5rem', xl: '2rem' },
-                        }}
-                      >
-                        {isAnonymous ? '?' : initial}
-                      </Avatar>
-
-                      <Typography
-                        variant="subtitle1"
-                        noWrap
-                        sx={{
-                          fontWeight: 600,
-                          fontSize: { xs: '1.2rem', md: '1.4rem', xl: '2rem' },
-                          maxWidth: { xs: '180px', sm: '250px', md: '400px' },
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}
-                      >
-                        {isAnonymous ? 'Anonymous' : username}
-                      </Typography>
-
-                    </Box>
                   </Box>
 
                   <Typography
@@ -360,6 +409,7 @@ function PrayerRequestCards({ activeStatus }) {
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'flex-end',
+                      mt: 'auto'
                     }}
                   >
                     <StatusBadge
@@ -421,8 +471,8 @@ function PrayerRequestCards({ activeStatus }) {
                     >
                       {formatDistanceToNow(new Date(prayer.createdAt))} ago
                     </Typography>
-
                   </Box>
+
                   {isExpanded && (
                     <Box sx={{ mt: 2 }}>
                       <Comments prayerId={prayer._id} currentUser={currentUser} />
@@ -444,6 +494,49 @@ function PrayerRequestCards({ activeStatus }) {
           </>
         )}
       </Container>
+
+      <Dialog
+        open={editDialogOpen}
+        onClose={() => setEditDialogOpen(false)}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle sx={{ fontWeight: 'bold' }}>Edit Prayer Request</DialogTitle>
+        <DialogContent>
+          <Stack spacing={3} sx={{ mt: 1 }}>
+            <TextField
+              fullWidth
+              label="Title"
+              value={selectedPrayer?.title || ''}
+              onChange={(e) =>
+                setSelectedPrayer({ ...selectedPrayer, title: e.target.value })
+              }
+            />
+            <TextField
+              fullWidth
+              multiline
+              rows={4}
+              label="Description"
+              value={selectedPrayer?.description || ''}
+              onChange={(e) =>
+                setSelectedPrayer({ ...selectedPrayer, description: e.target.value })
+              }
+            />
+          </Stack>
+        </DialogContent>
+        <DialogActions sx={{ p: 3 }}>
+          <Button onClick={() => setEditDialogOpen(false)} color="inherit">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleEditSubmit}
+            variant="contained"
+            sx={{ borderRadius: 2, px: 4 }}
+          >
+            Update Request
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
