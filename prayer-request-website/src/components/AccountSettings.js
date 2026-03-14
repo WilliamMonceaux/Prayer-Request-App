@@ -140,7 +140,16 @@ function AccountSettings() {
   if (loading) return <CircularProgress sx={{ m: 'auto', display: 'block' }} />;
 
   return (
-    <Box sx={{ p: 3, display: 'flex', justifyContent: 'center', position: 'relative' }}>
+    <Box
+      sx={{
+        p: 3,
+        display: 'flex',
+        justifyContent: 'center',
+        minHeight: '100vh',
+        overflowY: 'auto',
+        pb: 10,
+      }}
+    >
       <Card variant="outlined" sx={{ width: '100%', maxWidth: 550, borderRadius: 3 }}>
         <CardContent sx={{ p: 4 }}>
           <Typography variant="h4" sx={{ fontWeight: 800, mb: 1 }}>
@@ -153,7 +162,9 @@ function AccountSettings() {
                 src={formData.profilePicture || currentUser?.profilePicture}
                 sx={{ width: 80, height: 80, fontSize: '2.5rem' }}
               >
-                {!formData.profilePicture && !currentUser?.profilePicture && formData.username?.charAt(0).toUpperCase()}
+                {!formData.profilePicture &&
+                  !currentUser?.profilePicture &&
+                  formData.username?.charAt(0).toUpperCase()}
               </Avatar>
 
               <Button variant="outlined" component="label" startIcon={<PhotoCamera />}>
@@ -183,7 +194,7 @@ function AccountSettings() {
               fullWidth
             />
             <TextField
-              label="New Password"
+              label="Change Password"
               name="password"
               type="password"
               value={formData.password}
@@ -260,7 +271,11 @@ function AccountSettings() {
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
-        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} variant="filled">
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+          variant="filled"
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>
