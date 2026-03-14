@@ -6,7 +6,6 @@ import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-// --- UPDATE PROFILE (PATCH) ---
 export async function PATCH(req) {
   try {
     await connectMongo();
@@ -25,7 +24,6 @@ export async function PATCH(req) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 });
     }
 
-    // Update allowed fields
     const allowedUpdates = ['username', 'email', 'password', 'profilePicture'];
     allowedUpdates.forEach((key) => {
       if (data[key] && data[key].trim() !== '') {
@@ -35,7 +33,6 @@ export async function PATCH(req) {
 
     await user.save();
 
-    // Remove password from response
     const userResponse = user.toObject();
     delete userResponse.password;
 
@@ -50,7 +47,6 @@ export async function PATCH(req) {
   }
 }
 
-// --- DELETE ACCOUNT (DELETE) ---
 export async function DELETE(req) {
   try {
     await connectMongo();
@@ -71,15 +67,13 @@ export async function DELETE(req) {
 
     const userId = decoded.userId;
 
-    // 1. Delete the user from the database
+
     const deletedUser = await User.findByIdAndDelete(userId);
     
     if (!deletedUser) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 });
     }
 
-    // 2. Clean up user's content (Prayers and Comments)
-    // We use $or to catch whichever naming convention your schema uses
     try {
       await PrayerPost.deleteMany({ 
         $or: [{ user_id: userId }, { author: userId }, { userId: userId }] 
@@ -92,7 +86,6 @@ export async function DELETE(req) {
       console.warn("Cleanup warning: User deleted, but some orphan content might remain.", cleanupErr);
     }
 
-    // 3. Clear the authentication cookie to log them out
     cookieStore.delete('token');
 
     return NextResponse.json({ message: 'Account deleted' }, { status: 200 });
