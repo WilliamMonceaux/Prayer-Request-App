@@ -2,9 +2,11 @@ import { connectMongo } from '@/lib/mongodb';
 import { User } from '@/models/User';
 import { PrayerPost } from '@/models/PrayerPost'; 
 import { Comment } from '@/models/Comment';
+import { Like } from '@/models/Like';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { Types } from 'mongoose';
 
 export async function PATCH(req) {
   try {
@@ -42,7 +44,6 @@ export async function PATCH(req) {
     }, { status: 200 });
 
   } catch (err) {
-    console.error('PATCH ERROR:', err);
     return NextResponse.json({ message: 'Update failed' }, { status: 500 });
   }
 }
@@ -62,11 +63,11 @@ export async function DELETE(req) {
     try {
       decoded = jwt.verify(token, process.env.JWT_SECRET);
     } catch (jwtErr) {
-      return NextResponse.json({ message: 'Session expired. Please log in again.' }, { status: 401 });
+      return NextResponse.json({ message: 'Session expired' }, { status: 401 });
     }
 
     const userId = decoded.userId;
-
+    const userObjectId = new Types.ObjectId(userId);
 
     const deletedUser = await User.findByIdAndDelete(userId);
     
@@ -74,24 +75,17 @@ export async function DELETE(req) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 });
     }
 
-    try {
-      await PrayerPost.deleteMany({ 
-        $or: [{ user_id: userId }, { author: userId }, { userId: userId }] 
-      }); 
-      
-      await Comment.deleteMany({ 
-        $or: [{ author: userId }, { user_id: userId }, { userId: userId }] 
-      });
-    } catch (cleanupErr) {
-      console.warn("Cleanup warning: User deleted, but some orphan content might remain.", cleanupErr);
-    }
+    await Promise.all([
+      PrayerPost.deleteMany({ user_id: userObjectId }),
+      Comment.deleteMany({ user_id: userObjectId }),
+      Like.deleteMany({ user_id: userObjectId })
+    ]);
 
     cookieStore.delete('token');
 
     return NextResponse.json({ message: 'Account deleted' }, { status: 200 });
 
   } catch (err) {
-    console.error('SERVER DELETE ERROR:', err);
     return NextResponse.json({ 
       message: 'Internal Server Error', 
       error: err.message 
