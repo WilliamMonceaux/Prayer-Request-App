@@ -47,7 +47,7 @@ function UnderstandingPrayer() {
             />
             <PrayerInfoCard
               title="Why is it important?"
-              description="As stated in James 5:16, it is important to pray for others so that they may find healing a mist their trials. It helps draw our focus back to God and the peace he gives."
+              description="As stated in James 5:16, it is important to pray for others so that they may find healing amidst their trials. It helps draw our focus back to God and the peace he gives."
               image={
                  <Box
                   component="img"
