@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 import { connectMongo } from '@/lib/mongodb';
-import path from 'path';
-import fs from 'fs/promises';
 import { User } from '@/models/User';
+import { uploadToS3 } from '@/lib/s3';
 
 export async function POST(request) {
   try {
@@ -24,27 +23,18 @@ export async function POST(request) {
       return NextResponse.json({ message: 'User already exists' }, { status: 400 });
     }
 
-    let profilePicturePath = '';
+    let profilePictureUrl = '';
 
-    if (file && typeof file !== 'string') {
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-
-      const filename = `${Date.now()}-${file.name}`;
-      const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-      const savePath = path.join(uploadDir, filename);
-
-      await fs.mkdir(uploadDir, { recursive: true });
-
-      await fs.writeFile(savePath, buffer);
-      profilePicturePath = `/uploads/${filename}`;
+    if (file && typeof file !== 'string' && file.size > 0) {
+      const buffer = Buffer.from(await file.arrayBuffer());
+      profilePictureUrl = await uploadToS3(buffer, file.name, file.type);
     }
 
     const newUser = await User.create({
       username,
       email,
       password,
-      profilePicture: profilePicturePath,
+      profilePicture: profilePictureUrl,
     });
 
     return NextResponse.json(
