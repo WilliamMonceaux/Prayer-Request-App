@@ -26,6 +26,7 @@ function AccountSettings() {
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [imageRemoved, setImageRemoved] = useState(false);
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: '',
@@ -46,6 +47,7 @@ function AccountSettings() {
         profilePicture: '',
         password: '',
       });
+      setImageRemoved(false);
     }
   }, [currentUser]);
 
@@ -59,14 +61,24 @@ function AccountSettings() {
         message: 'File is too large (max 2MB)',
         severity: 'error',
       });
+      e.target.value = '';
       return;
     }
 
     const reader = new FileReader();
     reader.onloadend = () => {
       setFormData((prev) => ({ ...prev, profilePicture: reader.result }));
+      setImageRemoved(false);
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleRemovePicture = () => {
+    setFormData((prev) => ({ ...prev, profilePicture: '' }));
+    setImageRemoved(true);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   const handleCloseSnackbar = () => setSnackbar({ ...snackbar, open: false });
@@ -75,12 +87,12 @@ function AccountSettings() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
- const onSave = async () => {
+  const onSave = async () => {
     try {
       const data = new FormData();
       data.append('username', formData.username);
       data.append('email', formData.email);
-      
+
       if (formData.password) {
         data.append('password', formData.password);
       }
@@ -142,6 +154,10 @@ function AccountSettings() {
 
   if (loading) return <CircularProgress sx={{ m: 'auto', display: 'block' }} />;
 
+  const displayImage = imageRemoved
+    ? null
+    : formData.profilePicture || currentUser?.profilePicture;
+
   return (
     <Box
       sx={{
@@ -162,24 +178,36 @@ function AccountSettings() {
           <Stack spacing={3} sx={{ mt: 4 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
               <Avatar
-                src={formData.profilePicture || currentUser?.profilePicture}
+                src={displayImage}
                 sx={{ width: 80, height: 80, fontSize: '2.5rem' }}
               >
-                {!formData.profilePicture &&
-                  !currentUser?.profilePicture &&
-                  formData.username?.charAt(0).toUpperCase()}
+                {!displayImage && formData.username?.charAt(0).toUpperCase()}
               </Avatar>
-
-              <Button variant="outlined" component="label" startIcon={<PhotoCamera />}>
-                Change Photo
-                <input
-                  ref={fileInputRef}
-                  hidden
-                  accept="image/*"
-                  type="file"
-                  onChange={handleFileChange}
-                />
-              </Button>
+              <Stack direction="row" spacing={1}>
+                <Button
+                  variant="outlined"
+                  component="label"
+                  startIcon={<PhotoCamera />}
+                >
+                  Change Photo
+                  <input
+                    ref={fileInputRef}
+                    hidden
+                    accept="image/*"
+                    type="file"
+                    onChange={handleFileChange}
+                  />
+                </Button>
+                {displayImage && (
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={handleRemovePicture}
+                  >
+                    Remove
+                  </Button>
+                )}
+              </Stack>
             </Box>
 
             <TextField
