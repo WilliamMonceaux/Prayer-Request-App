@@ -1,47 +1,40 @@
-# Software Engineering Capstone Project
+# Prayer Request App
 
 ## Overview
 
-The Capstone Project requires students to define, design, and deliver a software project towards the end of the course, showcasing the skills learned throughout the program. This project provides full exposure to the software development life cycle (SDLC).
+The Prayer Request App is a dedicated sanctuary designed to foster spiritual support and community connection. By creating a personal account, users join a supportive network where they can share their hearts and lift others up. The platform empowers members to submit prayer requests to a public board, manage their active requests through a personal dashboard, and tailor their profile settings to stay connected with the community.
 
-## Project Deliverables
+## Goal
 
-Students must submit the following three items:
+The heart of this platform is to provide a digital sanctuary where you can escape the noise of life and find true reassurance through the power of communal prayer. We are dedicated to building a space for collective intercession, ensuring that no one has to carry their burdens alone while fostering a community that intentionally lifts one another up. By offering a quiet corner for scriptural grounding, we aim to help you find the guidance and strength needed to navigate life’s problems with peace. Ultimately, our goal is to facilitate authentic connection, creating an environment where seeking help is embraced as a vital step toward healing and spiritual growth.
 
-- **Code:** A GitHub repository which includes a `README.md` file.
-- **Presentation:** A presentation and live demo lasting 5-10 minutes.
-- **Documentation:** A project document based on the provided [template](template.md).
+## Resources used
 
-## Technical Scope & Requirements
+**Frontend & UI**
+* **Next.js** - Core framework
+* **Material UI (MUI)** - Component library
+* **Emotion** - CSS-in-JS styling engine
+* **Fontsource** - Lato and Roboto typography
 
-Your project must make use of the following technical elements:
+**Backend & Database**
+* **Mongoose** - MongoDB object modeling
+* **JSONWebToken (JWT)** - Secure user authentication
+* **Bcryptjs** - Password hashing and security
+* **Formidable** - Handling form data and file uploads
 
-- **Architecture:** Client-Server architecture (or Client - Server - other services).
-- **Database:** A database used for CRUD (Create, Read, Update, Delete) operations.
-- **Data Handling:** Functionality to display data and update it.
-- **User Interface:** A user interface that allows the submission of new data.
-- **Testing:** Implementation of unit testing.
+**Utilities**
+* **Date-fns** & **Dayjs** - Date and time manipulation
+* **Dotenv** - Environment variable management
 
-### Implementation Guidelines
+**Tools**
+* **Figma** - https://www.figma.com/design/SF2rosZ8WndjtxoK156PG4/Capstone-project?node-id=0-1&p=f&t=7KwcTykKyDnFRMfZ-0
+* **API-testing** - Thunder Client
+* **Icons** - Flaticon & MUI Icons
+* **Unit Testing** - Jest, SuperTest
 
-To achieve high marks during evaluation, the implementation should also adhere to the following:
+**Deployment**
+* **AWS App Runner**
+* **AWS EC2 (Elastic Compute Cloud)**
+* **Amazon S3**
 
-- **MVC Model:** The code should reflect the MVC model (route/controller, etc.) with appropriate use of classes.
-- **Version Control:** Git usage should go beyond basic versioning by making use of releases and feature branches.
-- **Testing Coverage:** The application should have unit tests for all functionalities, as well as API functionality tests.
 
-## Project Ideas
-
-Examples of suitable projects include:
-
-- User management systems.
-- An online store.
-- Implementing a popular board game.
-
-## Rubric
-
-View the [rubric](rubric.md) for more details on how the project will be evaluated.
-
-## Process
-
-Students are advised to have regular check-ins with their trainers to maximize the chances of a successful outcome.
