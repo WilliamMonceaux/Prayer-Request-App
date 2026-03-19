@@ -37,4 +37,41 @@ The heart of this platform is to provide a digital sanctuary where you can escap
 * **AWS EC2 (Elastic Compute Cloud)**
 * **Amazon S3**
 
+## Local Development Setup
+
+Follow these steps to get a local copy of the project up and running.
+
+**prerequisites**
+* Node.js (v18.0.0 or higher recommended)
+* npm (comes with Node.js)
+* MongoDB Atlas account (or a local MongoDB instance)
+* AWS Account (for S3 bucket access)
+
+**Clone The Repository**
+```bash
+git clone https://github.com/WilliamMonceaux/M11-Capstone-Project.git
+cd M11-Capstone-Project
+```
+
+**Install Dependencies**
+```bash
+npm install
+```
+
+**Environment Configuration**
+* Create a .env file in the root directory and add the following keys:
+```bash
+MONGO_URI=your_mongodb_uri
+PORT=3000
+JWT_SECRET=your_secret_key
+AWS_REGION=your_region
+AWS_S3_BUCKET_NAME=your_bucket_name
+AWS_ACCESS_KEY_ID=your_access_key
+AWS_SECRET_ACCESS_KEY=your_secret_key
+```
+
+**Run the Project**
+```bash
+npm run dev
+```
 
