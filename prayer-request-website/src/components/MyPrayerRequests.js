@@ -18,6 +18,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Avatar
 } from '@mui/material';
 import {
   Edit as EditIcon,
@@ -136,7 +137,9 @@ function MyPrayerRequests() {
                 sx={{
                   display: 'flex',
                   justifyContent: 'space-between',
+                  flexDirection: { xs: 'column', sm: 'row' },
                   alignItems: 'flex-start',
+                  gap: 2,
                   mb: 2,
                 }}
               >
@@ -403,12 +406,16 @@ function CommentSection({ prayerId }) {
     <Stack spacing={2.5} sx={{ p: 1 }}>
       {comments.map((c) => (
         <Box key={c._id} sx={{ display: 'flex', gap: 2.5 }}>
-          <Box
+          <Avatar
+          src={c.user_id?.profilePicture}
             sx={{
               width: 40,
               height: 40,
+              minWidth: 40,
+              minHeight: 40,
               borderRadius: '50%',
               bgcolor: 'grey.300',
+              color: 'black',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
@@ -417,7 +424,7 @@ function CommentSection({ prayerId }) {
             }}
           >
             {c.user_id?.username?.charAt(0).toUpperCase() || 'U'}
-          </Box>
+          </Avatar>
           <Box>
             <Typography
               variant="caption"
