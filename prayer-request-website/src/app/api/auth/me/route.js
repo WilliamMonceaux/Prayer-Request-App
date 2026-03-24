@@ -19,7 +19,7 @@ export async function GET() {
 
     // If no token exists, the user is unauthenticated
     if (!token) {
-      return NextResponse.json({ user: null }, { status: 401 });
+      return NextResponse.json({ user: null }, { status: 200 });
     }
 
     // Verify the token using secret key
