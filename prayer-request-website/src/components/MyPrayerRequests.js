@@ -18,7 +18,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Avatar
+  Avatar,
 } from '@mui/material';
 import {
   Edit as EditIcon,
@@ -146,10 +146,9 @@ function MyPrayerRequests() {
                 <Typography
                   variant="h5"
                   sx={{
-                    fontSize: { xs: '1.4rem', md: '1.8rem', xl: '2rem' },
+                    fontSize: { xs: '1.6rem', md: '1.8rem', xl: '2rem' },
                     fontWeight: 600,
                     lineHeight: 1.2,
-                    color: '#1a1a1a',
                     flex: 1,
                   }}
                 >
@@ -224,9 +223,8 @@ function MyPrayerRequests() {
               <Typography
                 variant="body1"
                 sx={{
-                  color: '#5f6368',
                   mb: 4,
-                  fontSize: { xs: '1rem', md: '1.2rem', xl: '1.4rem' },
+                  fontSize: { xs: '1.2rem', md: '1.2rem', xl: '1.4rem' },
                   lineHeight: 1.6,
                 }}
               >
@@ -243,7 +241,7 @@ function MyPrayerRequests() {
               >
                 <Typography
                   sx={{
-                    fontSize: { xs: '0.95rem', md: '1.1rem', xl: '1.3rem' },
+                    fontSize: { xs: '1rem', md: '1.1rem', xl: '1.3rem' },
                     fontWeight: 'bold',
                   }}
                 >
@@ -251,7 +249,7 @@ function MyPrayerRequests() {
                 </Typography>
                 <Typography
                   sx={{
-                    fontSize: { xs: '0.95rem', md: '1.1rem', xl: '1.3rem' },
+                    fontSize: { xs: '1rem', md: '1.1rem', xl: '1.3rem' },
                     fontWeight: 'bold',
                   }}
                 >
@@ -259,16 +257,14 @@ function MyPrayerRequests() {
                 </Typography>
                 <Typography
                   sx={{
-                    fontSize: { xs: '0.95rem', md: '1.1rem', xl: '1.3rem' },
-                    color: '#999',
+                    fontSize: { xs: '1rem', md: '1.1rem', xl: '1.3rem' },
                   }}
                 >
                   Duration: {prayer.duration}
                 </Typography>
                 <Typography
                   sx={{
-                    fontSize: { xs: '0.95rem', md: '1.1rem', xl: '1.3rem' },
-                    color: '#999',
+                    fontSize: { xs: '1rem', md: '1.1rem', xl: '1.3rem' },
                   }}
                 >
                   Posted: {new Date(prayer.createdAt).toLocaleDateString()}
@@ -280,7 +276,7 @@ function MyPrayerRequests() {
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography
                   sx={{
-                    fontSize: { xs: '0.95rem', md: '1.1rem', xl: '1.3rem' },
+                    fontSize: { xs: '1rem', md: '1.1rem', xl: '1.3rem' },
                     color: '#1a73e8',
                     fontWeight: 600,
                   }}
@@ -288,7 +284,7 @@ function MyPrayerRequests() {
                   Words of Encouragement ({prayer.commentCount || 0})
                 </Typography>
               </AccordionSummary>
-              <AccordionDetails sx={{ bgcolor: '#fafafa' }}>
+              <AccordionDetails sx={{ bgcolor: 'inherit' }}>
                 <CommentSection prayerId={prayer._id} />
               </AccordionDetails>
             </Accordion>
@@ -407,15 +403,15 @@ function CommentSection({ prayerId }) {
       {comments.map((c) => (
         <Box key={c._id} sx={{ display: 'flex', gap: 2.5 }}>
           <Avatar
-          src={c.user_id?.profilePicture}
+            src={c.user_id?.profilePicture}
             sx={{
               width: 40,
               height: 40,
               minWidth: 40,
               minHeight: 40,
               borderRadius: '50%',
-              bgcolor: 'grey.300',
-              color: 'black',
+              bgcolor: 'action.selected',
+              color: 'text.primary',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
@@ -428,14 +424,14 @@ function CommentSection({ prayerId }) {
           <Box>
             <Typography
               variant="caption"
-              sx={{ fontSize: '1.4rem', fontWeight: 'bold', color: '#1a1a1a' }}
+              sx={{ fontSize: '1.4rem', fontWeight: 'bold', color: 'text.secondary' }}
             >
               {c.user_id?.username || 'Anonymous'} •{' '}
               {new Date(c.createdAt).toLocaleDateString()}
             </Typography>
             <Typography
               variant="body2"
-              sx={{ fontSize: '1.2rem', color: '#444', mt: 0.5 }}
+              sx={{ fontSize: '1.4rem', color: 'text.primary', mt: 0.5 }}
             >
               {c.content}
             </Typography>
