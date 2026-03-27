@@ -34,12 +34,6 @@ function HeroArea({ heading, paragraph, button }) {
             variant="h1"
             component="h1"
             sx={{
-              fontSize: {
-                xs: '2.8rem',
-                md: '6.10rem',
-                xl: '7.63rem',
-              },
-              lineHeight: 1.1,
               letterSpacing: '-0.02em',
               wordBreak: 'keep-all',
               textShadow: '0px 6px 12px rgba(0,0,0,0.35)',
