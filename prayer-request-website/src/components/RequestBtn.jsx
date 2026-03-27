@@ -28,9 +28,9 @@ function RequestBtn({ text }) {
               fontSize: { md: '1.4rem', xl: '1.6rem' },
               fontWeight: 500,
               p: '1.2rem',
-              backgroundColor: '#2196F3',
+              backgroundColor: 'primary.main',
               '&:hover': {
-                backgroundColor: '#1976d2',
+                backgroundColor: 'primary.dark',
                 boxShadow: 'none',
               },
               width: { xs: '20rem', md: '30rem' },
