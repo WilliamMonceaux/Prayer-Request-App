@@ -129,10 +129,12 @@ function Navbar(props) {
       <AppBar
         position="sticky"
         component="nav"
-        sx={{
-          backgroundColor: 'transparent',
+        sx={(theme) => ({
+          backgroundColor:
+            theme.palette.mode === 'dark' ? 'background.paper' : 'inherit',
+          backgroundImage: 'none',
           boxShadow: 'none',
-        }}
+        })}
       >
         <Toolbar sx={{ justifyContent: 'end' }}>
           <Box
@@ -162,7 +164,7 @@ function Navbar(props) {
                 variant="h6"
                 component="div"
                 sx={{
-                  color: 'black',
+                  color: 'text.primary',
                   fontSize: '2.4rem',
                   flexGrow: 1,
                   mx: 1,
@@ -182,7 +184,7 @@ function Navbar(props) {
                 sx={{
                   fontSize: { md: '1.4rem', xl: '1.6rem' },
                   fontWeight: 500,
-                  color: 'black',
+                  color: 'text.primary',
                   mr: 1,
                   textTransform: 'none',
                 }}
@@ -203,7 +205,10 @@ function Navbar(props) {
           <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center', gap: 1 }}>
             <ThemeSwitcher />
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar src={currentUser?.profilePicture} sx={{ width: 40, height: 40 }}>
+              <Avatar
+                src={currentUser?.profilePicture}
+                sx={(theme) => ({ width: 40, height: 40, bgcolor: theme.palette.mode === 'dark' ? 'grey.50' : 'grey.300' })}
+              >
                 {currentUser?.username?.charAt(0).toUpperCase()}
               </Avatar>
             </IconButton>
