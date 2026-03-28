@@ -8,7 +8,8 @@ import AccountSettings from '@/components/AccountSettings';
 import MyPrayerRequests from '@/components/MyPrayerRequests';
 import NotificationsProvider from '@/hooks/useNotifications/NotificationsProvider';
 import DialogsProvider from '@/hooks/useDialogs/DialogsProvider';
-import AppTheme from '@/lib/theme/customizations/AppTheme';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from '@/lib/index';
 
 export default function DashboardClient() {
   const router = React.useMemo(() => {
@@ -26,13 +27,13 @@ export default function DashboardClient() {
   }, []);
 
   return (
-    <AppTheme>
+    <ThemeProvider theme={theme}>
       <CssBaseline enableColorScheme /> 
       <NotificationsProvider>
         <DialogsProvider>
           <RouterProvider router={router} />
         </DialogsProvider>
       </NotificationsProvider>
-    </AppTheme>
+    </ThemeProvider>
   );
 }
