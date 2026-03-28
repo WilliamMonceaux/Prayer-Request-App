@@ -23,6 +23,7 @@ import {
   MenuItem,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import ThemeSwitcher from './ThemeSwitcher';
 import { useUserContext } from '@/context/UserContext';
 
 const drawerWidth = 240;
@@ -199,7 +200,8 @@ function Navbar(props) {
           >
             <MenuIcon sx={{ fontSize: '2.5rem', color: 'black' }} />
           </IconButton>
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center', gap: 1 }}>
+            <ThemeSwitcher />
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <Avatar src={currentUser?.profilePicture} sx={{ width: 40, height: 40 }}>
                 {currentUser?.username?.charAt(0).toUpperCase()}
