@@ -13,6 +13,8 @@ import {
   FormControl,
   Select,
   Button,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import Image from 'next/image';
 import CheckMark from '../../public/images/checkmark.png';
@@ -35,11 +37,14 @@ const PageWrapper = styled(Stack)(({ theme }) => ({
 function RequestForm() {
   const { currentUser: user, loading } = useUserContext();
   const router = useRouter();
-
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [snackbarMessage, setSnackbarMessage] = React.useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = React.useState('success');
   const [title, setTitle] = useState('');
   const [request, setRequest] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [duration, setDuration] = useState('1 Week');
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -63,14 +68,27 @@ function RequestForm() {
       });
 
       if (res.ok) {
-        router.push('/');
+        setSnackbarSeverity('success');
+        setSnackbarMessage('Prayer request submitted successfully!');
+        setOpenSnackbar(true);
+
+        setTimeout(() => {
+          router.push('/');
+        }, 2000);
       } else {
+        setSnackbarSeverity('error');
+        setSnackbarMessage('Failed to submit prayer request. Please try again.');
+        setOpenSnackbar(true);
+
         const errorData = await res.json();
         console.error('Post failed:', errorData.error);
         alert(`Error: ${errorData.error}`);
       }
     } catch (err) {
       console.error('Network error:', err);
+      setSnackbarSeverity('error');
+      setSnackbarMessage('Network error. Please check your connection and try again.');
+      setOpenSnackbar(true);
     }
   };
 
@@ -211,6 +229,21 @@ function RequestForm() {
           </Button>
         </Box>
       </Paper>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setOpenSnackbar(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={() => setOpenSnackbar(false)}
+          severity={snackbarSeverity}
+          variant='filled'
+          sx={{ width: '100%' }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </PageWrapper>
   );
 }
