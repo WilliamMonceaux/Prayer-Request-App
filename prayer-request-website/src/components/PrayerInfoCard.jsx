@@ -33,7 +33,7 @@ function PrayerInfoCard({ title, description, quote, image }) {
       </Typography>
       <Typography
         variant="body1"
-        sx={{ mt: 2, fontSize: { xs: '1.4rem', md: '1.6rem', xl: '2.0rem' } }}
+        sx={{ mt: 2 }}
       >
         {quote}
       </Typography>
