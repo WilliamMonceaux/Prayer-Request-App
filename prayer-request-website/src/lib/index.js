@@ -28,14 +28,26 @@ const theme = createTheme({
     ...feedbackCustomizations,
     ...navigationCustomizations,
     ...surfacesCustomizations,
-    MuiCssBaseline: {
-      styleOverrides: {
-        html: {
-          fontSize: '10px',
-        },
-      },
+MuiCssBaseline: {
+  styleOverrides: (theme) => ({
+    html: {
+      fontSize: '10px',
     },
+    body: {
+      backgroundRepeat: 'no-repeat',
+      backgroundAttachment: 'fixed',
+      backgroundImage:
+        'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
+      
+      ...theme.applyStyles('dark', {
+        backgroundImage:
+          'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
+      }),
+    },
+  }),
+},
   },
-});
+},
+);
 
 export default theme;
