@@ -24,8 +24,8 @@ export default function AboutPage() {
   return (
     <Container component="main" maxWidth="md" sx={{ py: { xs: 4, md: 10 } }}>
       <Paper
-        elevation={0}
-        sx={{ p: { xs: 3, md: 8 }, borderRadius: 6, border: '1px solid #f0f0f0' }}
+        elevation={3}
+        sx={{ p: { xs: 3, md: 8 }, borderRadius: 6 }}
       >
         <Box component="header" textAlign="center" mb={8}>
           <Typography component="h1" sx={{ ...responsiveTypography.h1, mb: 2 }}>
