@@ -29,9 +29,9 @@ import { Edit as EditIcon } from '@mui/icons-material';
 const PrayerCard = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
   borderRadius: theme.shape.borderRadius * 2,
-  boxShadow: '0px 2px 8px rgba(0,0,0,0.1)',
-  border: '1px solid #e0e0e0',
-  backgroundColor: '#fff',
+  boxShadow: theme.shadows[1],
+  border: `1px solid ${theme.palette.divider}`,
+  backgroundColor: theme.palette.background.default,
   display: 'flex',
   flexDirection: 'column',
   transition: 'transform 0.2s',
