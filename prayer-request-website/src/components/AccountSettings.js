@@ -240,7 +240,6 @@ function AccountSettings() {
               variant="contained"
               size="large"
               onClick={onSave}
-              sx={{ bgcolor: '#1e293b', mt: 2, '&:hover': { bgcolor: '#334155' } }}
             >
               Save Changes
             </Button>
