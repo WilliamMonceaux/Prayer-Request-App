@@ -18,7 +18,7 @@ import {
   DialogTitle,
   DialogContent,
   TextField,
-  DialogActions
+  DialogActions,
 } from '@mui/material';
 import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
@@ -176,7 +176,8 @@ function PrayerRequestCards({ activeStatus }) {
 
         if (res.ok) {
           const data = await res.json();
-          setPrayers(data.prayers || [data]);
+          // If data.prayers is undefined, fallback to an empty array to prevent .map errors
+          setPrayers(Array.isArray(data.prayers) ? data.prayers : []);
           setTotalPages(data.totalPages || 1);
         }
       } catch (err) {
@@ -313,7 +314,10 @@ function PrayerRequestCards({ activeStatus }) {
                         <IconButton
                           size="small"
                           onClick={() => handleEditClick(prayer)}
-                          sx={{ color: 'grey.400', '&:hover': { color: 'primary.main' } }}
+                          sx={{
+                            color: 'grey.400',
+                            '&:hover': { color: 'primary.main' },
+                          }}
                         >
                           <EditIcon fontSize="medium" />
                         </IconButton>
@@ -368,10 +372,10 @@ function PrayerRequestCards({ activeStatus }) {
                         onClick={() => toggleComments(prayer._id)}
                         variant="text"
                         sx={{
+                          typography: 'caption',
                           textTransform: 'none',
                           fontWeight: 700,
-                          borderRadius: '20px',
-                          fontSize: { xs: '0.9rem', md: '1rem', xl: '1.3rem' },
+                          borderRadius: '2rem',
                           color: 'text.primary',
                         }}
                       >
@@ -409,7 +413,7 @@ function PrayerRequestCards({ activeStatus }) {
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'flex-end',
-                      mt: 'auto'
+                      mt: 'auto',
                     }}
                   >
                     <StatusBadge
@@ -422,10 +426,10 @@ function PrayerRequestCards({ activeStatus }) {
                       }}
                     >
                       <Typography
+                        variant="body2"
                         sx={{
                           color: 'black',
                           fontWeight: 'bold',
-                          fontSize: { xs: '0.9rem', md: '1.1rem', xl: '1.6rem' },
                         }}
                       >
                         Status: &nbsp;
@@ -440,9 +444,15 @@ function PrayerRequestCards({ activeStatus }) {
                           variant="standard"
                           disableUnderline
                           sx={{
+                            border: 'none',
+                            boxShadow: 'none',
+                            backgroundColor: 'transparent',
+                            typography: 'body2',
                             fontWeight: 500,
-                            fontSize: { xs: '0.9rem', md: '1.1rem', xl: '1.6rem' },
                             color: 'black',
+                            '&:hover': {
+                              backgroundColor: 'transparent',
+                            },
                           }}
                         >
                           <MenuItem value="Need Prayers">Need Prayers</MenuItem>
@@ -450,10 +460,10 @@ function PrayerRequestCards({ activeStatus }) {
                         </Select>
                       ) : (
                         <Typography
+                          variant="body2"
                           sx={{
                             color: 'black',
                             fontWeight: 500,
-                            fontSize: { xs: '0.9rem', md: '1.1rem', xl: '1.6rem' },
                           }}
                         >
                           {status}
@@ -464,9 +474,7 @@ function PrayerRequestCards({ activeStatus }) {
                     <Typography
                       variant="caption"
                       sx={{
-                        color: 'grey.500',
                         fontStyle: 'italic',
-                        fontSize: { xs: '0.9rem', md: '1rem', xl: '1.5rem' },
                       }}
                     >
                       {formatDistanceToNow(new Date(prayer.createdAt))} ago
