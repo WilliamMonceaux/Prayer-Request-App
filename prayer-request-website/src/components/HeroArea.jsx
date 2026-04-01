@@ -1,5 +1,5 @@
 import { Typography, Grid } from '@mui/material';
-import { RequestBtn } from '../components/RequestBtn';
+import { RequestBtn } from './Buttons';
 
 function HeroArea({ heading, paragraph, button }) {
   return (
