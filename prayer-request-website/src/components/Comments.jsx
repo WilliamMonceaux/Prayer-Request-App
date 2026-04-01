@@ -82,13 +82,13 @@ function Comments({ prayerId, currentUser }) {
               <Stack direction="row" spacing={2} alignItems="flex-start">
                 <Avatar
                   src={comment.user_id?.profilePicture}
-                  sx={{ width: 32, height: 32, fontSize: '0.8rem' }}
+                  sx={{ width: 32, height: 32 }}
                 >
                   {comment.user_id?.username?.charAt(0).toUpperCase() || 'U'}
                 </Avatar>
                 <Box>
                   <Typography
-                    variant="caption"
+                    variant="body2"
                     sx={{
                       fontWeight: 700,
                       display: 'block',
@@ -124,7 +124,7 @@ function Comments({ prayerId, currentUser }) {
             onChange={(e) => setNewComment(e.target.value)}
             variant="outlined"
             size="small"
-            sx={{ mb: 1, backgroundColor: '#f9f9f9' }}
+            sx={{ mb: 3 }}
           />
           <Button
             type="submit"
