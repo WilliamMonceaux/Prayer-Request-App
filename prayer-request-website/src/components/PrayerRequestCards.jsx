@@ -1,5 +1,7 @@
 'use client';
+import { green, red } from '../lib/theme/customizations/themePrimitives';
 import React, { useEffect, useState } from 'react';
+import { StatusBadge } from './Buttons';
 import {
   Box,
   Typography,
@@ -42,27 +44,18 @@ const PrayerCard = styled(Paper)(({ theme }) => ({
   },
 }));
 
-const StatusBadge = styled(Box)(({ theme }) => ({
-  display: 'inline-flex',
-  alignItems: 'center',
-  padding: theme.spacing(0.5, 1.5),
-  borderRadius: '4px',
-  backgroundColor: '#ffebee',
-  border: '1px solid',
-}));
-
 const getStatusColors = (status) => {
   if (status === 'Prayer Answered') {
     return {
-      bg: '#e8f5e9',
-      border: '#a5d6a7',
-      shadow: 'rgba(165, 214, 167, 0.6)',
+      bg: green[50],
+      border: green[200],
+      shadow: green[200],
     };
   }
   return {
-    bg: '#ffebee',
-    border: '#ffcdd2',
-    shadow: 'rgba(255, 205, 210, 0.6)',
+    bg: red[50],
+    border: red[200],
+    shadow: red[100],
   };
 };
 
