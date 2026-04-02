@@ -2,6 +2,7 @@
 import { green, red } from '../lib/theme/customizations/themePrimitives';
 import React, { useEffect, useState } from 'react';
 import { StatusBadge } from './Buttons';
+import { UserAvatar } from './UserAvatar';
 import {
   Box,
   Typography,
@@ -264,19 +265,13 @@ function PrayerRequestCards({ activeStatus }) {
                         minWidth: 0,
                       }}
                     >
-                      <Avatar
-                        src={!isAnonymous && profilePic ? profilePic : undefined}
+                      <UserAvatar
+                        user={isAnonymous ? { name: '?' } : prayer.user_id}
                         sx={{
-                          bgcolor: 'grey.200',
-                          color: 'black',
-                          fontWeight: 'bold',
                           width: { xs: 40, md: 52, xl: 64 },
                           height: { xs: 40, md: 52, xl: 64 },
-                          fontSize: { xs: '1.2rem', md: '1.5rem', xl: '2rem' },
                         }}
-                      >
-                        {isAnonymous ? '?' : initial}
-                      </Avatar>
+                      />
 
                       <Typography
                         variant="subtitle1"
