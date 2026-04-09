@@ -56,6 +56,24 @@ export const inputsCustomizations = {
   MuiTextField: {
     styleOverrides: {
       root: ({ theme }) => ({
+'& .MuiInputLabel-root': {
+    color: theme.palette.text.secondary,
+  },
+  '& .MuiInputBase-input::placeholder': {
+    color: theme.palette.text.secondary,
+    opacity: 1,
+  },
+  '& .MuiFilledInput-root': {
+          backgroundColor: gray[100],
+          borderRadius: '1.2rem',
+          color: gray[900], 
+          '&:hover': {
+            backgroundColor: gray[200],
+          },
+          '&.Mui-focused': {
+            backgroundColor: gray[100],
+          },
+        },
         '& .MuiOutlinedInput-root': {
           backgroundColor:
             theme.palette.mode === 'dark'
