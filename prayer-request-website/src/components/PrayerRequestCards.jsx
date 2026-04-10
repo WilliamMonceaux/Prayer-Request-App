@@ -7,7 +7,6 @@ import {
   Box,
   Typography,
   Container,
-  Avatar,
   Paper,
   styled,
   Stack,
@@ -227,8 +226,6 @@ function PrayerRequestCards({ activeStatus }) {
               const isExpanded = expandedComments[prayer._id];
               const isAnonymous = prayer.isAnonymous;
               const username = prayer.user_id?.username || 'Community Member';
-              const profilePic = prayer.user_id?.profilePicture;
-              const initial = username.charAt(0).toUpperCase();
               const status = prayer.status || 'Need Prayers';
               const colors = getStatusColors(status);
               const hasPrayed = prayer.prayedBy?.includes(currentUser?._id);
@@ -274,11 +271,10 @@ function PrayerRequestCards({ activeStatus }) {
                       />
 
                       <Typography
-                        variant="subtitle1"
+                        variant="body2"
                         noWrap
                         sx={{
                           fontWeight: 600,
-                          fontSize: { xs: '1.2rem', md: '1.4rem', xl: '2rem' },
                           maxWidth: { xs: '180px', sm: '250px', md: '400px' },
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
@@ -337,8 +333,7 @@ function PrayerRequestCards({ activeStatus }) {
                         sx={{
                           textTransform: 'none',
                           fontWeight: 700,
-                          borderRadius: '20px',
-                          fontSize: { xs: '0.9rem', md: '1rem', xl: '1.3rem' },
+                          borderRadius: '2rem',
                           color: hasPrayed ? '#2e7d32' : 'inherit',
                           backgroundColor: hasPrayed
                             ? 'rgba(46, 125, 50, 0.08)'
@@ -351,24 +346,24 @@ function PrayerRequestCards({ activeStatus }) {
                         variant="body2"
                         sx={{
                           fontWeight: 800,
-                          fontSize: { xs: '1rem', md: '1.3rem', xl: '1.6rem' },
                         }}
                       >
                         {prayer.prayedCount || 0}
                       </Typography>
                       <Button
                         onClick={() => toggleComments(prayer._id)}
-                        variant="text"
+                        variant="body2"
                         sx={{
-                          typography: 'caption',
                           textTransform: 'none',
                           fontWeight: 700,
                           borderRadius: '2rem',
-                          color: 'text.primary',
                         }}
                       >
                         {isExpanded ? 'Hide' : 'Comment'}
                       </Button>
+                      <Typography variant='body2'>
+                        {prayer.comment_id?.length || 0}
+                      </Typography>
                     </Stack>
                   </Box>
 
@@ -378,19 +373,17 @@ function PrayerRequestCards({ activeStatus }) {
                       fontWeight: 800,
                       mb: 1,
                       lineHeight: 1.2,
-                      fontSize: { xs: '1.6rem', md: '2rem', xl: '2.0rem' },
                     }}
                   >
                     {prayer.title}
                   </Typography>
 
                   <Typography
-                    variant="body1"
+                    variant="body2"
                     sx={{
                       color: 'text.secondary',
                       mb: 4,
                       lineHeight: 1.6,
-                      fontSize: { xs: '1.1rem', md: '1.4rem', xl: '1.6rem' },
                     }}
                   >
                     {prayer.description}

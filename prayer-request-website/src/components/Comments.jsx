@@ -100,7 +100,7 @@ function Comments({ prayerId, currentUser }) {
                     {comment.user_id?.username || 'Community Member'} •{' '}
                     {formatDistanceToNow(new Date(comment.createdAt))} ago
                   </Typography>
-                  <Typography variant="body2" sx={{ color: 'text.primary' }}>
+                  <Typography variant="body2">
                     {comment.content}
                   </Typography>
                 </Box>
@@ -130,13 +130,13 @@ function Comments({ prayerId, currentUser }) {
             type="submit"
             variant="contained"
             disabled={submitting || !newComment.trim()}
-            sx={{ borderRadius: '20px', textTransform: 'none', fontWeight: 600 }}
+            sx={{ borderRadius: '2rem', textTransform: 'none', fontWeight: 600 }}
           >
             {submitting ? 'Posting...' : 'Post Encouragement'}
           </Button>
         </Box>
       ) : (
-        <Typography variant="caption" color="text.secondary">
+        <Typography variant="body2">
           Please log in to leave a comment.
         </Typography>
       )}
