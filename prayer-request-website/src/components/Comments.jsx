@@ -10,9 +10,12 @@ import {
   Divider,
   CircularProgress,
 } from '@mui/material';
+import { UserAvatar } from './UserAvatar';
+import { useUserContext } from '@/context/UserContext';
 import { formatDistanceToNow } from 'date-fns';
 
-function Comments({ prayerId, currentUser }) {
+function Comments({ prayerId }) {
+  const { currentUser } = useUserContext();
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [loading, setLoading] = useState(false);
@@ -80,12 +83,7 @@ function Comments({ prayerId, currentUser }) {
           comments.map((comment, index) => (
             <Box key={comment._id || index}>
               <Stack direction="row" spacing={2} alignItems="flex-start">
-                <Avatar
-                  src={comment.user_id?.profilePicture}
-                  sx={{ width: 32, height: 32 }}
-                >
-                  {comment.user_id?.username?.charAt(0).toUpperCase() || 'U'}
-                </Avatar>
+                <UserAvatar sx={{ width: 32, height: 32}} user={comment.user_id} />
                 <Box>
                   <Typography
                     variant="body2"
