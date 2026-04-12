@@ -7,7 +7,6 @@ import {
   Button,
   Card,
   CardContent,
-  Avatar,
   Stack,
   CircularProgress,
   Snackbar,
@@ -17,6 +16,7 @@ import {
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useUserContext } from '@/context/UserContext';
+import { UserAvatar } from './UserAvatar';
 import { useRouter } from 'next/navigation';
 
 function AccountSettings() {
@@ -179,12 +179,7 @@ function AccountSettings() {
 
           <Stack spacing={3} sx={{ mt: 4 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-              <Avatar
-                src={displayImage}
-                sx={{ width: 80, height: 80, fontSize: '2.5rem' }}
-              >
-                {!displayImage && formData.username?.charAt(0).toUpperCase()}
-              </Avatar>
+              <UserAvatar user={currentUser} sx={{ width: 80, height: 80}} />
               <Stack direction="column" textAlign="center" spacing={2}>
                 <Button
                   variant="outlined"
