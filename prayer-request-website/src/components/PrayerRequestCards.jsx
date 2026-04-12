@@ -334,7 +334,7 @@ function PrayerRequestCards({ activeStatus }) {
                           textTransform: 'none',
                           fontWeight: 700,
                           borderRadius: '2rem',
-                          color: hasPrayed ? '#2e7d32' : 'inherit',
+                          color: hasPrayed ? green[500] : 'inherit',
                           backgroundColor: hasPrayed
                             ? 'rgba(46, 125, 50, 0.08)'
                             : 'transparent',
@@ -361,7 +361,7 @@ function PrayerRequestCards({ activeStatus }) {
                       >
                         {isExpanded ? 'Hide' : 'Comment'}
                       </Button>
-                      <Typography variant='body2'>
+                      <Typography variant="body2" sx={{ fontWeight: 800 }}>
                         {prayer.comment_id?.length || 0}
                       </Typography>
                     </Stack>
