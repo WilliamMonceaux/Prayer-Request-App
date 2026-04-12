@@ -10,7 +10,7 @@ const StyledAvatar = styled(Avatar)(({ theme, size }) => ({
 
 // Displays profile picture if a user has one
 // else it will display the first initials of username
-function UserAvatar({ user }) {
+function UserAvatar({ user, sx }) {
   const profilePic = user?.profilePicture;
   const initials = user?.username.charAt(0).toUpperCase();
 
@@ -20,11 +20,16 @@ function UserAvatar({ user }) {
   user: PropTypes.shape({
     username: PropTypes.string,
     profilePicture: PropTypes.string,
-  }).isRequired,
+  }),
+  sx: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])),
+    PropTypes.func,
+    PropTypes.object,
+  ]),
 };
 
   return (
-    <StyledAvatar src={profilePic}>
+    <StyledAvatar src={profilePic} sx={sx}>
       {userProfile}
     </StyledAvatar>
   );
