@@ -17,12 +17,12 @@ import {
   Toolbar,
   Typography,
   Button,
-  Avatar,
   Tooltip,
   Menu,
   MenuItem,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { UserAvatar } from './UserAvatar';
 import ThemeSwitcher from './ThemeSwitcher';
 import { useUserContext } from '@/context/UserContext';
 
@@ -193,25 +193,20 @@ function Navbar(props) {
               </Button>
             ))}
           </Box>
-          <IconButton
+          <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center', gap: 1 }}>
+            <ThemeSwitcher />
+            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, mx: 2 }}>
+              <UserAvatar user={currentUser} />
+            </IconButton>
+                      <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
+            sx={{ display: { sm: 'none' } }}
           >
-            <MenuIcon sx={{ fontSize: '2.5rem', color: 'black' }} />
+            <MenuIcon sx={{ fontSize: '2.5rem', color: 'text.primary' }} />
           </IconButton>
-          <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center', gap: 1 }}>
-            <ThemeSwitcher />
-            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar
-                src={currentUser?.profilePicture}
-                sx={(theme) => ({ width: 40, height: 40, bgcolor: theme.palette.mode === 'dark' ? 'grey.50' : 'grey.300' })}
-              >
-                {currentUser?.username?.charAt(0).toUpperCase()}
-              </Avatar>
-            </IconButton>
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"
@@ -237,7 +232,6 @@ function Navbar(props) {
                 >
                   <Typography
                     sx={{
-                      fontSize: { md: '1.4rem', xl: '2.0rem' },
                       textAlign: 'center',
                     }}
                   >
