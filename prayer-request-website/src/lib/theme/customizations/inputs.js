@@ -1,5 +1,5 @@
 import { alpha } from '@mui/material/styles';
-import { gray, brand } from './themePrimitives';
+import { gray, brand, red } from './themePrimitives';
 
 export const inputsCustomizations = {
   MuiButton: {
@@ -19,7 +19,7 @@ export const inputsCustomizations = {
         ...(ownerState.variant === 'contained' &&
           ownerState.color === 'primary' && {
             backgroundColor: brand[500],
-            color: '#fff',
+            color: gray[50],
             boxShadow: '0px 4px 12px hsla(207, 90%, 54%, 0.25)',
             '&:hover': {
               backgroundColor: brand[400],
@@ -27,6 +27,17 @@ export const inputsCustomizations = {
             },
           }),
 
+        ...(ownerState.variant === 'contained' &&
+          ownerState.color === 'error' && {
+            backgroundColor: red[500],
+            color: gray[50],
+            boxShadow: '0px 4px 12px hsla(0, 90%, 54%, 0.25)',
+            '&:hover': {
+              backgroundColor: red[400],
+              boxShadow: '0px 6px 16px hsla(0, 98%, 48%, 0.60)',
+            },
+          }),
+        
         '@media (min-width:1536px)': {
           padding: '.8rem 2rem',
           fontSize: '1.6rem',
