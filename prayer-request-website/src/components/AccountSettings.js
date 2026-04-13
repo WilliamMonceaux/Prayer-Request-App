@@ -179,7 +179,7 @@ function AccountSettings() {
 
           <Stack spacing={3} sx={{ mt: 4 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-              <UserAvatar user={currentUser} sx={{ width: 80, height: 80}} />
+              <UserAvatar user={currentUser} sx={{ width: 80, height: 80, fontSize: '3rem'}} />
               <Stack direction="column" textAlign="center" spacing={2}>
                 <Button
                   variant="outlined"
