@@ -2,7 +2,7 @@
 import { green, red } from '../lib/theme/customizations/themePrimitives';
 import React, { useEffect, useState } from 'react';
 import { StatusBadge } from './Buttons';
-import { UserAvatar } from './UserAvatar';
+import { Username } from './Username';
 import {
   Box,
   Typography,
@@ -253,37 +253,14 @@ function PrayerRequestCards({ activeStatus }) {
                       mb: 2,
                     }}
                   >
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 2,
-                        order: { xs: 2, sm: 1 },
-                        minWidth: 0,
-                      }}
-                    >
-                      <UserAvatar
-                        user={isAnonymous ? { name: '?' } : prayer.user_id}
-                        sx={{
-                          width: { xs: 40, md: 52, xl: 64 },
-                          height: { xs: 40, md: 52, xl: 64 },
-                        }}
-                      />
-
-                      <Typography
-                        variant="body2"
-                        noWrap
-                        sx={{
-                          fontWeight: 600,
-                          maxWidth: { xs: '180px', sm: '250px', md: '400px' },
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}
-                      >
-                        {isAnonymous ? 'Anonymous' : username}
-                      </Typography>
-                    </Box>
-
+                    {/* Check if user submitted prayer as anonymous
+                    If anonymous, render username as 'Anonymous'
+                    and display initial as '?'
+                    else display username and initial/profile picture */}
+                    <Username
+                      name={isAnonymous ? 'Anonymous' : username}
+                      pic={isAnonymous ? { name: '?' } : prayer.user_id}
+                    />
                     <Stack
                       direction="row"
                       spacing={1}
