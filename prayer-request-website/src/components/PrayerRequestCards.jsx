@@ -3,6 +3,7 @@ import { green, red } from '../lib/theme/customizations/themePrimitives';
 import React, { useEffect, useState } from 'react';
 import { StatusBadge } from './Buttons';
 import { Username } from './Username';
+import { CommentBtn } from './CommentBtn';
 import {
   Box,
   Typography,
@@ -327,20 +328,11 @@ function PrayerRequestCards({ activeStatus }) {
                       >
                         {prayer.prayedCount || 0}
                       </Typography>
-                      <Button
-                        onClick={() => toggleComments(prayer._id)}
-                        variant="body2"
-                        sx={{
-                          textTransform: 'none',
-                          fontWeight: 700,
-                          borderRadius: '2rem',
-                        }}
-                      >
-                        {isExpanded ? 'Hide' : 'Comment'}
-                      </Button>
-                      <Typography variant="body2" sx={{ fontWeight: 800 }}>
-                        {prayer.comment_id?.length || 0}
-                      </Typography>
+                      <CommentBtn
+                        text={isExpanded ? 'Hide' : 'Comment'}
+                        expand={() => toggleComments(prayer._id)}
+                        amount={prayer.comment_id?.length || 0}
+                      />
                     </Stack>
                   </Box>
 
