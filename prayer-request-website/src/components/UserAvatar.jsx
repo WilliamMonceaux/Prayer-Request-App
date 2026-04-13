@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const StyledAvatar = styled(Avatar)(({ theme, size }) => ({
   backgroundColor: gray[200],
-  color: theme.palette.light,
+  color: 'black',
 }));
 
 
