@@ -5,6 +5,7 @@ import { StatusBadge } from './Buttons';
 import { UserHeader } from './UserHeader';
 import { CommentBtn } from './CommentBtn';
 import { LikeBtn } from './LikeBtn';
+import { EditBtn } from './EditBtn';
 import {
   Box,
   Typography,
@@ -17,18 +18,15 @@ import {
   Skeleton,
   Select,
   MenuItem,
-  IconButton,
   Dialog,
   DialogTitle,
   DialogContent,
   TextField,
   DialogActions,
 } from '@mui/material';
-import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
 import { useUserContext } from '@/context/UserContext';
 import { Comments } from '@/components/Comments';
-import { Edit as EditIcon } from '@mui/icons-material';
 
 const PrayerCard = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
@@ -274,16 +272,7 @@ function PrayerRequestCards({ activeStatus }) {
                       }}
                     >
                       {isAuthor && (
-                        <IconButton
-                          size="small"
-                          onClick={() => handleEditClick(prayer)}
-                          sx={{
-                            color: 'grey.400',
-                            '&:hover': { color: 'primary.main' },
-                          }}
-                        >
-                          <EditIcon fontSize="medium" />
-                        </IconButton>
+                        <EditBtn editToggle={() => handleEditClick(prayer)} />
                       )}
                       <LikeBtn
                         author={isAuthor}
