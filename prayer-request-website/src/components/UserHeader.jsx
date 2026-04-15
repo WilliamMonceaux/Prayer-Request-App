@@ -1,7 +1,7 @@
 import { UserAvatar } from './UserAvatar';
 import { Box, Typography } from '@mui/material';
 
-function Username({ pic, name }) {
+function UserHeader({ pic, name }) {
   return (
     <Box
       sx={{
@@ -38,4 +38,4 @@ function Username({ pic, name }) {
   );
 }
 
-export { Username };
+export { UserHeader };

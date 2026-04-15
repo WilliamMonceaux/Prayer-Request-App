@@ -2,7 +2,7 @@
 import { green, red } from '../lib/theme/customizations/themePrimitives';
 import React, { useEffect, useState } from 'react';
 import { StatusBadge } from './Buttons';
-import { Username } from './Username';
+import { UserHeader } from './UserHeader';
 import { CommentBtn } from './CommentBtn';
 import {
   Box,
@@ -258,7 +258,7 @@ function PrayerRequestCards({ activeStatus }) {
                     If anonymous, render username as 'Anonymous'
                     and display initial as '?'
                     else display username and initial/profile picture */}
-                    <Username
+                    <UserHeader
                       name={isAnonymous ? 'Anonymous' : username}
                       pic={isAnonymous ? { name: '?' } : prayer.user_id}
                     />
