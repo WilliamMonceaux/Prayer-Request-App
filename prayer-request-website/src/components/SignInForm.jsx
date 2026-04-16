@@ -226,7 +226,7 @@ function SignInForm(props) {
               fullWidth
               variant="contained"
               disabled={loading}
-              sx={{ my: 2, backgroundColor: '#2196F3', textTransform: 'none' }}
+              sx={{ my: 2 }}
             >
               Sign In
             </Button>

@@ -18,7 +18,7 @@ export const inputsCustomizations = {
 
         ...(ownerState.variant === 'contained' &&
           ownerState.color === 'primary' && {
-            backgroundColor: brand[500],
+            backgroundColor: brand[350],
             color: gray[50],
             boxShadow: '0px 4px 12px hsla(207, 90%, 54%, 0.25)',
             '&:hover': {
