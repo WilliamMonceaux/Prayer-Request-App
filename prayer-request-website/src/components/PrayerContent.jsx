@@ -1,4 +1,5 @@
 import { Typography } from '@mui/material';
+import PropTypes from 'prop-types';
 
 function PrayerContent({ title, content }) {
   return (
@@ -29,5 +30,10 @@ function PrayerContent({ title, content }) {
     </>
   );
 }
+
+PrayerContent.propTypes = {
+  title: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+};
 
 export { PrayerContent };
