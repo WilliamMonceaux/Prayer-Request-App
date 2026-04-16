@@ -1,7 +1,7 @@
 'use client';
 import { green, red } from '../lib/theme/customizations/themePrimitives';
 import React, { useEffect, useState } from 'react';
-import { StatusBadge } from './Buttons';
+import { StatusBadge } from './StatusBadge';
 import { UserHeader } from './UserHeader';
 import { CardActions } from './CardActions';
 import { PrayerContent } from './PrayerContent';
@@ -17,12 +17,12 @@ import {
   Pagination,
   Skeleton,
   Select,
-  MenuItem,
   Dialog,
   DialogTitle,
   DialogContent,
   TextField,
   DialogActions,
+  MenuItem
 } from '@mui/material';
 import { useUserContext } from '@/context/UserContext';
 import { Comments } from '@/components/Comments';
@@ -286,59 +286,15 @@ function PrayerRequestCards({ activeStatus }) {
                       mt: 'auto',
                     }}
                   >
-                    <StatusBadge
-                      sx={{
-                        px: { xs: 1.5, xl: 3 },
-                        py: { xs: 0.5, xl: 1.5 },
-                        backgroundColor: colors.bg,
-                        borderColor: colors.border,
-                        cursor: isAuthor ? 'pointer' : 'default',
-                      }}
-                    >
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          color: 'black',
-                          fontWeight: 'bold',
-                        }}
-                      >
-                        Status: &nbsp;
-                      </Typography>
 
-                      {isAuthor ? (
-                        <Select
-                          value={status}
-                          onChange={(e) =>
-                            handleStatusChange(prayer._id, e.target.value)
-                          }
-                          variant="standard"
-                          disableUnderline
-                          sx={{
-                            border: 'none',
-                            boxShadow: 'none',
-                            backgroundColor: 'transparent',
-                            typography: 'body2',
-                            fontWeight: 500,
-                            color: 'black',
-                            '&:hover': {
-                              backgroundColor: 'transparent',
-                            },
-                          }}
-                        >
-                          <MenuItem value="Need Prayers">Need Prayers</MenuItem>
-                          <MenuItem value="Prayer Answered">Prayer Answered</MenuItem>
-                        </Select>
-                      ) : (
-                        <Typography
-                          variant="body2"
-                          sx={{
-                            color: 'black',
-                            fontWeight: 500,
-                          }}
-                        >
-                          {status}
-                        </Typography>
-                      )}
+                    {/* Displays status of prayers */}
+                    {/* The Author has the ability to toggle between different statuses */}
+                    <StatusBadge
+                      status={status}
+                      onStatusChange={(e) => handleStatusChange(prayer._id, e.target.value)}
+                      isAuthor={isAuthor}
+                      sx={{ cursor: isAuthor ? 'pointer' : 'default' }}
+                    >
                     </StatusBadge>
 
                     {/* Displays when prayer was created */}
