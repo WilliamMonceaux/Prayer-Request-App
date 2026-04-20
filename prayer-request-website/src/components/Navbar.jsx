@@ -25,6 +25,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { UserAvatar } from './UserAvatar';
 import ThemeSwitcher from './ThemeSwitcher';
 import { useUserContext } from '@/context/UserContext';
+import { useRouter } from 'next/navigation';
 
 const drawerWidth = 240;
 const pages = [
@@ -66,6 +67,7 @@ const settingsLoggedOut = [
 
 function Navbar(props) {
   const { currentUser, logout } = useUserContext();
+  const router = useRouter();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -77,6 +79,16 @@ function Navbar(props) {
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
+
+  const handleRequestPrayersClick = (e, path) =>  {
+    if ( path === '/request' && !currentUser) {
+      e.preventDefault();
+      const message = encodeURIComponent('You must sign in first before submitting a prayer request.');
+      router.push(`/signin?message=${message}`);
+
+      if (mobileOpen) setMobileOpen(false);
+    }
+  }
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
@@ -98,6 +110,7 @@ function Navbar(props) {
             <ListItemButton
               component={Link}
               href={page.path}
+              onClick={(e) => handleRequestPrayersClick(e, page.path)}
               sx={{ textAlign: 'center' }}
             >
               <ListItemText
@@ -181,6 +194,7 @@ function Navbar(props) {
                 key={page.title}
                 component={Link}
                 href={page.path}
+                onClick={(e) => handleRequestPrayersClick(e, page.path)}
                 sx={{
                   fontSize: { md: '1.4rem', xl: '1.6rem' },
                   fontWeight: 500,
