@@ -6,6 +6,9 @@ export const feedbackCustomizations = {
   MuiAlert: {
     styleOverrides: {
       root: ({ theme }) => ({
+        '& .MuiAlert-message': {
+         ...theme.typography.body1,
+        },
         borderRadius: 10,
         backgroundColor: orange[100],
         color: (theme.vars || theme).palette.text.primary,

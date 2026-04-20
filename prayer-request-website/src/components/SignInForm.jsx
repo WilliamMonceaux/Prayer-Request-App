@@ -67,7 +67,7 @@ function SignInForm(props) {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
-  const [formStatus, setFormStatus] = React.useState('');
+  const [formStatus, setFormStatus] = React.useState({ message: '', type: 'error' });
   const [loading, setLoading] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -83,9 +83,15 @@ function SignInForm(props) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setFormStatus({ message: '', type: 'error' });
 
-    setFormStatus('');
-    if (!validateInputs()) return;
+    if (!validateInputs()) {
+      setFormStatus({
+        message: 'Please correct the highlighted errors.',
+        type: 'error',
+      });
+      return;
+    }
 
     setLoading(true);
     const data = new FormData(event.currentTarget);
@@ -102,16 +108,20 @@ function SignInForm(props) {
       const result = await response.json();
 
       if (response.ok) {
-
         handleUpdateUser(result.user);
-
+        setFormStatus({ message: 'Login successful!', type: 'success' });
         window.location.href = '/';
-
-        setFormStatus(result.message || 'Login failed');
-
+      } else {
+        setFormStatus({
+          message: result.message || 'Login failed. Please check your credentials.',
+          type: 'error',
+        });
       }
     } catch (err) {
-      setFormStatus('A server error occurred. Please try again later.');
+      setFormStatus({
+        message: 'A server error occurred. Please try again later.',
+        type: 'error',
+      });
     } finally {
       setLoading(false);
     }
@@ -156,18 +166,11 @@ function SignInForm(props) {
           >
             Sign in
           </Typography>
-          {props.message && (
-            <Alert
-              severity="info"
-              sx={{ textAlign: 'center', mb: 1, fontSize: '1.6rem' }}
-            >
-              {props.message}
-            </Alert>
-          )}
+          {props.message && <Alert severity="info">{props.message}</Alert>}
 
-          {formStatus && (
-            <Alert severity="success" sx={{ mb: 2 }}>
-              {formStatus}
+          {formStatus.message && (
+            <Alert severity={formStatus.type} sx={{ mb: 2 }}>
+              {formStatus.message}
             </Alert>
           )}
           <Box
