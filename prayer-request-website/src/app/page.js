@@ -13,7 +13,14 @@ export default function Home() {
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '100vh',
+        }}
+      >
         <CircularProgress />
       </Box>
     );
@@ -73,7 +80,7 @@ export default function Home() {
             <PrayerCategories alignment={statusFilter} setAlignment={setStatusFilter} />
           </Box>
         </Container>
-        <PrayerRequestCards activeStatus={statusFilter} prayer={'all'} />
+        <PrayerRequestCards activeStatus={statusFilter} type="all" />
       </main>
     </>
   );
