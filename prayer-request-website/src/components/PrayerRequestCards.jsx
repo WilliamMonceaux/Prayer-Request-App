@@ -51,7 +51,7 @@ const getStatusColors = (status) => {
   };
 };
 
-function PrayerRequestCards({ activeStatus }) {
+function PrayerRequestCards({ activeStatus, type = 'all' }) {
   const { currentUser } = useUserContext();
   const [expandedComments, setExpandedComments] = useState({});
   const [prayers, setPrayers] = useState([]);
@@ -156,14 +156,18 @@ function PrayerRequestCards({ activeStatus }) {
       try {
         const statusParam =
           activeStatus !== 'all' ? `&status=${encodeURIComponent(activeStatus)}` : '';
-        const res = await fetch(
-          `/api/prayers?page=${page}&limit=${limit}${statusParam}`
-        );
+
+        const baseUrl = type === 'user' ? '/api/users/prayers' : '/api/prayers';
+        const url = `${baseUrl}?page=${page}&limit=${limit}${statusParam}`;
+
+        const res = await fetch(url);
 
         if (res.ok) {
           const data = await res.json();
           // If data.prayers is undefined, fallback to an empty array to prevent .map errors
-          setPrayers(Array.isArray(data.prayers) ? data.prayers : []);
+          const prayerList = Array.isArray(data) ? data : data.prayers || [];
+          console.log(prayerList);
+          setPrayers(prayerList);
           setTotalPages(data.totalPages || 1);
         }
       } catch (err) {
@@ -172,8 +176,10 @@ function PrayerRequestCards({ activeStatus }) {
         setLoading(false);
       }
     };
-    fetchPrayers();
-  }, [page, activeStatus]);
+    if (type === 'all' || (type === 'user' && currentUser?._id)) {
+      fetchPrayers();
+    }
+  }, [page, activeStatus, type, currentUser?._id]);
 
   if (loading) {
     return (
@@ -211,18 +217,25 @@ function PrayerRequestCards({ activeStatus }) {
       >
         {prayers.length === 0 ? (
           <Typography textAlign="center" color="text.secondary">
-            No active prayer requests.
+            Currently No Prayers Available
           </Typography>
         ) : (
           <>
             {prayers.map((prayer) => {
               const isExpanded = expandedComments[prayer._id];
               const isAnonymous = prayer.isAnonymous;
-              const username = prayer.user_id?.username || 'Community Member';
+              const username = isAnonymous
+                ? 'Anonymous'
+                : prayer.user_id?.username || 'Community Member';
               const status = prayer.status || 'Need Prayers';
               const colors = getStatusColors(status);
               const hasPrayed = prayer.prayedBy?.includes(currentUser?._id);
               const isAuthor = currentUser?._id === prayer.user_id?._id;
+              const avatarData = isAnonymous
+                ? { username: 'Anonymous' }
+                : typeof prayer.user_id === 'object'
+                  ? prayer.user_id
+                  : { username: 'You' };
 
               return (
                 <PrayerCard
@@ -252,7 +265,7 @@ function PrayerRequestCards({ activeStatus }) {
                     else display username and initial/profile picture */}
                     <UserHeader
                       name={isAnonymous ? 'Anonymous' : username}
-                      pic={isAnonymous ? { name: '?' } : prayer.user_id}
+                      pic={avatarData}
                     />
 
                     {/* User Interactions for each prayer request */}
